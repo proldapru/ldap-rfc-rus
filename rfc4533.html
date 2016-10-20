@@ -39,50 +39,69 @@ J.H. Choi, IBM Corporation
 <p>В данной спецификации описывается операция синхронизации содержимого каталога, основанного на Lightweight Directory Access Protocol (LDAP). Эта операция позволяет клиенту поддерживать копию фрагмента информационного дерева каталога (Directory Information Tree, DIT). В ней поддерживается как запрос изменений, так и ожидание посылок изменений. Данная операция определяется как расширение операции поиска LDAP.</p>
 
 <h3>Содержание</h3>
-<dl>
-<dt>1. <a href="#section-1">Введение</a></dt>
-<dd>1.1. <a href="#section-1.1">Предпосылки</a></dd>
-<dd>1.2. <a href="#section-1.2">Предназначение</a></dd>
-<dd>1.3. <a href="#section-1.3">Обзор</a></dd>
-<dd>1.4. <a href="#section-1.4">Соглашения</a></dd>
-
-<dt>2. <a href="#section-2">Элементы операции Sync</a></dt>
-<dd>2.1. <a href="#section-2.1">Общие элементы ASN.1</a></dd>
-<dd>2.2. <a href="#section-2.2">Sync Request Control</a></dd>
-<dd>2.3. <a href="#section-2.3">Sync State Control</a></dd>
-<dd>2.4. <a href="#section-2.4">Sync Done Control</a></dd>
-<dd>2.5. <a href="#section-2.5">Sync Info Message</a></dd>
-<dd>2.6. <a href="#section-2.6">Результирующие коды Sync</a></dd>
-<dt>3. <a href="#section-3">Синхронизация содержимого каталога</a></dt>
-<dd>3.1. <a href="#section-3.1">Сессия синхронизации</a></dd>
-<dd>3.2. <a href="#section-3.2">Определение содержимого каталога</a></dd>
-<dd>3.3. <a href="#section-3.3">Режим refreshOnly</a></dd>
-<dd>3.4. <a href="#section-3.4">Режим refreshAndPersist</a></dd>
-<dd>3.5. <a href="#section-3.5">Параметры поискового запроса</a></dd>
-<dd>3.6. <a href="#section-3.6">objectName</a></dd>
-<dd>3.7. <a href="#section-3.7">Отмена операции Sync</a></dd>
-<dd>3.8. <a href="#section-3.8">Требование выполнения обновления</a></dd>
-<dd>3.9. <a href="#section-3.9">Соображения уменьшения трафика</a></dd>
-<dd>3.10. <a href="#section-3.10">Объединение (мультиплексирование) операций</a></dd>
-<dt>4. <a href="#section-4">О мета-информации</a></dt>
-<dd>4.1. <a href="#section-4.1">DN записи</a></dd>
-<dd>4.2. <a href="#section-4.2">Операционные атрибуты</a></dd>
-<dd>4.3. <a href="#section-4.3">Коллективные атрибуты</a></dd>
-<dd>4.4. <a href="#section-4.4">Контроль доступа и другие виды административного контроля</a></dd>
-<dt>5. <a href="#section-5">Интеграция с другими элементами управления</a></dt>
-<dd>5.1. <a href="#section-5.1">Элемент управления ManageDsaIT Control</a></dd>
-<dd>5.2. <a href="#section-5.2">Элемент управления Subentries Control</a></dd>
-<dt>6. <a href="#section-6">О теневых каталогах</a></dt>
-<dt>7. <a href="#section-7">О безопасности</a></dt>
-<dt>8. <a href="#section-8">Регистрация в IANA</a></dt>
-<dd>8.1. <a href="#section-8.1">Идентификатор объекта</a></dd>
-<dd>8.2. <a href="#section-8.2">Механизм протокола LDAP</a></dd>
-<dd>8.3. <a href="#section-8.3">Результирующие коды LDAP</a></dd>
-<dt>9. <a href="#section-9">Благодарности</a></dt>
-<dt>10. <a href="#section-10">Нормативные документы</a></dt>
-<dt>11. <a href="#section-11">Информативные документы</a></dt>
-<dt>Приложение A. <a href="#appendix-A">Соображения по реализациям, основанным на CSN</a></dt>
-</dl>
+<div class="contents">
+<ul>
+<li>1. <a href="#section-1">Введение</a>
+    <ul>
+      <li>1.1. <a href="#section-1.1">Предпосылки</a></li>
+      <li>1.2. <a href="#section-1.2">Предназначение</a></li>
+      <li>1.3. <a href="#section-1.3">Обзор</a></li>
+      <li>1.4. <a href="#section-1.4">Соглашения</a></li>
+    </ul>
+</li>
+<li>2. <a href="#section-2">Элементы операции Sync</a>
+    <ul>
+      <li>2.1. <a href="#section-2.1">Общие элементы ASN.1</a></li>
+      <li>2.2. <a href="#section-2.2">Sync Request Control</a></li>
+      <li>2.3. <a href="#section-2.3">Sync State Control</a></li>
+      <li>2.4. <a href="#section-2.4">Sync Done Control</a></li>
+      <li>2.5. <a href="#section-2.5">Sync Info Message</a></li>
+      <li>2.6. <a href="#section-2.6">Результирующие коды Sync</a></li>
+    </ul>
+</li>
+<li>3. <a href="#section-3">Синхронизация содержимого каталога</a>
+    <ul>
+      <li>3.1. <a href="#section-3.1">Сессия синхронизации</a></li>
+      <li>3.2. <a href="#section-3.2">Определение содержимого каталога</a></li>
+      <li>3.3. <a href="#section-3.3">Режим refreshOnly</a></li>
+      <li>3.4. <a href="#section-3.4">Режим refreshAndPersist</a></li>
+      <li>3.5. <a href="#section-3.5">Параметры поискового запроса</a></li>
+      <li>3.6. <a href="#section-3.6">objectName</a></li>
+      <li>3.7. <a href="#section-3.7">Отмена операции Sync</a></li>
+      <li>3.8. <a href="#section-3.8">Требование выполнения обновления</a></li>
+      <li>3.9. <a href="#section-3.9">Соображения уменьшения трафика</a></li>
+      <li>3.10. <a href="#section-3.10">Объединение (мультиплексирование) операций</a></li>
+    </ul>
+</li>
+<li>4. <a href="#section-4">О мета-информации</a>
+    <ul>
+      <li>4.1. <a href="#section-4.1">DN записи</a></li>
+      <li>4.2. <a href="#section-4.2">Операционные атрибуты</a></li>
+      <li>4.3. <a href="#section-4.3">Коллективные атрибуты</a></li>
+      <li>4.4. <a href="#section-4.4">Контроль доступа и другие виды административного контроля</a></li>
+    </ul>
+</li>
+<li>5. <a href="#section-5">Интеграция с другими элементами управления</a>
+    <ul>
+      <li>5.1. <a href="#section-5.1">Элемент управления ManageDsaIT Control</a></li>
+      <li>5.2. <a href="#section-5.2">Элемент управления Subentries Control</a></li>
+    </ul>
+</li>
+<li>6. <a href="#section-6">О теневых каталогах</a></li>
+<li>7. <a href="#section-7">О безопасности</a></li>
+<li>8. <a href="#section-8">Регистрация в IANA</a>
+    <ul>
+      <li>8.1. <a href="#section-8.1">Идентификатор объекта</a></li>
+      <li>8.2. <a href="#section-8.2">Механизм протокола LDAP</a></li>
+      <li>8.3. <a href="#section-8.3">Результирующие коды LDAP</a></li>
+    </ul>
+</li>
+<li>9. <a href="#section-9">Благодарности</a></li>
+<li>10. <a href="#section-10">Нормативные документы</a></li>
+<li>11. <a href="#section-11">Информативные документы</a></li>
+<li>Приложение A. <a href="#appendix-A">Соображения по реализациям, основанным на CSN</a></li>
+</ul>
+</div>
 
 <h2><a name="section-1">1</a>. Введение</h2>
 

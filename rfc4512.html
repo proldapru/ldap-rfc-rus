@@ -34,56 +34,74 @@ K. Zeilenga, OpenLDAP Foundation
 <p>Облегчённый протокол доступа к службам каталогов (Lightweight Directory Access Protocol, LDAP)&thinsp;&mdash;&thinsp;это Интернет-протокол для доступа к распределённым службам каталогов, функционирующим в соответствии с моделями данных и сервисов X.500. В этом документе описываются информационные модели каталога X.500, используемые в LDAP.</p>
 
 <h3>Содержание</h3>
-<dl>
-<dt>1. <a href="#section-1">Введение</a></dt>
-<dd>1.1. <a href="#section-1.1">Взаимосвязь с другими спецификациями LDAP</a></dd>
-<dd>1.2. <a href="#section-1.2">Взаимосвязь с X.501</a></dd>
-<dd>1.3. <a href="#section-1.3">Соглашения</a></dd>
-<dd>1.4. <a href="#section-1.4">Общие конструкции ABNF</a></dd>
-
-<dt>2. <a href="#section-2">Модель пользовательской информации каталога</a></dt>
-<dd>2.1. <a href="#section-2.1">Информационное дерево каталога (DIT)</a></dd>
-<dd>2.2. <a href="#section-2.2">Структура записи</a></dd>
-<dd>2.3. <a href="#section-2.3">Именование записей</a></dd>
-<dd>2.4. <a href="#section-2.4">Объектные классы</a></dd>
-<dd>2.5. <a href="#section-2.5">Описания атрибутов</a></dd>
-<dd>2.6. <a href="#section-2.6">Записи-псевдонимы (Alias Entries)</a></dd>
-
-<dt>3. <a href="#section-3">Административная и операционная информация каталога</a></dt>
-<dd>3.1. <a href="#section-3.1">Поддеревья (Subtrees)</a></dd>
-<dd>3.2. <a href="#section-3.2">Подзаписи (Subentries)</a></dd>
-<dd>3.3. <a href="#section-3.3">Атрибут 'objectClass'</a></dd>
-<dd>3.4. <a href="#section-3.4">Операционные атрибуты</a></dd>
-
-<dt>4. <a href="#section-4">Схема данных каталога (Directory Schema)</a></dt>
-<dd>4.1. <a href="#section-4.1">Определения схемы данных</a></dd>
-<dd>4.2. <a href="#section-4.2">Подзаписи подсхемы (Subschema Subentries)</a></dd>
-<dd>4.3. <a href="#section-4.3">Объектный класс 'extensibleObject'</a></dd>
-<dd>4.4. <a href="#section-4.4">Изучение подсхемы</a></dd>
-
-<dt>5. <a href="#section-5">Информационная модель DSA (сервера)</a></dt>
-<dd>5.1. <a href="#section-5.1">Требования к специфичной для сервера информации</a></dd>
-
-<dt>6. <a href="#section-6">Прочие соображения</a></dt>
-<dd>6.1. <a href="#section-6.1">Сохранность в неизменном виде пользовательской информации</a></dd>
-<dd>6.2. <a href="#section-6.2">Короткие имена</a></dd>
-<dd>6.3. <a href="#section-6.3">Кэши и теневые копии</a></dd>
-
-<dt>7. <a href="#section-7">Рекомендации для реализаций</a></dt>
-<dd>7.1. <a href="#section-7.1">Рекомендации для серверов</a></dd>
-<dd>7.2. <a href="#section-7.2">Рекомендации для клиентов</a></dd>
-
-<dt>8. <a href="#section-8">О безопасности</a></dt>
-<dt>9. <a href="#section-9">Регистрация в IANA</a></dt>
-<dt>10. <a href="#section-10">Благодарности</a></dt>
-<dt>11. <a href="#section-11">Нормативные документы</a></dt>
-
-<dt>Приложение A. <a href="#appendix-A">Изменения</a></dt>
-<dd>A.1. <a href="#appendix-A.1">Изменения, внесённые в RFC 2251</a></dd>
-<dd>A.2. <a href="#appendix-A.2">Изменения, внесённые в RFC 2252</a></dd>
-<dd>A.3. <a href="#appendix-A.3">Изменения, внесённые в RFC 2256</a></dd>
-<dd>A.3. <a href="#appendix-A.3">Изменения, внесённые в RFC 3674</a></dd>
-</dl>
+<div class="contents">
+<ul>
+<li>1. <a href="#section-1">Введение</a>
+    <ul>
+      <li>1.1. <a href="#section-1.1">Взаимосвязь с другими спецификациями LDAP</a></li>
+      <li>1.2. <a href="#section-1.2">Взаимосвязь с X.501</a></li>
+      <li>1.3. <a href="#section-1.3">Соглашения</a></li>
+      <li>1.4. <a href="#section-1.4">Общие конструкции ABNF</a></li>
+    </ul>
+</li>
+<li>2. <a href="#section-2">Модель пользовательской информации каталога</a>
+    <ul>
+      <li>2.1. <a href="#section-2.1">Информационное дерево каталога (DIT)</a></li>
+      <li>2.2. <a href="#section-2.2">Структура записи</a></li>
+      <li>2.3. <a href="#section-2.3">Именование записей</a></li>
+      <li>2.4. <a href="#section-2.4">Объектные классы</a></li>
+      <li>2.5. <a href="#section-2.5">Описания атрибутов</a></li>
+      <li>2.6. <a href="#section-2.6">Записи-псевдонимы (Alias Entries)</a></li>
+    </ul>
+</li>
+<li>3. <a href="#section-3">Административная и операционная информация каталога</a>
+    <ul>
+      <li>3.1. <a href="#section-3.1">Поддеревья (Subtrees)</a></li>
+      <li>3.2. <a href="#section-3.2">Подзаписи (Subentries)</a></li>
+      <li>3.3. <a href="#section-3.3">Атрибут 'objectClass'</a></li>
+      <li>3.4. <a href="#section-3.4">Операционные атрибуты</a></li>
+    </ul>
+</li>
+<li>4. <a href="#section-4">Схема данных каталога (Directory Schema)</a>
+    <ul>
+      <li>4.1. <a href="#section-4.1">Определения схемы данных</a></li>
+      <li>4.2. <a href="#section-4.2">Подзаписи подсхемы (Subschema Subentries)</a></li>
+      <li>4.3. <a href="#section-4.3">Объектный класс 'extensibleObject'</a></li>
+      <li>4.4. <a href="#section-4.4">Изучение подсхемы</a></li>
+    </ul>
+</li>
+<li>5. <a href="#section-5">Информационная модель DSA (сервера)</a>
+    <ul>
+      <li>5.1. <a href="#section-5.1">Требования к специфичной для сервера информации</a></li>
+    </ul>
+</li>
+<li>6. <a href="#section-6">Прочие соображения</a>
+    <ul>
+      <li>6.1. <a href="#section-6.1">Сохранность в неизменном виде пользовательской информации</a></li>
+      <li>6.2. <a href="#section-6.2">Короткие имена</a></li>
+      <li>6.3. <a href="#section-6.3">Кэши и теневые копии</a></li>
+    </ul>
+</li>
+<li>7. <a href="#section-7">Рекомендации для реализаций</a>
+    <ul>
+      <li>7.1. <a href="#section-7.1">Рекомендации для серверов</a></li>
+      <li>7.2. <a href="#section-7.2">Рекомендации для клиентов</a></li>
+    </ul>
+</li>
+<li>8. <a href="#section-8">О безопасности</a></li>
+<li>9. <a href="#section-9">Регистрация в IANA</a></li>
+<li>10. <a href="#section-10">Благодарности</a></li>
+<li>11. <a href="#section-11">Нормативные документы</a></li>
+<li>Приложение A. <a href="#appendix-A">Изменения</a>
+    <ul>
+      <li>A.1. <a href="#appendix-A.1">Изменения, внесённые в RFC 2251</a></li>
+      <li>A.2. <a href="#appendix-A.2">Изменения, внесённые в RFC 2252</a></li>
+      <li>A.3. <a href="#appendix-A.3">Изменения, внесённые в RFC 2256</a></li>
+      <li>A.3. <a href="#appendix-A.3">Изменения, внесённые в RFC 3674</a></li>
+    </ul>
+</li>
+</ul>
+</div>
 
 <h2><a name="section-1">1</a>. Введение</h2>
 

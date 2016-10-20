@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Ресурсы проекта Pro-LDAP.ru. RFC по службам каталогов и LDAP." />
+<meta name="keywords" content="Pro-LDAP.ru,LDAP,OpenLDAP,slapd,по-русски,на русском,перевод,документация,RFC" />
+<link rel="stylesheet" href="/pro-ldap.css" type="text/css">
+<title>RFC 4510</title>
+<script src="/pro-ldap.js"></script>
+</head>
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+
+<pre>Network Working Group
+<strong>Request for Comments: 4510</strong>
+Категория: Standards Track
+Под редакцией K. Zeilenga, OpenLDAP Foundation
+Июнь 2006 года
+Отменяет: <a href="http://tools.ietf.org/html/rfc2251">2251</a>, <a href="http://tools.ietf.org/html/rfc2252">2252</a>, <a href="http://tools.ietf.org/html/rfc2253">2253</a>, <a href="http://tools.ietf.org/html/rfc2254">2254</a>, <a href="http://tools.ietf.org/html/rfc2255">2255</a>, <a href="http://tools.ietf.org/html/rfc2256">2256</a>, <a href="http://tools.ietf.org/html/rfc2829">2829</a>, <a href="http://tools.ietf.org/html/rfc2830">2830</a>, <a href="http://tools.ietf.org/html/rfc3377">3377</a>, <a href="http://tools.ietf.org/html/rfc3771">3771</a></pre>
+
+<h1>Lightweight Directory Access Protocol (LDAP): Путеводитель по технической спецификации</h1>
+
+<h3>Статус документа</h3>
+
+<p>Этот документ определяет проект стандарта протокола Интернет для сообщества Интернет, а также приглашает к обсуждению и подаче предложений по его усовершенствованию. Пожалуйста, сверяйтесь с текущей редакцией "Официальных стандартов протоколов Интернет" (STD 1), чтобы узнать состояние стандартизации и статус этого протокола. Ограничений на распространение данного документа не накладывается.</p>
+
+<h3>Уведомление об авторских правах</h3>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<h3>Тезисы</h3>
+
+<p>Lightweight Directory Access Protocol (LDAP)&thinsp;&mdash;&thinsp;это протокол Интернет для доступа к распределённым службам каталога, работающим в соответствии с моделью данных и сервисной моделью X.500. В этом документе представлен путеводитель по технической спецификации LDAP.</p>
+
+<h2><a name="section-1">1</a>. Техническая спецификация LDAP</h2>
+
+<p>Техническая спецификация, определяющая версию 3 протокола Интернет Lightweight Directory Access Protocol (LDAP), состоит из этого документа, а также следующих документов:</p>
+<blockquote>
+<p>LDAP: Определение протокола [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>]</p>
+<p>LDAP: Информационные модели каталога [<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>]</p>
+<p>LDAP: Методы аутентификации и механизмы обеспечения безопасности [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>]</p>
+<p>LDAP: Строковое представление уникальных имён [<a href="rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>]</p>
+<p>LDAP: Строковое представление поисковых фильтров [<a href="rfc4515.html" title="LDAP: Строковое представление поисковых фильтров">RFC4515</a>]</p>
+<p>LDAP: Единый указатель ресурса (URL) [<a href="rfc4516.html" title="LDAP: URL">RFC4516</a>]</p>
+<p>LDAP: Синтаксисы и правила соответствия [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>]</p>
+<p>LDAP: Подготовка интернационализированных строк [<a href="rfc4518.html" title="LDAP: Подготовка интернационализированных строк">RFC4518</a>]</p>
+<p>LDAP: Схема данных для пользовательских приложений [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>]</p>
+</blockquote>
+
+<p>Термины "LDAP" и "LDAPv3" обычно используются для неофициального указания на протокол, определённый в данной технической спецификации. Набор стандартов LDAP должен официально идентифицироваться в других документах путём указания нормативной ссылки на этот документ как на путеводитель по данной технической спецификации.</p>
+
+<p>LDAP является расширяемым протоколом. Расширения LDAP могут быть определены в других документах. Термин, обозначающий подобную комбинацию LDAP и расширений, не определяется в данном документе, но может быть определён в каком-либо будущем документе (документах). Ожидается, что расширения LDAP не должны быть обязательными для применения. Соглашения о расширениях LDAP, описанные в <a href="http://tools.ietf.org/html/bcp118">BCP 118</a>, <a href="http://tools.ietf.org/html/rfc4521">RFC 4521</a> [<a href="http://tools.ietf.org/html/rfc4521" title="Соглашения IANA о расширениях LDAP">RFC4521</a>], применяются к данной ревизии технической спецификации LDAP в полном объёме.</p>
+
+<p>Соглашения IANA (Internet Assigned Numbers Authority) о LDAP, описанные в <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a> [<a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>], применяются к данной ревизии технической спецификации LDAP в полном объёме.</p>
+
+<h3><a name="section-1.1">1.1</a>. Соглашения</h3>
+
+<p>Ключевые слова "MUST" (необходимо), "MUST NOT" (недопустимо), "REQUIRED" (требуется), "SHALL" (нужно), "SHALL NOT" (не нужно), "SHOULD" (следует), "SHOULD NOT" (не следует), "RECOMMENDED" (рекомендуется), "MAY" (возможно) и "OPTIONAL" (необязательно) в данном документе должны интерпретироваться так, как описано в <a href="http://rfc2.ru/2119.rfc">BCP 14</a> [<a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC2119</a>].</p>
+
+<h2><a name="section-2">2</a>. Взаимосвязь с X.500</h2>
+
+<p>В данной технической спецификации LDAP определяется с точки зрения [<a href="#ref-X.500" title="The Directory: Overview of concepts, models and services">X.500</a>] как механизм доступа к каталогам X.500. При предоставлении этого сервиса сервер LDAP должен (MUST) функционировать в соответствии с серией рекомендаций X.500 (1993) Сектора стандартизации электросвязи Международного союза электросвязи (International Telecommunication Union - Telecommunication Standardization, ITU-T). Однако, не выдвигается требование, что при предоставлении этого сервиса сервер LDAP должен обеспечивать использование какого-либо из протоколов X.500. Например, LDAP может быть отображён на любую другую систему каталогов, если при этом используемые в LDAP модель данных [<a href="#ref-X.501" title="The Directory: Models">X.501</a>] и сервисная модель [<a href="#ref-X.511" title="The Directory: Abstract Service Definition">X.511</a>] X.500 не нарушаются в интерфейсе LDAP.</p>
+
+<p>Данная техническая спецификация включает в себя в явном виде части стандартов X.500(93). Дальнейшие ревизии стандартов серии X.500 не должны автоматически применяться к данной технической спецификации.</p>
+
+<h2><a name="section-3">3</a>. Взаимосвязь с устаревшими спецификациями</h2>
+
+<p>Как определено в <a href="#section-1">разделе 1</a>, данная техническая спецификация полностью отменяет предыдущую техническую спецификацию LDAP, определённую в <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a> (и состоящую из RFC 2251-2256, 2829, 2830, 3771 и собственно 3377). По сравнению с предыдущей ревизией, данная техническая спецификация была существенно реорганизована.</p>
+
+<p>Этот документ заменяет <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>, а также <a href="http://tools.ietf.org/html/rfc2251#section-3.3">раздел 3.3 RFC 2251</a>. [<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>] заменяет части <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> и <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>] заменяет большую часть <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, части <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, и полностью <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a>. [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>] заменяет <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a>, <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a> и части <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>] заменяет большую часть <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> и части <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>] заменяет большую часть <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. [<a href="rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>] заменяет <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>. [<a href="rfc4515.html" title="LDAP: Строковое представление поисковых фильтров">RFC4515</a>] заменяет <a href="http://tools.ietf.org/html/rfc2254">RFC 2254</a>. [<a href="rfc4516.html" title="LDAP: URL">RFC4516</a>] заменяет <a href="http://tools.ietf.org/html/rfc2255">RFC 2255</a>.</p>
+
+<p>[<a name="ref-RFC4518" id="ref-RFC4518">RFC4518</a>] является новым документом в данной ревизии технической спецификации LDAP.</p>
+
+<p>В каждом документе данной спецификации имеются приложения, в которых собраны изменения всех разделов предыдущей спецификации, заменённых этим документом. В <a href="#appendix-A.1"> приложении A.1</a> данного документа собраны изменения, внесённые в <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>. В <a href="#appendix-A.2">приложении A.2</a> данного документа собраны изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2251#section-3.3">раздел 3.3 RFC 2251</a>.</p>
+
+<p>Кроме того, части данной технической спецификации обновляют и/или заменяют некоторые другие документы, не перечисленные выше. Такие изменения подробно обсуждаются непосредственно в соответствующих документах данной технической спецификации.</p>
+
+<h2><a name="section-4">4</a>. О безопасности</h2>
+
+<p>Соображения безопасности LDAP обсуждаются в каждом документе, включённом в данную техническую спецификацию.</p>
+
+<h2><a name="section-5">5</a>. Благодарности</h2>
+
+<p>Этот документ основан главным образом на <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>, авторы J. Hodges и R. Morgan. <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>&thinsp;&mdash;&thinsp;продукт рабочих групп LDAPBIS и LDAPEXT. Также материалы для данного документа позаимствованы из <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, авторы M. Wahl, T. Howes и S. Kille. <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>&thinsp;&mdash;&thinsp;продукт рабочей группы ASID.</p>
+
+<p>Этот документ&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAPBIS.</p>
+
+<h2><a name="section-6">6</a>. Нормативные документы</h2>
+
+<p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
+
+<p>[<a name="ref-RFC4511" id="ref-RFC4511">RFC4511</a>] Под редакцией Sermersheim, J., "Lightweight Directory Access Protocol (LDAP): Определение протокола", <a href="rfc4511.html">RFC 4511</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Информационные модели каталога", <a href="rfc4512.html">RFC4512</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4513" id="ref-RFC4513">RFC4513</a>] Под редакцией Harrison, R., "Lightweight Directory Access Protocol (LDAP): Методы аутентификации и механизмы обеспечения безопасности", <a href="rfc4513.html">RFC 4513</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4514" id="ref-RFC4514">RFC4514</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Строковое представление уникальных имён", <a href="rfc4514.html">RFC 4514</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4515" id="ref-RFC4515">RFC4515</a>] Под редакцией Smith, M. и T. Howes, "Lightweight Directory Access Protocol (LDAP): Строковое представление поисковых фильтров", <a href="rfc4515.html">RFC 4515</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4516" id="ref-RFC4516">RFC4516</a>] Под редакцией Smith, M. и T. Howes, "Lightweight Directory Access Protocol (LDAP): Единый указатель ресурса (URL)", <a href="rfc4516.html">RFC 4516</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4517" id="ref-RFC4517">RFC4517</a>] Под редакцией Legg, S., "Lightweight Directory Access Protocol (LDAP): Синтаксисы и правила соответствия", <a href="rfc4517.html">RFC 4517</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4518" id="ref-RFC4518">RFC4518</a>] Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Подготовка интернационализированных строк", <a href="rfc4518.html">RFC 4518</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4519" id="ref-RFC4519">RFC4519</a>] Под редакцией Sciberras, A., "Lightweight Directory Access Protocol (LDAP): Схема данных для пользовательских приложений", <a href="rfc4519.html">RFC 4519</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Internet Assigned Numbers Authority (IANA) Considerations for the Lightweight Directory Access Protocol (LDAP)", <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a>, June 2006.</p>
+
+<p>[<a name="ref-RFC4521" id="ref-RFC4521">RFC4521</a>] Zeilenga, K., "Considerations for LDAP Extensions", <a href="http://tools.ietf.org/html/bcp118">BCP 118</a>, <a href="http://tools.ietf.org/html/rfc4521">RFC 4521</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-X.500" id="ref-X.500">X.500</a>] International Telecommunication Union - Telecommunication Standardization Sector, "The Directory: Overview of concepts, models and services", X.500(1993) (он же ISO/IEC 9594-1:1994).</p>
+
+<p>[<a name="ref-X.501" id="ref-X.501">X.501</a>] International Telecommunication Union - Telecommunication Standardization Sector, "The Directory: Models", X.501(1993) (он же ISO/IEC 9594-2:1994).</p>
+
+<p>[<a name="ref-X.511" id="ref-X.511">X.511</a>] International Telecommunication Union - Telecommunication Standardization Sector, "The Directory: Abstract Service Definition", X.511(1993) (он же ISO/IEC 9594-3:1993).</p>
+
+<h2><a name="appendix-A">Приложение A</a>. Изменения, внесённые в предыдущие документы</h2>
+
+<p>В данном приложении приводятся изменения относительно документов, которые заменяются этим документом (полностью или частично).</p>
+
+<h3><a name="appendix-A.1">A.1</a>. Изменения, внесённые в RFC 3377</h3>
+
+<p>Данный документ практически полностью переопределяет <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>, поскольку большая часть материала из <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a> больше неприменима. Среди прочего, эти изменения включают указание, что термины "LDAP" и "LDAPv3" используются для ссылки на данную ревизию технической спецификации.</p>
+
+<h3><a name="appendix-A.2">A.2</a>. Изменения, внесённые в раздел 3.3 RFC 2251</h3>
+
+<p>Этот раздел претерпел незначительные изменения (слово "документ" заменено на выражение "техническая спецификация"), тем самым уточняется, что информация относится ко всей технической спецификации LDAP в целом.</p>
+
+<h2>Адрес автора</h2>
+<p>Kurt D. Zeilenga</p>
+<p>OpenLDAP Foundation</p>
+<p>EMail: Kurt@OpenLDAP.org</p>
+
+<h2>Полное заявление авторских прав</h2>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+
+<p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
+
+<h2>Интеллектуальная собственность</h2>
+
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a target="_blank" href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a target="_blank" href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+
+<p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
+
+<h2>Признание заслуг</h2>
+
+<p>Финансирование функций RFC Editor обеспечивается IETF Administrative Support Activity (IASA).</p>
+
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+</body></html>

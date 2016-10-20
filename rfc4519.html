@@ -1,0 +1,1344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Ресурсы проекта Pro-LDAP.ru. RFC по службам каталогов и LDAP." />
+<meta name="keywords" content="Pro-LDAP.ru,LDAP,OpenLDAP,slapd,по-русски,на русском,перевод,документация,RFC" />
+<link rel="stylesheet" href="/pro-ldap.css" type="text/css">
+<title>RFC 4519</title>
+<script src="/pro-ldap.js"></script>
+</head>
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+
+<pre>Network Working Group
+<strong>Request for Comments: 4519</strong>
+Категория: Standards Track
+Под редакцией A. Sciberras, eB2Bcom
+Июнь 2006 года
+Отменяет: <a href="http://tools.ietf.org/html/rfc2256">2256</a>
+Обновляет: <a href="http://tools.ietf.org/html/rfc2247">2247</a>, <a href="http://tools.ietf.org/html/rfc2798">2798</a>, <a href="http://tools.ietf.org/html/rfc2377">2377</a></pre>
+<h1>Lightweight Directory Access Protocol (LDAP): Схема данных для пользовательских приложений</h1>
+
+<h3>Статус документа</h3>
+
+<p>Этот документ определяет проект стандарта протокола Интернет для сообщества Интернет, а также приглашает к обсуждению и подаче предложений по его усовершенствованию. Пожалуйста, сверяйтесь с текущей редакцией "Официальных стандартов протоколов Интернет" (STD 1), чтобы узнать состояние стандартизации и статус этого протокола. Ограничений на распространение данного документа не накладывается.</p>
+
+<h3>Уведомление об авторских правах</h3>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<h3>Тезисы</h3>
+
+<p>Этот документ является неотъемлемой частью технической спецификации протокола Lightweight Directory Access Protocol (LDAP). В нём представлена техническая спецификация типов атрибутов и объектных классов, предназначенных для использования клиентами каталогов LDAP во многих службах каталогов, таких как "Белые страницы" ("White Pages"). Данные объекты широко используются в качестве основы для схемы данных во многих каталогах LDAP. Этот документ не включает атрибуты, используемые для администрирования серверов каталогов, а также не включает объекты каталога для специфических нужд&thinsp;&mdash;&thinsp;они определяются в других документах.</p>
+
+<h3>Содержание</h3>
+<div class="contents">
+<ul>
+<li>1. <a href="#section-1">Введение</a>
+	<ul>
+		<li>1.1. <a href="#section-1.1">Взаимосвязь с другими спецификациями</a></li>
+		<li>1.2. <a href="#section-1.2">Соглашения</a></li>
+		<li>1.3. <a href="#section-1.3">Общие замечания</a></li>
+	</ul>
+</li>
+<li>2. <a href="#section-2">Типы атрибутов</a>
+	<ul>
+		<li>2.1. <a href="#section-2.1">'businessCategory'</a></li>
+		<li>2.2. <a href="#section-2.2">'c'</a></li>
+		<li>2.3. <a href="#section-2.3">'cn'</a></li>
+		<li>2.4. <a href="#section-2.4">'dc'</a></li>
+		<li>2.5. <a href="#section-2.5">'description'</a></li>
+		<li>2.6. <a href="#section-2.6">'destinationIndicator'</a></li>
+		<li>2.7. <a href="#section-2.7">'distinguishedName'</a></li>
+		<li>2.8. <a href="#section-2.8">'dnQualifier'</a></li>
+		<li>2.9. <a href="#section-2.9">'enhancedSearchGuide'</a></li>
+		<li>2.10. <a href="#section-2.10">'facsimileTelephoneNumber'</a></li>
+		<li>2.11. <a href="#section-2.11">'generationQualifier'</a></li>
+		<li>2.12. <a href="#section-2.12">'givenName'</a></li>
+		<li>2.13. <a href="#section-2.13">'houseIdentifier'</a></li>
+		<li>2.14. <a href="#section-2.14">'initials'</a></li>
+		<li>2.15. <a href="#section-2.15">'internationalISDNNumber'</a></li>
+		<li>2.16. <a href="#section-2.16">'l'</a></li>
+		<li>2.17. <a href="#section-2.17">'member'</a></li>
+		<li>2.18. <a href="#section-2.18">'name'</a></li>
+		<li>2.19. <a href="#section-2.19">'o'</a></li>
+		<li>2.20. <a href="#section-2.20">'ou'</a></li>
+		<li>2.21. <a href="#section-2.21">'owner'</a></li>
+		<li>2.22. <a href="#section-2.22">'physicalDeliveryOfficeName'</a></li>
+		<li>2.23. <a href="#section-2.23">'postalAddress'</a></li>
+		<li>2.24. <a href="#section-2.24">'postalCode'</a></li>
+		<li>2.25. <a href="#section-2.25">'postOfficeBox'</a></li>
+		<li>2.26. <a href="#section-2.26">'preferredDeliveryMethod'</a></li>
+		<li>2.27. <a href="#section-2.27">'registeredAddress'</a></li>
+		<li>2.28. <a href="#section-2.28">'roleOccupant'</a></li>
+		<li>2.29. <a href="#section-2.29">'searchGuide'</a></li>
+		<li>2.30. <a href="#section-2.30">'seeAlso'</a></li>
+		<li>2.31. <a href="#section-2.31">'serialNumber'</a></li>
+		<li>2.32. <a href="#section-2.32">'sn'</a></li>
+		<li>2.33. <a href="#section-2.33">'st'</a></li>
+		<li>2.34. <a href="#section-2.34">'street'</a></li>
+		<li>2.35. <a href="#section-2.35">'telephoneNumber'</a></li>
+		<li>2.36. <a href="#section-2.36">'teletexTerminalIdentifier'</a></li>
+		<li>2.37. <a href="#section-2.37">'telexNumber'</a></li>
+		<li>2.38. <a href="#section-2.38">'title'</a></li>
+		<li>2.39. <a href="#section-2.39">'uid'</a></li>
+		<li>2.40. <a href="#section-2.40">'uniqueMember'</a></li>
+		<li>2.41. <a href="#section-2.41">'userPassword'</a></li>
+		<li>2.42. <a href="#section-2.42">'x121Address'</a></li>
+		<li>2.43. <a href="#section-2.43">'x500UniqueIdentifier'</a></li>
+	</ul>
+</li>
+<li><a href="#section-3">3. Объектные классы</a>
+	<ul>
+		<li>3.1. <a href="#section-3.1">'applicationProcess'</a></li>
+		<li>3.2. <a href="#section-3.2">'country'</a></li>
+		<li>3.3. <a href="#section-3.3">'dcObject'</a></li>
+		<li>3.4. <a href="#section-3.4">'device'</a></li>
+		<li>3.5. <a href="#section-3.5">'groupOfNames'</a></li>
+		<li>3.6. <a href="#section-3.6">'groupOfUniqueNames'</a></li>
+		<li>3.7. <a href="#section-3.7">'locality'</a></li>
+		<li>3.8. <a href="#section-3.8">'organization'</a></li>
+		<li>3.9. <a href="#section-3.9">'organizationalPerson'</a></li>
+		<li>3.10. <a href="#section-3.10">'organizationalRole'</a></li>
+		<li>3.11. <a href="#section-3.11">'organizationalUnit'</a></li>
+		<li>3.12. <a href="#section-3.12">'person'</a></li>
+		<li>3.13. <a href="#section-3.13">'residentialPerson'</a></li>
+		<li>3.14. <a href="#section-3.14">'uidObject'</a></li>
+	</ul>
+</li>
+<li>4. <a href="#section-4">Регистрация в IANA</a></li>
+<li>5. <a href="#section-5">О безопасности</a></li>
+<li>6. <a href="#section-6">Благодарности</a></li>
+<li>7. <a href="#section-7">Документы</a>
+	<ul>
+		<li>7.1. <a href="#section-7.1">Нормативные документы</a></li>
+		<li>7.2. <a href="#section-7.2">Информативные документы</a></li>
+	</ul>
+</li>
+<li>Приложение A  <a href="#appendix-A">Изменения, внесённые в RFC 2256</a></li>
+</ul>
+</div>
+
+<h2><a name="section-1">1</a>. Введение</h2>
+
+<p>В этом документе представлен обзор типов атрибутов и объектных классов, предназначенных для использования клиентами каталогов LDAP во многих службах каталогов, таких как "Белые страницы" ("White Pages"). Первоначально определённые в документах X.500 [<a href="#ref-X.500" title=" Information Technology - Open Systems Interconnection - The Directory: Overview of concepts">X.500</a>], данные объекты широко используются в качестве основы для схемы данных во многих каталогах LDAP. Этот документ не включает атрибуты, используемые для администрирования серверов каталогов, а также не включает объекты каталога для специфических нужд&thinsp;&mdash;&thinsp;они определяются в других документах.</p>
+
+<h3><a name="section-1.1">1.1</a>. Взаимосвязь с другими спецификациями</h3>
+
+<p>Данный документ является неотъемлемой частью технической спецификации LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>], полностью отменяющей ранее определённую техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>. В отношении <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>: разделы <a href="http://tools.ietf.org/html/rfc2256#section-6">6</a> и <a href="http://tools.ietf.org/html/rfc2256#section-8">8</a> <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменены <a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC 4517</a>. Разделы <a href="http://tools.ietf.org/html/rfc2256#section-5.1">5.1</a>, <a href="http://tools.ietf.org/html/rfc2256#section-5.2">5.2</a>, <a href="http://tools.ietf.org/html/rfc2256#section-7.1">7.1</a> и <a href="http://tools.ietf.org/html/rfc2256#section-7.2">7.2</a> <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменены <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменяется этим документом. Технические спецификации типа атрибута 'dc' и объектного класса 'dcObject' в <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a> заменяются разделами <a href="#section-2.4">2.4</a> и <a href="#section-3.3">3.3</a> этого документа. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a> остаётся в силе.</p>
+
+<p>Данный документ обновляет <a href="http://tools.ietf.org/html/rfc2798">RFC 2798</a> путём замены информативного описания типа атрибута 'uid' на дефинитивное описание (приводится в <a href="#section-2.39">разделе 2.39</a>).</p>
+
+<p>Данный документ обновляет <a href="http://tools.ietf.org/html/rfc2377">RFC 2377</a> путём замены информативного описания объектного класса 'uidObject' на дефинитивное описание (приводится в <a href="#section-3.14">разделе 3.14</a>).</p>
+
+<p>Некоторые элементы схемы данных, которые были включены в предыдущую редакцию технической спецификации LDAP, в эту редакцию не включены. Элементы схемы данных, относящиеся к PKI, теперь определяются в <a href="http://tools.ietf.org/html/rfc4523" title="Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509 Certificates">RFC 4523</a>. Остальные исключённые элементы, если они не будут заново определены в будущих технических спецификациях, должны рассматриваться как исторические.</p>
+
+<p>Приводимые в этом документе описания должны (SHALL) рассматриваться как дефинитивные для использования в LDAP.</p>
+
+<h3><a name="section-1.2">1.2</a>. Соглашения</h3>
+
+<p>Ключевые слова "MUST" (необходимо), "MUST NOT" (недопустимо), "REQUIRED" (требуется), "SHALL" (нужно), "SHALL NOT" (не нужно), "SHOULD" (следует), "SHOULD NOT" (не следует), "RECOMMENDED" (рекомендуется), "MAY" (возможно) и "OPTIONAL" (необязательно) в данном документе должны интерпретироваться так, как описано в <a href="http://rfc2.ru/2119.rfc">RFC 2119</a> [<a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC2119</a>].</p>
+
+<h3><a name="section-1.3">1.3</a>. Общие замечания</h3>
+
+<p>В этом документе упоминаются синтаксисы, определённые в <a href="rfc4517.html#section-3">разделе 3 RFC 4517</a>, и правила соответствия, определённые в <a href="rfc4517.html#section-4">разделе 4 RFC 4517</a>.</p>
+
+<p>Определения типов атрибутов и объектных классов записаны с использованием ABNF-форм [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>] <a href="rfc4512.html#section-4.1.2" title="LDAP: Информационные модели каталога">AttributeTypeDescription</a> и <a href="rfc4512.html#section-4.1.1" title="LDAP: Информационные модели каталога">ObjectClassDescription</a>, приведённых в <a href="rfc4512.html#section-4.1" title="LDAP: Информационные модели каталога">RFC 4512</a>. Строки были разбиты для повышения читабельности. При передаче таких значений в качестве значений атрибутов в протоколе LDAP переносов строк в них быть не должно.</p>
+
+<h2><a name="section-2">2</a>. Типы атрибутов</h2>
+
+<p>В определяемых в этом разделе типах атрибутов хранится пользовательская информация.</p>
+
+<p>Не выдвигается требования, чтобы реализации серверов поддерживали типы атрибутов <a href="#section-2.29">'searchGuide'</a> и <a href="#section-2.36">'teletexTerminalIdentifier'</a>. Фактически, использовать их не рекомендуется.</p>
+
+<p>Реализациям LDAP-серверов следует (SHOULD) распознавать остальные описанные в этом разделе типы атрибутов.</p>
+
+<h3><a name="section-2.1">2.1</a>. 'businessCategory'</h3>
+
+<p>Тип атрибута 'businessCategory' описывает разновидности бизнеса, осуществляемые организацией. Каждая разновидность представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.15 NAME 'businessCategory'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "banking", "transportation" и "real estate".</p>
+
+<h3><a name="section-2.2">2.2</a>. 'c'</h3>
+
+<p>Тип атрибута 'c' (в X.500&thinsp;&mdash;&thinsp;'countryName') содержит двухбуквенный код страны согласно стандарту ISO 3166 [<a href="#ref-ISO3166" title="Codes for the representation of names of countries">ISO3166</a>].</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.6 NAME 'c'
+         SUP name
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.11
+         SINGLE-VALUE )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.11 указывает на синтаксис <a href="rfc4517.html#section-3.3.4" title="LDAP: Синтаксисы и правила соответствия">Country String</a> [<a href="rfc4517.html#section-3.3.4" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "DE", "AU" и "FR".</p>
+
+<h3><a name="section-2.3">2.3</a>. 'cn'</h3>
+
+<p>Тип атрибута 'cn' (в X.500&thinsp;&mdash;&thinsp;'commonName') содержит имена объекта. Каждое имя представлено одним значением этого многозначного атрибута. Если объект соответствует человеку, то обычно это полное имя этого человека.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.3 NAME 'cn'
+         SUP name )
+</pre>
+
+<p>Примеры: "Martin K Smith", "Marty Smith" и "printer12".</p>
+
+<h3><a name="section-2.4">2.4</a>. 'dc'</h3>
+
+<p>Тип атрибута 'dc' (в <a href="http://tools.ietf.org/html/rfc1274#section-9.3.21">RFC 1274</a>&thinsp;&mdash;&thinsp;<a href="http://tools.ietf.org/html/rfc1274#section-9.3.21">'domainComponent'</a>) представляет собой строку, содержащую один компонент (метку) доменного имени DNS [<a href="http://tools.ietf.org/html/rfc1034" title="Domain names - concepts and facilities">RFC1034</a>][<a href="http://tools.ietf.org/html/rfc2181" title="Clarifications to the DNS Specification">RFC2181</a>], именующего хост [<a href="http://tools.ietf.org/html/rfc1123" title="Requirements for Internet Hosts - Application and Support">RFC1123</a>]. То есть, значение этого атрибута представляет собой строку символов ASCII, соблюдающую следующую ABNF [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:</p>
+
+<pre class="list">
+   label = (ALPHA / DIGIT) [*61(ALPHA / DIGIT / HYPHEN) (ALPHA / DIGIT)]
+   ALPHA   = %x41-5A / %x61-7A     ; "A"-"Z" / "a"-"z"
+   DIGIT   = %x30-39               ; "0"-"9"
+   HYPHEN  = %x2D                  ; дефис ("-")
+</pre>
+
+<p>Кодировка IA5String для использования в LDAP представляет собой просто символы ASCII этой метки. <a href="rfc4517.html#section-4.2.7">Правило соответствия equality</a> не требует соблюдения регистра символов, что соответствует сегодняшним реалиям DNS. (Источник: <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a> и <a href="http://tools.ietf.org/html/rfc1274">RFC 1274</a>)</p>
+
+<pre class="list">
+      ( 0.9.2342.19200300.100.1.25 NAME 'dc'
+         EQUALITY caseIgnoreIA5Match
+         SUBSTR caseIgnoreIA5SubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+         SINGLE-VALUE )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.26 указывает на синтаксис <a href="rfc4517.html#section-3.3.15" title="LDAP: Синтаксисы и правила соответствия">IA5 String</a> [<a href="rfc4517.html#section-3.3.15" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: Правильные значения&thinsp;&mdash;&thinsp;"example" и "com", но не "example.com". Последнее значение является неверным, поскольку оно содержит несколько компонентов домена.</p>
+
+<p>Следует иметь ввиду, что служба каталогов не должна обеспечивать того, чтобы значения этого атрибута соответствовали ограничениям на метку хоста [<a href="http://tools.ietf.org/html/rfc1123" title="Requirements for Internet Hosts - Application and Support">RFC1123</a>], проиллюстрированным приведённой выше конструкцией &lt;label&gt;.  Обеспечение того, что сохраняемые в этом атрибуте метки должным образом ограничены, входит в сферу ответственности клиента каталога.</p>
+
+<p>Приложениям каталога, поддерживающим интернационализированные доменные имена, для формирования метки доменного компонента нужно (SHALL) использовать метод ToASCII [<a href="http://tools.ietf.org/html/rfc3490" title="Internationalizing Domain Names in Applications (IDNA)">RFC3490</a>]. В зависимости от того, будет ли данный доменный компонент использоваться в качестве строк "stored" или "query", должны быть приняты во внимание особые соображения, обсуждаемые в <a href="http://tools.ietf.org/html/rfc3490#section-4" title="Internationalizing Domain Names in Applications (IDNA)">разделе 4 RFC 3490</a>.</p>
+
+<h3><a name="section-2.5">2.5</a>. 'description'</h3>
+
+<p>Тип атрибута 'description' содержит описательные фразы об объекте, предназначенные для чтения человеком. Каждое описание представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.13 NAME 'description'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "a color printer", "Maintenance is done every Monday, at 1pm." и "distribution list for all technical staff".</p>
+
+<h3><a name="section-2.6">2.6</a>. 'destinationIndicator'</h3>
+
+<p>Тип атрибута 'destinationIndicator' содержит ассоциированные с объектом (адресатом) строки страны и города, необходимые для предоставления услуг Public Telegram Service.  Строки составляются в соответствии с рекомендациями CCITT F.1 [<a href="#ref-F.1" title="CCITT Recommendation F.1">F.1</a>] и F.31 [<a href="#ref-F.31" title="CCITT Recommendation F.31">F.31</a>]. Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.27 NAME 'destinationIndicator'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.44 указывает на синтаксис <a href="rfc4517.html#section-3.3.29" title="LDAP: Синтаксисы и правила соответствия">Printable String</a> [<a href="rfc4517.html#section-3.3.29" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "AASD" как указатель места назначения для Sydney, Australia. "GBLD" как указатель места назначения для London, United Kingdom.</p>
+
+<p>Следует иметь ввиду, что служба каталогов не должна обеспечивать того, чтобы значения этого атрибута удовлетворяли рекомендациям CCITT F.1 и F.31. Обеспечение того, что сохраняемые в этом атрибуте указатели места назначения должным образом составлены, входит в сферу ответственности приложения.</p>
+
+<h3><a name="section-2.7">2.7</a>. 'distinguishedName'</h3>
+
+<p>Тип атрибута 'distinguishedName' не используется для хранения имени самого объекта, вместо этого он представляет собой базовый тип, от которого могут быть унаследованы некоторые пользовательские типы атрибутов с <a href="rfc4517.html#section-3.3.9" title="LDAP: Синтаксисы и правила соответствия">синтаксисом DN</a>.</p>
+
+<p>Маловероятно, что значения самого этого типа будут присутствовать в записи. Реализациям LDAP-сервера, не поддерживающим подтипы атрибутов, не нужно распознавать этот атрибут в запросах. Реализации клиентов не должны (MUST NOT) предполагать, что LDAP-серверы поддерживают подтипы атрибутов.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.49 NAME 'distinguishedName'
+         EQUALITY distinguishedNameMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.12 указывает на синтаксис <a href="rfc4517.html#section-3.3.9" title="LDAP: Синтаксисы и правила соответствия">DN</a> [<a href="rfc4517.html#section-3.3.9" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<h3><a name="section-2.8">2.8</a>. 'dnQualifier'</h3>
+
+<p>Тип атрибута 'dnQualifier' содержит информационные строки, призванные устранять неоднозначности, для добавления к относительному уникальному имени записи. Информация предназначена для использования при объединении данных из нескольких источников в целях предотвращения конфликтов между записями, которые в противном случае могли бы иметь одинаковое имя. Каждая строка представлена одним значением этого многозначного атрибута. Рекомендуется, чтобы значение атрибута 'dnQualifier' было одинаковым для всех записей из одного источника.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.46 NAME 'dnQualifier'
+         EQUALITY caseIgnoreMatch
+         ORDERING caseIgnoreOrderingMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.44 указывает на синтаксис <a href="rfc4517.html#section-3.3.29" title="LDAP: Синтаксисы и правила соответствия">Printable String</a> [<a href="rfc4517.html#section-3.3.29" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "20050322123345Z"&thinsp;&mdash;&thinsp;отметки времени могут быть использованы для устранения неоднозначности информации. "123456A"&thinsp;&mdash;&thinsp;серийные номера могут быть использованы для устранения неоднозначности информации.</p>
+
+<h3><a name="section-2.9">2.9</a>. 'enhancedSearchGuide'</h3>
+
+<p>Тип атрибута 'enhancedSearchGuide' содержит наборы информации, предназначенные для использования клиентами каталогов при построении поисковых фильтров. Каждый набор представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.47 NAME 'enhancedSearchGuide'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.21 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.21 указывает на синтаксис <a href="rfc4517.html#section-3.3.10" title="LDAP: Синтаксисы и правила соответствия">Enhanced Guide</a> [<a href="rfc4517.html#section-3.3.10" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "person#(sn$APPROX)#wholeSubtree" и "organizationalUnit#(ou$SUBSTR)#oneLevel".</p>
+
+<h3><a name="section-2.10">2.10</a>. 'facsimileTelephoneNumber'</h3>
+
+<p>Тип атрибута 'facsimileTelephoneNumber' содержит телефонные номера (и, опционально, параметры) для терминалов факсимильной связи. Каждый телефонный номер представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.23 NAME 'facsimileTelephoneNumber'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.22 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.22 указывает на синтаксис <a href="rfc4517.html#section-3.3.11" title="LDAP: Синтаксисы и правила соответствия">Facsimile Telephone Number</a> [<a href="rfc4517.html#section-3.3.11" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "+61 3 9896 7801" и "+81 3 347 7418$fineResolution".</p>
+
+<h3><a name="section-2.11">2.11</a>. 'generationQualifier'</h3>
+
+<p>Тип атрибута 'generationQualifier' содержит строки именования, обычно представляющие собой суффикс, прибавляемый к имени человека. Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.44 NAME 'generationQualifier'
+         SUP name )
+</pre>
+
+<p>Примеры: "III", "3rd" и "Jr.".</p>
+
+<h3><a name="section-2.12">2.12</a>. 'givenName'</h3>
+
+<p>Тип атрибута 'givenName' содержит строки именования, представляющие собой часть имени человека, в которую не входит фамилия. Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.42 NAME 'givenName'
+         SUP name )
+</pre>
+
+<p>Примеры: "Andrew", "Charles" и "Joanne".</p>
+
+<h3><a name="section-2.13">2.13</a>. 'houseIdentifier'</h3>
+
+<p>Тип атрибута 'houseIdentifier' содержит идентификаторы для здания в описании местоположения. Каждый идентификатор представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.51 NAME 'houseIdentifier'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "20" представляет собой номер дома 20.</p>
+
+<h3><a name="section-2.14">2.14</a>. 'initials'</h3>
+
+<p>Тип атрибута 'initials' содержит строки инициалов для некоторых или всех имён индивидуума, кроме фамилии (фамилий). Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.43 NAME 'initials'
+         SUP name )
+</pre>
+
+<p>Примеры: "K. A." и "K".</p>
+
+<h3><a name="section-2.15">2.15</a>. 'internationalISDNNumber'</h3>
+
+<p>Тип атрибута 'internationalISDNNumber' содержит адреса Integrated Services Digital Network (ISDN), как определено в рекомендациях International Telecommunication Union (ITU) E.164 [<a href="#ref-E.164" title=" ITU-T Recommendation E.164">E.164</a>]. Каждый адрес представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.25 NAME 'internationalISDNNumber'
+         EQUALITY numericStringMatch
+         SUBSTR numericStringSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.36 указывает на синтаксис <a href="rfc4517.html#section-3.3.23" title="LDAP: Синтаксисы и правила соответствия">Numeric String</a> [<a href="rfc4517.html#section-3.3.23" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "0198 333 333".</p>
+
+<h3><a name="section-2.16">2.16</a>. 'l'</h3>
+
+<p>Тип атрибута 'l' (в X.500&thinsp;&mdash;&thinsp;'localityName') содержит названия населенного пункта или места, таких как город, округ или другой географический район. Каждое имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.7 NAME 'l'
+         SUP name )
+</pre>
+
+<p>Примеры: "Geneva", "Paris" и "Edinburgh".</p>
+
+<h3><a name="section-2.17">2.17</a>. 'member'</h3>
+
+<p>Тип атрибута 'member' содержит уникальные имена объектов, находящихся в списке или в группе. Каждое имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.31 NAME 'member'
+         SUP distinguishedName )
+</pre>
+
+<p>Примеры: "cn=James Clarke,ou=Finance,o=Widget\, Inc." и "cn=John Xerri,ou=Finance,o=Widget\, Inc." могут быть двумя членами финансового подразделения (группы) в <em>Widget, Inc.</em>, в этом случае оба этих уникальных имени будут представлены отдельными значениями атрибута member.</p>
+
+<h3><a name="section-2.18">2.18</a>. 'name'</h3>
+
+<p>Тип атрибута 'name' представляет собой супертип атрибута, от которого наследуются пользовательские типы атрибутов с синтаксисом имени. Такие типы атрибутов обычно используются для именования. Данный тип атрибута многозначный.</p>
+
+<p>Маловероятно, что значения самого этого типа будут присутствовать в записи. Реализациям LDAP-сервера, не поддерживающим подтипы атрибутов, не нужно распознавать этот атрибут в запросах. Реализации клиентов не должны (MUST NOT) предполагать, что LDAP-серверы поддерживают подтипы атрибутов.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.41 NAME 'name'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<h3><a name="section-2.19">2.19</a>. 'o'</h3>
+
+<p>Тип атрибута 'o' (в X.500&thinsp;&mdash;&thinsp;'organizationName') содержит имена организации. Каждое имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.10 NAME 'o'
+         SUP name )
+</pre>
+
+<p>Примеры: "Widget", "Widget, Inc." и "Widget, Incorporated.".</p>
+
+<h3><a name="section-2.20">2.20</a>. 'ou'</h3>
+
+<p>Тип атрибута 'ou' (в X.500&thinsp;&mdash;&thinsp;'organizationalUnitName') содержит имена подразделения организации. Каждое имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.11 NAME 'ou'
+         SUP name )
+</pre>
+
+</p>Примеры: "Finance", "Human Resources" и "Research and Development".</p>
+
+<h3><a name="section-2.21">2.21</a>. 'owner'</h3>
+
+<p>Тип атрибута 'owner' содержит уникальные имена объектов, исполняющих обязанности владельца по отношению к данному объекту. Каждое имя владельца представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.32 NAME 'owner'
+         SUP distinguishedName )
+</pre>
+
+</p>Пример: Объект списка рассылки с DN "cn=All Employees, ou=Mailing List,o=Widget\, Inc." принадлежит Human Resources Director.</p>
+
+<p>Следовательно, значением атрибута 'owner' в объекте списка рассылки будет DN этого руководителя (роли): "cn=Human Resources Director,ou=employee,o=Widget\, Inc.".</p>
+
+<h3><a name="section-2.22">2.22</a>. 'physicalDeliveryOfficeName'</h3>
+
+<p>Тип атрибута 'physicalDeliveryOfficeName' содержит имена, используемые службой почты (Postal Service) для идентификации почтового отделения.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.19 NAME 'physicalDeliveryOfficeName'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "Bremerhaven, Main" и "Bremerhaven, Bonnstrasse".</p>
+
+<h3><a name="section-2.23">2.23</a>. 'postalAddress'</h3>
+
+<p>Тип атрибута 'postalAddress' содержит адреса, используемые службой почты (Postal Service) в целях выполнения услуг для данного объекта. Каждый адрес представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.16 NAME 'postalAddress'
+         EQUALITY caseIgnoreListMatch
+         SUBSTR caseIgnoreListSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.41 указывает на синтаксис <a href="rfc4517.html#section-3.3.28" title="LDAP: Синтаксисы и правила соответствия">Postal Address</a> [<a href="rfc4517.html#section-3.3.28" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "15 Main St.$Ottawa$Canada".</p>
+
+<h3><a name="section-2.24">2.24</a>. 'postalCode'</h3>
+
+<p>Тип атрибута 'postalCode' содержит коды, используемые службой почты (Postal Service) для идентификации зон предоставления почтовых услуг. Каждый код представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.17 NAME 'postalCode'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "22180", идентифицирует Vienna, VA, USA.</p>
+
+<h3><a name="section-2.25">2.25</a>. 'postOfficeBox'</h3>
+
+<p>Тип атрибута 'postOfficeBox' содержит идентификаторы почтовых ящиков, используемые службой почты (Postal Service), когда получение почты клиентом организовано в почтовый ящик на территории службы почты. Каждый идентификатор почтового ящика представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.18 NAME 'postOfficeBox'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "Box 45".</p>
+
+<h3><a name="section-2.26">2.26</a>. 'preferredDeliveryMethod'</h3>
+
+<p>Тип атрибута 'preferredDeliveryMethod' содержит указание предпочтительного способа получения сообщений для данного объекта.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.28 NAME 'preferredDeliveryMethod'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.14
+         SINGLE-VALUE )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.14 указывает на синтаксис <a href="rfc4517.html#section-3.3.5" title="LDAP: Синтаксисы и правила соответствия">Delivery Method</a> [<a href="rfc4517.html#section-3.3.5" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: Если метод доставки <em>mhs</em> более предпочтителен, чем метод доставки <em>telephone</em>, который, в свою очередь, более предпочтителен, чем все остальные методы, то значение атрибута будет: "mhs $ telephone".</p>
+
+<h3><a name="section-2.27">2.27</a>. 'registeredAddress'</h3>
+
+<p>Тип атрибута 'registeredAddress' содержит почтовые адреса, на которые можно принимать телеграммы или документы с ускоренной доставкой, когда требуется подтверждение доставки получателем. Каждый адрес представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.26 NAME 'registeredAddress'
+         SUP postalAddress
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.41 указывает на синтаксис <a href="rfc4517.html#section-3.3.28" title="LDAP: Синтаксисы и правила соответствия">Postal Address</a> [<a href="rfc4517.html#section-3.3.28" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "Receptionist$Widget, Inc.$15 Main St.$Ottawa$Canada".</p>
+
+<h3><a name="section-2.28">2.28</a>. 'roleOccupant'</h3>
+
+<p>Тип атрибута 'roleOccupant' содержит уникальные имена объектов (обычно людей), исполняющих обязанности роли, описанной этим объектом. Каждое уникальное имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.33 NAME 'roleOccupant'
+         SUP distinguishedName )
+</pre>
+
+</p>Пример: Объект роли, "cn=Human Resources Director,ou=Position,o=Widget\, Inc."; эту роль исполняют два человека, имена объектов которых: "cn=Mary Smith,ou=employee,o=Widget\, Inc." и "cn=James Brown,ou=employee,o=Widget\, Inc.". Атрибут 'roleOccupant' объекта роли будет содержать оба этих уникальных имени, поскольку оба они выполняют эту роль.</p>
+
+<h3><a name="section-2.29">2.29</a>. 'searchGuide'</h3>
+
+<p>Тип атрибута 'searchGuide' содержит наборы информации, предназначенные для использования клиентами при построении поисковых фильтров. Этот тип атрибута заменён описанным выше в <a href="#section-2.9">разделе 2.9</a> типом <a href="#section-2.9">'enhancedSearchGuide'</a>. Каждый набор представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.14 NAME 'searchGuide'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.25 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.25 указывает на синтаксис <a href="rfc4517.html#section-3.3.14" title="LDAP: Синтаксисы и правила соответствия">Guide</a> [<a href="rfc4517.html#section-3.3.14" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "person#sn$EQ".</p>
+
+<h3><a name="section-2.30">2.30</a>. 'seeAlso'</h3>
+
+<p>Тип атрибута 'seeAlso' содержит уникальные имена объектов, связанных с данным объектом. Каждое имя связанного объекта представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.34 NAME 'seeAlso'
+         SUP distinguishedName )
+</pre>
+
+</p>Пример: Объект человека "cn=James Brown,ou=employee,o=Widget\, Inc." связан с объектами ролей "cn=Football Team Captain,ou=sponsored activities,o=Widget\, Inc." и "cn=Chess Team,ou=sponsored activities,o=Widget\, Inc.". Поскольку объекты роли связаны с данным объектом человека, атрибут 'seeAlso' будет содержать уникальные имена каждого объекта роли отдельным значением.</p>
+
+<h3><a name="section-2.31">2.31</a>. 'serialNumber'</h3>
+
+<p>Тип атрибута 'serialNumber' содержит серийные номера устройств. Каждый серийный номер представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.5 NAME 'serialNumber'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.44 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.44 указывает на синтаксис <a href="rfc4517.html#section-3.3.29" title="LDAP: Синтаксисы и правила соответствия">Printable String</a> [<a href="rfc4517.html#section-3.3.29" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "WI-3005" и "XF551426".</p>
+
+<h3><a name="section-2.32">2.32</a>. 'sn'</h3>
+
+<p>Тип атрибута 'sn' (в X.500&thinsp;&mdash;&thinsp;'surname') содержит строки именования для фамилии человека. Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.4 NAME 'sn'
+         SUP name )
+</pre>
+
+</p>Пример: "Smith".</p>
+
+<h3><a name="section-2.33">2.33</a>. 'st'</h3>
+
+<p>Тип атрибута 'st' (в X.500&thinsp;&mdash;&thinsp;'stateOrProvinceName') содержит полные имена штатов или провинций. Каждое имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.8 NAME 'st'
+         SUP name )
+</pre>
+
+</p>Пример: "California".</p>
+
+<h3><a name="section-2.34">2.34</a>. 'street'</h3>
+
+<p>Тип атрибута 'street' (в X.500&thinsp;&mdash;&thinsp;'streetAddress') содержит информацию по местоположению из почтового адреса (то есть, название улицы, места, проспекта и номер дома). Каждая улица представлена одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.9 NAME 'street'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "15 Main St.".</p>
+
+<h3><a name="section-2.35">2.35</a>. 'telephoneNumber'</h3>
+
+<p>Тип атрибута 'telephoneNumber' содержит телефонные номера, соответствующие рекомендации ITU E.123 [<a href="#ref-E.123" title=" ITU-T Recommendation E.123">E.123</a>]. Каждый номер представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.20 NAME 'telephoneNumber'
+         EQUALITY telephoneNumberMatch
+         SUBSTR telephoneNumberSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.50 указывает на синтаксис <a href="rfc4517.html#section-3.3.31" title="LDAP: Синтаксисы и правила соответствия">Telephone Number</a> [<a href="rfc4517.html#section-3.3.31" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "+1 234 567 8901".</p>
+
+<h3><a name="section-2.36">2.36</a>. 'teletexTerminalIdentifier'</h3>
+
+<p>В соответствии с выводом рекомендации F.200 данный атрибут был исключён.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.22 NAME 'teletexTerminalIdentifier'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.51 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.51 указывает на синтаксис <a href="rfc4517.html#section-3.3.32" title="LDAP: Синтаксисы и правила соответствия">Teletex Terminal Identifier</a> [<a href="rfc4517.html#section-3.3.32" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<h3><a name="section-2.37">2.37</a>. 'telexNumber'</h3>
+
+<p>Тип атрибута 'telexNumber' содержит наборы строк, представляющих собой номер телекса, код страны и код автоответа терминала телекса. Каждый набор представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.21 NAME 'telexNumber'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.52 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.52 указывает на синтаксис <a href="rfc4517.html#section-3.3.33" title="LDAP: Синтаксисы и правила соответствия">Telex Number</a> [<a href="rfc4517.html#section-3.3.33" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "12345$023$ABCDE".</p>
+
+<h3><a name="section-2.38">2.38</a>. 'title'</h3>
+
+<p>Тип атрибута 'title' содержит наименование человека в контексте его организации. Каждое наименование представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.12 NAME 'title'
+         SUP name )
+</pre>
+
+<p>Примеры: "Vice President", "Software Engineer" и "CEO".</p>
+
+<h3><a name="section-2.39">2.39</a>. 'uid'</h3>
+
+<p>Тип атрибута 'uid' (в <a href="http://tools.ietf.org/html/rfc1274">RFC 1274</a>&thinsp;&mdash;&thinsp;'userid') содержит имена учётных записей компьютерных систем, ассоциированных с этим объектом. Каждое имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: <a href="http://tools.ietf.org/html/rfc2798" title="Definition of the inetOrgPerson LDAP Object Class">RFC 2798</a> и <a href="http://tools.ietf.org/html/rfc1274" title="The COSINE and Internet X.500 Schema">RFC 1274</a>)</p>
+
+<pre class="list">
+      ( 0.9.2342.19200300.100.1.1 NAME 'uid'
+         EQUALITY caseIgnoreMatch
+         SUBSTR caseIgnoreSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.15 указывает на синтаксис <a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">Directory String</a> [<a href="rfc4517.html#section-3.3.6" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Примеры: "s9709015", "admin" и "Administrator".</p>
+
+<h3><a name="section-2.40">2.40</a>. 'uniqueMember'</h3>
+
+<p>Тип атрибута 'uniqueMember' содержит уникальные имена объектов, находящихся в списке или в группе. При этом относительные уникальные имена этих объектов включают значение, уникальное среди этих объектов, что позволяет отличать их, если уникальные имена объектов используются повторно. Каждое уникальное имя представлено одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.50 NAME 'uniqueMember'
+         EQUALITY uniqueMemberMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.34 указывает на синтаксис <a href="rfc4517.html#section-3.3.21" title="LDAP: Синтаксисы и правила соответствия">Name and Optional UID</a> [<a href="rfc4517.html#section-3.3.21" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: Если батальон "ou=1st Battalion,o=Defense,c=US" расформирован, то при формировании нового батальона с тем же именем к этому имени будет добавлено значение уникального идентификатора, в результате чего получится "ou=1st Battalion, o=Defense,c=US#'010101'B".</p>
+
+<h3><a name="section-2.41">2.41</a>. 'userPassword'</h3>
+
+<p>Тип атрибута 'userPassword' содержит строки октетов, известных только пользователю и системе, к которой пользователь имеет доступ. Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>Приложению следует (SHOULD) выполнять подготовку текстовых строк, используемых в качестве паролей, путём транскодирования их в Unicode, применения алгоритма SASLprep [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>] и кодирования в виде UTF-8. Определение того, является ли пароль текстовым, возлагается на локального клиента.</p>
+
+<p>(Источник: X.509 [<a href="#ref-X.509" title="ITU-T Recommendation X.509">X.509</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.35 NAME 'userPassword'
+         EQUALITY octetStringMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.40 указывает на синтаксис <a href="rfc4517.html#section-3.3.25" title="LDAP: Синтаксисы и правила соответствия">Octet String</a> [<a href="rfc4517.html#section-3.3.25" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пароли хранятся с использованием синтаксиса <a href="rfc4517.html#section-3.3.25" title="LDAP: Синтаксисы и правила соответствия">Octet String</a> и не шифруются. Передача паролей открытым текстом настоятельно не рекомендуется в случаях, когда базовая служба транспортировки не может гарантировать конфиденциальности, в результате чего может произойти раскрытие пароля посторонними лицами.</p>
+
+<p>Примером необходимости многозначности атрибута 'userPassword' может служить окружение, где пользователь каждый месяц должен использовать разный пароль, сгенерированный некоторой автоматизированной системой. Во время переходного периода, например, в последний и первый день месяца, может понадобиться, чтобы верными были два пароля для двух следующих друг за другом месяцев.</p>
+
+<h3><a name="section-2.42">2.42</a>. 'x121Address'</h3>
+
+<p>Тип атрибута 'x121Address' содержит данные сетевых адресов, как определено рекомендациями ITU X.121 [<a href="#ref-X.121" title=" ITU-T Recommendation X.121">X.121</a>]. Каждый адрес представлен одним значением этого многозначного атрибута.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.24 NAME 'x121Address'
+         EQUALITY numericStringMatch
+         SUBSTR numericStringSubstringsMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.36 указывает на синтаксис <a href="rfc4517.html#section-3.3.23" title="LDAP: Синтаксисы и правила соответствия">Numeric String</a> [<a href="rfc4517.html#section-3.3.23" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
+
+<p>Пример: "36111222333444555".</p>
+
+<h3><a name="section-2.43">2.43</a>. 'x500UniqueIdentifier'</h3>
+
+<p>Тип атрибута 'x500UniqueIdentifier' содержит двоичные строки, применяемые для того, чтобы отличать объекты при повторном использовании уникальных имён. Каждая строка представлена одним значением этого многозначного атрибута.</p>
+
+<p>В X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>] этот атрибут называется 'uniqueIdentifier'. Этот тип атрибута отличается от типов атрибутов LDAP <a href="#section-2.39">'uid'</a> и <a href="http://tools.ietf.org/html/rfc4524#section-2.24" title="COSINE LDAP/X.500 Schema">'uniqueIdentifier'</a>. Тип атрибута <a href="http://tools.ietf.org/html/rfc4524#section-2.24" title="COSINE LDAP/X.500 Schema">'uniqueIdentifier'</a> определён в <a href="http://tools.ietf.org/html/rfc4524#section-2.24" title="COSINE LDAP/X.500 Schema">RFC 4524</a>.</p>
+
+<p>(Источник: X.520 [<a href="#ref-X.520" title="ITU-T Recommendation X.520">X.520</a>])</p>
+
+<pre class="list">
+      ( 2.5.4.45 NAME 'x500UniqueIdentifier'
+         EQUALITY bitStringMatch
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.6 )
+</pre>
+
+<p>Идентификатор 1.3.6.1.4.1.1466.115.121.1.6 указывает на синтаксис <a href="rfc4517.html#section-3.3.2" title="LDAP: Синтаксисы и правила соответствия">Bit String</a> [<a href="rfc4517.html#section-3.3.2" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].
+
+<h2><a name="section-3">3</a>. Объектные классы</h2>
+
+<p>LDAP-серверам следует (SHOULD) распознавать все перечисленные в этом разделе объектные классы как значения атрибута <a href="rfc4512.html#section-3.3" title="LDAP: Информационные модели каталога">'objectClass'</a> (смотрите <a href="rfc4512.html#section-3.3" title="LDAP: Информационные модели каталога">RFC 4512</a>).</p>
+
+<h3><a name="section-3.1">3.1</a>. 'applicationProcess'</h3>
+
+<p>Определение объектного класса 'applicationProcess' является основой записи, которая представляет собой приложение, выполняющееся в компьютерной системе.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.11 NAME 'applicationProcess'
+         SUP top
+         STRUCTURAL
+         MUST cn
+         MAY ( seeAlso $
+               ou $
+               l $
+               description ) )
+</pre>
+
+<h3><a name="section-3.2">3.2</a>. 'country'</h3>
+
+<p>Определение объектного класса 'country' является основой записи, которая представляет собой страну.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.2 NAME 'country'
+         SUP top
+         STRUCTURAL
+         MUST c
+         MAY ( searchGuide $
+               description ) )
+</pre>
+
+<h3><a name="section-3.3">3.3</a>. 'dcObject'</h3>
+
+<p>Объектный класс 'dcObject' позволяет записи содержать информацию компонента домена. Данный объектный класс определён как вспомогательный, поскольку он предназначен для использования в сочетании с существующим структурным объектным классом.</p>
+
+<p>(Источник: <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a> [<a href="http://tools.ietf.org/html/rfc2247" title="Using Domains in LDAP/X.500 Distinguished Names">RFC2247</a>])</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.344 NAME 'dcObject'
+         SUP top
+         AUXILIARY
+         MUST dc )
+</pre>
+
+<h3><a name="section-3.4">3.4</a>. 'device'</h3>
+
+<p>Объектный класс 'device' является основой записи, которая представляет собой прибор, компьютер или элемент сети.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.14 NAME 'device'
+         SUP top
+         STRUCTURAL
+         MUST cn
+         MAY ( serialNumber $
+               seeAlso $
+               owner $
+               ou $
+               o $
+               l $
+               description ) )
+</pre>
+
+<h3><a name="section-3.5">3.5</a>. 'groupOfNames'</h3>
+
+<p>Объектный класс 'groupOfNames' является основой записи, которая представляет собой набор именованных объектов, а также включает информацию о цели создания и способах обслуживания этого набора.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.9 NAME 'groupOfNames'
+         SUP top
+         STRUCTURAL
+         MUST ( member $
+               cn )
+         MAY ( businessCategory $
+               seeAlso $
+               owner $
+               ou $
+               o $
+               description ) )
+</pre>
+
+<h3><a name="section-3.6">3.6</a>. 'groupOfUniqueNames'</h3>
+
+<p>Объектный класс 'groupOfUniqueNames'&thinsp;&thinsp;то же самое, что и объектный класс 'groupOfNames', за исключением того, что в пределах этого набора имена объектов не повторяются и не переназначаются.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.17 NAME 'groupOfUniqueNames'
+         SUP top
+         STRUCTURAL
+         MUST ( uniqueMember $
+               cn )
+         MAY ( businessCategory $
+               seeAlso $
+               owner $
+               ou $
+               o $
+               description ) )
+</pre>
+
+<h3><a name="section-3.7">3.7</a>. 'locality'</h3>
+
+<p>Объектный класс 'locality' является основой записи, которая представляет собой место в физическом мире.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.3 NAME 'locality'
+         SUP top
+         STRUCTURAL
+         MAY ( street $
+               seeAlso $
+               searchGuide $
+               st $
+               l $
+               description ) )
+</pre>
+
+<h3><a name="section-3.8">3.8</a>. 'organization'</h3>
+
+<p>Объектный класс 'organization' является основой записи, которая представляет собой структурированную группу людей.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.4 NAME 'organization'
+         SUP top
+         STRUCTURAL
+         MUST o
+         MAY ( userPassword $ searchGuide $ seeAlso $
+               businessCategory $ x121Address $ registeredAddress $
+               destinationIndicator $ preferredDeliveryMethod $
+               telexNumber $ teletexTerminalIdentifier $
+               telephoneNumber $ internationalISDNNumber $
+               facsimileTelephoneNumber $ street $ postOfficeBox $
+               postalCode $ postalAddress $ physicalDeliveryOfficeName $
+               st $ l $ description ) )
+</pre>
+
+<h3><a name="section-3.9">3.9</a>. 'organizationalPerson'</h3>
+
+<p>Объектный класс 'organizationalPerson' является основой записи, которая представляет собой человека по отношению к организации.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.7 NAME 'organizationalPerson'
+         SUP person
+         STRUCTURAL
+         MAY ( title $ x121Address $ registeredAddress $
+               destinationIndicator $ preferredDeliveryMethod $
+               telexNumber $ teletexTerminalIdentifier $
+               telephoneNumber $ internationalISDNNumber $
+               facsimileTelephoneNumber $ street $ postOfficeBox $
+               postalCode $ postalAddress $ physicalDeliveryOfficeName $
+               ou $ st $ l ) )
+</pre>
+
+<h3><a name="section-3.10">3.10</a>. 'organizationalRole'</h3>
+
+<p>Объектный класс 'organizationalRole' является основой записи, которая представляет работу, обязанности или должность в организации.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.8 NAME 'organizationalRole'
+         SUP top
+         STRUCTURAL
+         MUST cn
+         MAY ( x121Address $ registeredAddress $ destinationIndicator $
+               preferredDeliveryMethod $ telexNumber $
+               teletexTerminalIdentifier $ telephoneNumber $
+               internationalISDNNumber $ facsimileTelephoneNumber $
+               seeAlso $ roleOccupant $ preferredDeliveryMethod $
+               street $ postOfficeBox $ postalCode $ postalAddress $
+               physicalDeliveryOfficeName $ ou $ st $ l $
+               description ) )
+</pre>
+
+<h3><a name="section-3.11">3.11</a>. 'organizationalUnit'</h3>
+
+<p>Объектный класс 'organizationalUnit' является основой записи, которая представляет собой часть организации.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.5 NAME 'organizationalUnit'
+         SUP top
+         STRUCTURAL
+         MUST ou
+         MAY ( businessCategory $ description $ destinationIndicator $
+               facsimileTelephoneNumber $ internationalISDNNumber $ l $
+               physicalDeliveryOfficeName $ postalAddress $ postalCode $
+               postOfficeBox $ preferredDeliveryMethod $
+               registeredAddress $ searchGuide $ seeAlso $ st $ street $
+               telephoneNumber $ teletexTerminalIdentifier $
+               telexNumber $ userPassword $ x121Address ) )
+</pre>
+
+<h3><a name="section-3.12">3.12</a>  'person'</h3>
+
+<p>Объектный класс 'person' является основой записи, которая представляет собой человека.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.6 NAME 'person'
+         SUP top
+         STRUCTURAL
+         MUST ( sn $
+               cn )
+         MAY ( userPassword $
+               telephoneNumber $
+               seeAlso $ description ) )
+</pre>
+
+<h3><a name="section-3.13">3.13</a>. 'residentialPerson'</h3>
+
+<p>Объектный класс 'residentialPerson' является основой записи, которая включает местонахождение человека при его описании.</p>
+
+<p>(Источник: X.521 [<a href="#ref-X.521">X.521</a>])</p>
+
+<pre class="list">
+      ( 2.5.6.10 NAME 'residentialPerson'
+         SUP person
+         STRUCTURAL
+         MUST l
+         MAY ( businessCategory $ x121Address $ registeredAddress $
+               destinationIndicator $ preferredDeliveryMethod $
+               telexNumber $ teletexTerminalIdentifier $
+               telephoneNumber $ internationalISDNNumber $
+               facsimileTelephoneNumber $ preferredDeliveryMethod $
+               street $ postOfficeBox $ postalCode $ postalAddress $
+               physicalDeliveryOfficeName $ st $ l ) )
+</pre>
+
+<h3><a name="section-3.14">3.14</a>. 'uidObject'</h3>
+
+<p>Объектный класс 'uidObject' позволяет записи содержать информацию об идентификации пользователя. Данный объектный класс определён как вспомогательный, поскольку он предназначен для использования в сочетании с существующим структурным объектным классом.</p>
+
+<p>(Источник: <a href="http://tools.ietf.org/html/rfc2377">RFC 2377</a> [<a href="http://tools.ietf.org/html/rfc2377" title="Naming Plan for Internet Directory-Enabled Applications">RFC2377</a>])</p>
+
+<pre class="list">
+      ( 1.3.6.1.1.3.1 NAME 'uidObject'
+         SUP top
+         AUXILIARY
+         MUST uid )
+</pre>
+
+<h2><a name="section-4">4</a>. Регистрация в IANA</h2>
+
+<p>Администрация адресного пространства Интернет (Internet Assigned Numbers Authority, IANA) обновила регистр дескрипторов LDAP, как указано в следующей форме:</p>
+
+<pre class="list">
+      Subject: Request for LDAP Descriptor Registration Update
+      Descriptor (short name): see comments
+      Object Identifier: see comments
+      Person &amp; email address to contact for further information:
+         Andrew Sciberras &lt;andrew.sciberras@eb2bcom.com&gt;
+      Usage: (A = attribute type, O = Object Class) see comment
+      Specification: RFC 4519
+      Author/Change Controller: IESG
+
+   Comments
+
+      In the LDAP descriptors registry, the following descriptors (short
+      names) have been updated to refer to RFC 4519. Names that need to
+      be reserved, rather than assigned to an Object Identifier, will
+      contain an Object Identifier value of RESERVED.
+
+      NAME                         Type OID
+      ------------------------     ---- ----------------------------
+      applicationProcess           O    2.5.6.11
+      businessCategory             A    2.5.4.15
+      c                            A    2.5.4.6
+      cn                           A    2.5.4.3
+      commonName                   A    2.5.4.3
+      country                      O    2.5.6.2
+      countryName                  A    2.5.4.6
+      dc                           A    0.9.2342.19200300.100.1.25
+      dcObject                     O    1.3.6.1.4.1.1466.344
+      description                  A    2.5.4.13
+      destinationIndicator         A    2.5.4.27
+      device                       O    2.5.6.14
+      distinguishedName            A    2.5.4.49
+      dnQualifier                  A    2.5.4.46
+      domainComponent              A    0.9.2342.19200300.100.1.25
+      enhancedSearchGuide          A    2.5.4.47
+      facsimileTelephoneNumber     A    2.5.4.23
+      generationQualifier          A    2.5.4.44
+      givenName                    A    2.5.4.42
+      gn                           A    RESERVED
+      groupOfNames                 O    2.5.6.9
+      groupOfUniqueNames           O    2.5.6.17
+      houseIdentifier              A    2.5.4.51
+      initials                     A    2.5.4.43
+      internationalISDNNumber      A    2.5.4.25
+      l                            A    2.5.4.7
+      locality                     O    2.5.6.3
+      localityName                 A    2.5.4.7
+      member                       A    2.5.4.31
+      name                         A    2.5.4.41
+      o                            A    2.5.4.10
+      organization                 O    2.5.6.4
+      organizationName             A    2.5.4.10
+      organizationalPerson         O    2.5.6.7
+      organizationalRole           O    2.5.6.8
+      organizationalUnit           O    2.5.6.5
+      organizationalUnitName       A    2.5.4.11
+      ou                           A    2.5.4.11
+      owner                        A    2.5.4.32
+      person                       O    2.5.6.6
+      physicalDeliveryOfficeName   A    2.5.4.19
+      postalAddress                A    2.5.4.16
+      postalCode                   A    2.5.4.17
+      postOfficeBox                A    2.5.4.18
+      preferredDeliveryMethod      A    2.5.4.28
+      registeredAddress            A    2.5.4.26
+      residentialPerson            O    2.5.6.10
+      roleOccupant                 A    2.5.4.33
+      searchGuide                  A    2.5.4.14
+      seeAlso                      A    2.5.4.34
+      serialNumber                 A    2.5.4.5
+      sn                           A    2.5.4.4
+      st                           A    2.5.4.8
+      street                       A    2.5.4.9
+      surname                      A    2.5.4.4
+      telephoneNumber              A    2.5.4.20
+      teletexTerminalIdentifier    A    2.5.4.22
+      telexNumber                  A    2.5.4.21
+      title                        A    2.5.4.12
+      uid                          A    0.9.2342.19200300.100.1.1
+      uidObject                    O    1.3.6.1.1.3.1
+      uniqueMember                 A    2.5.4.50
+      userid                       A    0.9.2342.19200300.100.1.1
+      userPassword                 A    2.5.4.35
+      x121Address                  A    2.5.4.24
+      x500UniqueIdentifier         A    2.5.4.45
+</pre>
+
+<h2><a name="section-5">5</a>. О безопасности</h2>
+
+<p>Атрибуты записей каталога используются для предоставления описательной информации об объектах реального мира, которые они представляют. Такими объектами могут быть люди, организации или устройства. В большинстве стран имеются законы, касающиеся защиты конфиденциальности при публикации информации о людях.</p>
+
+<p>Передача паролей в открытом виде настоятельно не рекомендуется там, где используемый транспортный сервис не может гарантировать конфиденциальности и целостности, поскольку это может привести к раскрытию пароля посторонними лицами.</p>
+
+<p>Использовать несколько значений в атрибуте <a href="#section-2.41">'userPassword'</a> следует с осторожностью. В особенности, при наличии нескольких значений пароля для разных приложений, сброс/удаление пароля администратором без знания старого пароля пользователя становится затруднительным или даже невозможным.</p>
+
+<p>Безусловно, приложениям, предназначенным для замены значения (значений) атрибута <a href="#section-2.41">'userPassword'</a> новым значением (значениями), следует использовать операции modify/replaceValues (или modify/deleteAttribute+addAttribute). Кроме того, реализациям сервера рекомендуется обеспечить возможность административного контроля, который, при включении, ограничивал атрибут 'userPassword' одним значением.</p>
+
+<p>Имейте ввиду, что при использовании в целях аутентификации [<a href="rfc4513.html#section-5" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>], пользователю требуется подтвердить знание только одного, а не всех значений атрибута <a href="#section-2.41">'userPassword'</a>.</p>
+
+<h2><a name="section-6">6</a>. Благодарности</h2>
+
+<p>Определения, на которых основан этот документ, были разработаны комитетами по телекоммуникациям и международным стандартам.</p>
+
+<p>Этот документ представляет собой обновление <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>, автор Mark Wahl. <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF ASID.</p>
+
+<p>Задаваемые в этом документе определения типа атрибута <a href="#section-2.4">'dc'</a> и объектного класса <a href="#section-3.3">'dcObject'</a> заменяют спецификации, приведённые в <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a>, авторы S. Kille, M. Wahl, A. Grimstad, R. Huber и S. Sataluri.</p>
+
+<p>Задаваемое в этом документе определение типа атрибута <a href="#section-2.39">'uid'</a> заменяет спецификацию 'userid', приведённую в <a href="http://tools.ietf.org/html/rfc1274">RFC 1274</a> by P. Barker and S. Kille and of the uid in <a href="http://tools.ietf.org/html/rfc2798">RFC 2798</a>, автор M. Smith.</p>
+
+<p>Задаваемое в этом документе определение объектного класса <a href="#section-3.14">'uidObject'</a> заменяет спецификацию 'uidObject', приведённую в <a href="http://tools.ietf.org/html/rfc2377">RFC 2377</a>, авторы A. Grimstad, R. Huber, S. Sataluri и M. Wahl.</p>
+
+<p>Этот документ основан на входных данных рабочей группы IETF LDAPBIS. Автор благодарит S. Legg и K. Zeilenga за их значительный вклад в эту работу. Автор также благодарит Kathy Dally за редактирование ранних версий этого документа.</p>
+
+<h2><a name="section-7">7</a>. Документы</h2>
+
+<h3><a name="section-7.1">7.1</a>. Нормативные документы</h3>
+
+<p>[<a name="ref-E.123" id="ref-E.123">E.123</a>] Notation for national and international telephone numbers, ITU-T Recommendation E.123, 1988 г.</p>
+
+<p>[<a name="ref-E.164" id="ref-E.164">E.164</a>] The international public telecommunication numbering plan, ITU-T Recommendation E.164, 1997 г.</p>
+
+<p>[<a name="ref-F.1" id="ref-F.1">F.1</a>] Operational Provisions For The International Public Telegram Service Transmission System, CCITT Recommendation F.1, 1992 г.</p>
+
+<p>[<a name="ref-F.31" id="ref-F.31">F.31</a>] Telegram Retransmission System, CCITT Recommendation F.31, 1988 г.</p>
+
+<p>[<a name="ref-ISO3166" id="ref-ISO3166">ISO3166</a>] ISO 3166, "Codes for the representation of names of countries".</p>
+
+<p>[<a name="ref-RFC1034" id="ref-RFC1034">RFC1034</a>] Mockapetris, P., "Domain names - concepts and facilities", STD 13, <a href="http://tools.ietf.org/html/rfc1034">RFC 1034</a>, ноябрь 1987 г.</p>
+
+<p>[<a name="ref-RFC1123" id="ref-RFC1123">RFC1123</a>] Braden, R., "Requirements for Internet Hosts - Application and Support", STD 3, <a href="http://tools.ietf.org/html/rfc1123">RFC 1123</a>, октябрь 1989 г.</p>
+
+<p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
+
+<p>[<a name="ref-RFC2181" id="ref-RFC2181">RFC2181</a>] Elz, R. и R. Bush, "Clarifications to the DNS Specification", <a href="http://tools.ietf.org/html/rfc2181">RFC 2181</a>, июль 1997 г.</p>
+
+<p>[<a name="ref-RFC3490" id="ref-RFC3490">RFC3490</a>] Faltstrom, P., Hoffman, P. и A. Costello, "Internationalizing Domain Names in Applications (IDNA)", <a href="http://tools.ietf.org/html/rfc3490">RFC 3490</a>, март 2003 г.</p>
+
+<p>[<a name="ref-RFC4013" id="ref-RFC4013">RFC4013</a>] Zeilenga, K., "SASLprep: Stringprep Profile for User Names and Passwords", <a href="http://tools.ietf.org/html/rfc4013">RFC 4013</a>, февраль 2005 г.</p>
+
+<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax Specifications: ABNF", <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
+
+<p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map", <a href="http://tools.ietf.org/html/rfc4510">RFC 4510</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Информационные модели каталога", <a href="rfc4512.html">RFC 4512</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4517" id="ref-RFC4517">RFC4517</a>] Под редакцией Legg, S., "Lightweight Directory Access Protocol (LDAP): Синтаксисы и правила соответствия", <a href="rfc4517.html">RFC 4517</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-X.121" id="ref-X.121">X.121</a>] International numbering plan for public data networks, ITU-T Recommendation X.121, 1996 г.</p>
+
+<p>[<a name="ref-X.509" id="ref-X.509">X.509</a>] The Directory: Authentication Framework, ITU-T Recommendation X.509, 1993 г.</p>
+
+<p>[<a name="ref-X.520" id="ref-X.520">X.520</a>] The Directory: Selected Attribute Types, ITU-T Recommendation X.520, 1993 г.</p>
+
+<p>[<a name="ref-X.521" id="ref-X.521">X.521</a>] The Directory: Selected Object Classes.  ITU-T Recommendation X.521, 1993 г.</p>
+
+<h3><a name="section-7.2">7.2</a>. Информативные документы</h3>
+
+<p>[<a name="ref-RFC1274" id="ref-RFC1274">RFC1274</a>] Barker, P. и S. Kille, "The COSINE and Internet X.500 Schema", <a href="http://tools.ietf.org/html/rfc1274">RFC 1274</a>, ноябрь 1991 г.</p>
+
+<p>[<a name="ref-RFC2247" id="ref-RFC2247">RFC2247</a>] Kille, S., Wahl, M., Grimstad, A., Huber, R. и S. Sataluri, "Using Domains in LDAP/X.500 Distinguished Names", <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a>, январь 1998 г.</p>
+
+<p>[<a name="ref-RFC2377" id="ref-RFC2377">RFC2377</a>] Grimstad, A., Huber, R., Sataluri, S. и M. Wahl, "Naming Plan for Internet Directory-Enabled Applications", <a href="http://tools.ietf.org/html/rfc2377">RFC 2377</a>, сентябрь 1998 г.</p>
+
+<p>[<a name="ref-RFC2798" id="ref-RFC2798">RFC2798</a>] Smith, M., "Definition of the inetOrgPerson LDAP Object Class", <a href="http://tools.ietf.org/html/rfc2798">RFC 2798</a>, апрель 2000 г.</p>
+
+<p>[<a name="ref-RFC4513" id="ref-RFC4513">RFC4513</a>] Под редакцией Harrison, R., "Lightweight Directory Access Protocol (LDAP): Методы аутентификации и механизмы обеспечения безопасности", <a href="rfc4513.html">RFC 4513</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4523" id="ref-RFC4523">RFC4523</a>] Zeilenga, K., "Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509 Certificates", <a href="http://tools.ietf.org/html/rfc4523">RFC 4523</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4524" id="ref-RFC4524">RFC4524</a>] Под редакцией Zeilenga, E., "COSINE LDAP/X.500 Schema", <a href="http://tools.ietf.org/html/rfc4524">RFC 4524</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-X.500" id="ref-X.500">X.500</a>] ITU-T Recommendations X.500 (1993) | ISO/IEC 9594-1:1994, Information Technology - Open Systems Interconnection - The Directory: Overview of concepts, models and services.</p>
+
+<h2><a name="appendix-A">Приложение A</a>. Изменения, внесённые в RFC 2256</h2>
+
+<p>В этом приложении перечислены изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> этим документом.</p>
+
+<p>Это приложение не является нормативной частью данной спецификации и приводится только в информативных целях.</p>
+
+<ol>
+<li>Изменено название документа.</li>
+<li>Удалено примечание IESG.</li>
+<li>Исключены зависимости от <a href="http://tools.ietf.org/html/rfc1274">RFC 1274</a>.</li>
+<li>Добавлены разделы "О безопасности" и "Регистрация в IANA".</li>
+<li>Удалено требование соответствия для объектных классов subschema в пользу заявления, приведённого в <a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC 4517</a>.</li>
+<li>Добавлены пояснения для каждого типа атрибута и объектного класса.</li>
+<li>Удалены <a href="http://tools.ietf.org/html/rfc2256#section-4">раздел 4</a> (синтаксисы) и <a href="http://tools.ietf.org/html/rfc2256#section-6">раздел 6</a> (правила соответствия). Они перемещены в <a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC 4517</a>.</li>
+<li>Удалены связанные с сертификатами типы атрибутов: authorityRevocationList, cACertificate, certificateRevocationList, crossCertificatePair, deltaRevocationList, supportedAlgorithms и userCertificate. Удалены связанные с сертификатами объектные классы: certificationAuthority, certificationAuthority-V2, cRLDistributionPoint, strongAuthenticationUser и userSecurityInformation. LDAP PKI сейчас обсуждается в <a href="http://tools.ietf.org/html/rfc4523" title="Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509 Certificates">RFC 4523</a>.</li>
+<li>Удалены типы атрибутов dmdName, knowledgeInformation, presentationAddress, protocolInformation и supportedApplicationContext, а также объектные классы dmd, applicationEntity и dSA.</li>
+<li>Удалены определения типов атрибутов <a href="rfc4512.html#section-2.6.2" title="LDAP: Информационные модели каталога">aliasedObjectName</a> и <a href="rfc4512.html#section-3.3" title="LDAP: Информационные модели каталога">objectClass</a>. Удалены определения объектных классов <a href="rfc4512.html#section-2.6.1" title="LDAP: Информационные модели каталога">alias</a> и <a href="rfc4512.html#section-2.4.1" title="LDAP: Информационные модели каталога">top</a>. Теперь они включены в <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>.</li>
+<li>Добавлен тип атрибута <a href="#section-2.4">'dc'</a> из <a href="http://tools.ietf.org/html/rfc2247">RFC 2247</a>, отмечено различие между значениями "stored" и "query" при подготовке строк IDN.</li>
+<li>Произведены многочисленные редакторские правки.</li>
+<li>Во всех определениях атрибутов удалены верхние границы после oid в поле SYNTAX.</li>
+<li>Добавлена информация о Unicode, SASLprep [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>] и UTF-8 для значений атрибута <a href="#section-2.41">'userPassword'</a>.</li>
+<li>Включены определения, комментарии и источники для <a href="#section-3.3">'dcObject'</a> и <a href="#section-3.14">'uidObject'</a>.</li>
+<li>Для элементов схемы данных PKI дана отсылка на <a href="http://tools.ietf.org/html/rfc4523">RFC 4523</a>.</li>
+<li>Аббревиатура ABNF (при первом появлении) расшифрована и приведена ссылка на стандарт.</li>
+<li>Удалён <a href="http://tools.ietf.org/html/rfc2256#section-4">раздел 4</a> ("Источники"). Таблица источников заменена на явное указание источника в каждом определении.</li>
+<li>Все указания типов атрибутов и объектных классов заключены в одинарные кавычки.</li>
+<li>Для обеспечения согласованности материала по всему документу был изменён макет определения <a href="#section-2">типа атрибута</a>. В него входят:
+<ul>
+    <li>Заголовок раздела</li>
+    <li>Описание типа атрибута</li>
+    <li>Описание многозначности</li>
+    <li>Информация об источнике</li>
+    <li>Определение</li>
+    <li>Пример</li>
+    <li>Дополнительные комментарии</li>
+</ul>
+В некоторые определения добавлены также дополнительные примеры.</li>
+<li>Указания альтернативных имён типов атрибутов приведены со ссылками на документы, в которых они были определены изначально.</li>
+<li>В определении типов атрибутов <a href="#section-2.7">'distinguishedName'</a> и <a href="#section-2.18">'name'</a> разъяснено, что они являются супертипами.</li>
+<li>Аббревиатура ISDN (при первом появлении) расшифрована.</li>
+<li>Для идентификатора поля SYNTAX в определении типа атрибута <a href="#section-2.36">'teletexTerminalIdentifier'</a> добавлена ссылка на <a href="rfc4517.html#section-3.3.32" title="LDAP: Синтаксисы и правила соответствия">RFC 4517</a>.</li>
+<li>В регистр IANA были добавлены дополнительные имена. Это <a href="#section-2.3">'commonName'</a>, <a href="#section-3.3">'dcObject'</a>, <a href="#section-2.4">'domainComponent'</a>, 'GN', <a href="#section-2.16">'localityName'</a>, <a href="#section-2.19">'organizationName'</a>, <a href="#section-2.20">'organizationUnitName'</a>, <a href="#section-2.32">'surname'</a>, <a href="#section-3.14">'uidObject'</a> и <a href="#section-2.39">'userid'</a>.</li>
+<li>Исправлены опечатки.</li>
+<li>Источники [<a href="#ref-F.1" title="CCITT Recommendation F.1">F.1</a>], [<a href="#ref-F.31" title="CCITT Recommendation F.31">F.31</a>] и [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>] перенесены из информативных в нормативные документы.</li>
+<li>Определение типа атрибута <a href="#section-2.2">'c'</a> изменено так, чтобы соответствовать определению в X.500.</li>
+</ol>
+
+<h2>Адрес автора</h2>
+<p>Andrew Sciberras</p>
+<p>eB2Bcom, Suite 3, Woodhouse Corporate Centre, 935 Station Street, Box Hill North, Victoria 3129, AUSTRALIA</p>
+<p>Телефон: +61 3 9896 7833</p>
+<p>EMail: andrew.sciberras@eb2bcom.com</p>
+
+<h2>Полное заявление авторских прав</h2>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+
+<p>Это документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
+
+<h2>Интеллектуальная собственность</h2>
+
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a target="_blank" href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a target="_blank" href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+
+<p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
+
+<h2>Признание заслуг</h2>
+
+<p>Финансирование функций RFC Editor обеспечивается IETF Administrative Support Activity (IASA).</p>
+
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+</body></html>

@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Ресурсы проекта Pro-LDAP.ru. RFC по службам каталогов и LDAP." />
+<meta name="keywords" content="Pro-LDAP.ru,LDAP,OpenLDAP,slapd,по-русски,на русском,перевод,документация,RFC" />
+<link rel="stylesheet" href="/pro-ldap.css" type="text/css">
+<title>RFC 4514</title>
+<script src="/pro-ldap.js"></script>
+</head>
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+
+<pre>Network Working Group
+<strong>Request for Comments: 4514</strong>
+Категория: Standards Track
+Под редакцией K. Zeilenga, OpenLDAP Foundation
+Июнь 2006 года
+Отменяет: <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>
+</pre>
+
+<h1>Lightweight Directory Access Protocol (LDAP): Строковое представление уникальных имён</h1>
+
+<h3>Статус документа</h3>
+
+<p>Этот документ определяет проект стандарта протокола Интернет для сообщества Интернет, а также приглашает к обсуждению и подаче предложений по его усовершенствованию. Пожалуйста, сверяйтесь с текущей редакцией "Официальных стандартов протоколов Интернет" (STD 1), чтобы узнать состояние стандартизации и статус этого протокола. Ограничений на распространение данного документа не накладывается.</p>
+
+<h3>Уведомление об авторских правах</h3>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<h3>Тезисы</h3>
+
+<p>Каталог X.500 использует уникальные имена (Distinguished Names, DN) в качестве первичных ключей записей в каталоге. В этом документе определяется строковое представление, используемое в протоколе Lightweight Directory Access Protocol (LDAP) для передачи уникальных имён. Это строковое представление разработано с целью обеспечить простое и понятное представление обычно используемых уникальных имён, а также иметь возможность представить любые уникальные имена.</p>
+
+<h2><a name="section-1">1</a>. Предпосылки и предполагаемое использование</h2>
+
+<p>В системах каталогов, основанных на X.500 [<a href="#ref-X.500" title="The Directory: Overview of concepts, models and services,">X.500</a>], в том числе тех, доступ к которым осуществляется с использованием протокола Lightweight Directory Access Protocol (LDAP) [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>], уникальные имена (DN) используются для однозначного указания на записи каталога [<a href="#ref-X.501" title="The Directory: Models,">X.501</a>][<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
+
+<p>Структура DN [<a href="#ref-X.501" title="The Directory: Models">X.501</a>] описывается в терминах ASN.1 [<a href="#ref-X.680" title="Abstract Syntax Notation One (ASN.1) - Specification of Basic Notation">X.680</a>]. В протоколе Directory Access Protocol стандарта X.500 [<a href="#ref-X.511" title="The Directory: Abstract Service Definition">X.511</a>] (и других определённых ITU протоколах, связанных с каталогами), DN кодируются с использованием Basic Encoding Rules (BER) [<a href="#ref-X.690" title="Specification of ASN.1 encoding rules: Basic Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER)">X.690</a>]. В LDAP DN представляются в строковой форме, описанной в этом документе.</p>
+
+<p>Важно иметь общепринятый формат, позволяющий однозначно представлять уникальные имена. Основная цель данной спецификации&thinsp;&mdash;&thinsp;обеспечить простоту кодирования и декодирования имён. Вторая цель&thinsp;&mdash;&thinsp;иметь имена, которые могли бы быть читаемы человеком. Не ожидается, что реализации LDAP с интерфейсом, рассчитанным на вывод информации человеку, будут отображать эти строки непосредственно пользователю; вероятнее всего, они будут выполнять трансляции (например, представление имён типов атрибутов на национальном языке).</p>
+
+<p>В этом документе определяется строковое представление используемых в LDAP [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>][<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>] уникальных имён. В <a href="#section-2">разделе 2</a> приводится рекомендуемый (RECOMMENDED) алгоритм конвертирования DN из его структурированного представления ASN.1 в строку. В <a href="#section-3">разделе 3</a> описывается, каким образом конвертировать DN из строки в структурированное представление ASN.1.</p>
+
+<p>Хотя в других документах могут быть определены иные алгоритмы конвертирования DN из структурированного представления ASN.1 в строку, все алгоритмы должны (MUST) выдавать строки, соблюдающие требования, приведённые в <a href="#section-3">разделе 3</a>.</p>
+
+<p>В этом документе не определяется каноническое строковое представление для DN. Сравнение DN на эквивалентность должно выполняться согласно правилу соответствия distinguishedNameMatch [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+
+<p>Этот документ является неотъемлемой частью технической спецификации LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>], полностью отменяющей предыдущую техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>. Этот документ отменяет <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>. Изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, обобщены в <a href="#appendix-B">приложении B</a>.</p>
+
+<p>В этой спецификации предполагается, что читатель знаком со стандартом X.500 [<a href="#ref-X.500" title="The Directory: Overview of concepts, models and services,">X.500</a>] и концепцией уникального имени [<a href="#ref-X.501" title="The Directory: Models,">X.501</a>][<a href="rfc4512.html#section-2.3" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
+
+<h3><a name="section-1.1">1.1</a>. Соглашения</h3>
+
+<p>Ключевые слова "MUST" (необходимо), "MUST NOT" (недопустимо), "REQUIRED" (требуется), "SHALL" (нужно), "SHALL NOT" (не нужно), "SHOULD" (следует), "SHOULD NOT" (не следует), "RECOMMENDED" (рекомендуется), "MAY" (возможно) и "OPTIONAL" (необязательно) в данном документе должны интерпретироваться так, как описано в <a href="http://rfc2.ru/2119.rfc">BCP 14</a> [<a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC2119</a>].</p>
+
+<p>Обозначения символов в этом документе используют нотацию кодирования и именования из стандарта Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>]. Например, буква "a" может быть представлена либо как &lt;U+0061&gt;, либо как &lt;LATIN SMALL LETTER A&gt;.</p>
+
+<p>Примечание: термины, используемые в Unicode, можно найти в соответствующем [<a href="#ref-Glossary" title="Глоссарий Unicode">Глоссарии</a>]. Информацию о модели кодирования символов Unicode можно найти в [<a href="#ref-CharModel" title="Unicode Technical Report #17, Character Encoding Model">Техническом отчёте Unicode</a>].</p>
+
+<h2><a name="section-2">2</a>. Конвертирование DistinguishedName из ASN.1 в строку</h2>
+
+<p>Стандарт X.501 [<a href="#ref-X.501" title="The Directory: Models,">X.501</a>] определяет структуру ASN.1 [<a href="#ref-X.680" title="Abstract Syntax Notation One (ASN.1) - Specification of Basic Notation">X.680</a>] уникального имени. Далее в обсуждении используется следующий вариант такой структуры:</p>
+
+<pre class="list">
+      DistinguishedName ::= RDNSequence
+
+      RDNSequence ::= SEQUENCE OF RelativeDistinguishedName
+
+      RelativeDistinguishedName ::= SET SIZE (1..MAX) OF
+          AttributeTypeAndValue
+
+      AttributeTypeAndValue ::= SEQUENCE {
+          type  AttributeType,
+          value AttributeValue }
+</pre>
+
+<p>В этом разделе определяется рекомендуемый (RECOMMENDED) алгоритм конвертирования уникального имени из структурированного представления ASN.1 в строковое представление в виде символов Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированных UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. В других документах могут быть описаны другие алгоритмы конвертирования уникального имени в строку, но реализации LDAP должны (SHALL) выдавать только строки, которые соответствуют грамматике, определённой в <a href="#section-3">разделе 3</a>.</p>
+
+<h3><a name="section-2.1">2.1</a>. Конвертирование RDNSequence</h3>
+
+<p>Если последовательность RDNSequence пуста, результатом конвертирования будет пустая строка или строка нулевой длины.</p>
+
+<p>В противном случае, вывод состоит из элементов RelativeDistinguishedName в последовательности RDNSequence, каждый из которых закодирован в строку (в соответствии с <a href="#section-2.2">разделом 2.2</a>), начиная с последнего элемента последовательности и двигаясь в обратном направлении в сторону первого.</p>
+
+<p>Смежные строковые представления RelativeDistinguishedNames разделяются символом запятой (',' U+002C).</p>
+
+<h3><a name="section-2.2">2.2</a>. Конвертирование RelativeDistinguishedName</h3>
+
+<p>При конвертировании RelativeDistinguishedName из ASN.1 в строку вывод состоит из последовательностей AttributeTypeAndValue, каждая из которых закодирована в строку (в соответствии с <a href="#section-2.3">разделом 2.3</a>), в произвольном порядке.</p>
+
+<p>Если RDN многозначный, смежные строковые представления AttributeTypeAndValues в выводе разделяются символом знака плюс ('+' U+002B).</p>
+
+<h3><a name="section-2.3">2.3</a>. Конвертирование AttributeTypeAndValue</h3>
+
+<p>Последовательность AttributeTypeAndValue кодируется как строковое представление AttributeType, за которым следует символ знака равенства ('=' U+003D), за которым следует строковое представление AttributeValue. Правила кодирования AttributeValue даны в <a href="#section-2.4">разделе 2.4</a>.</p>
+
+<p>Если в определении AttributeType имеется короткое имя (дескриптор) [<a href="rfc4512.html#section-6.2" title="LDAP: Информационные модели каталога">RFC4512</a>] и известно, что это короткое имя зарегистрировано [<a href="#ref-REGISTRY" title="Object Identifier Descriptors Registry">REGISTRY</a>] [<a href="http://tools.ietf.org/html/rfc4520" title="Internet Assigned Numbers Authority (IANA) Considerations for the Lightweight Directory Access Protocol (LDAP)">RFC4520</a>] как идентифицирующее данный AttributeType, используется это короткое имя (&lt;descr&gt;). В противном случае, AttributeType кодируется в виде точечно-цифрового представления (&lt;numericoid&gt;) его идентификатора объекта (OBJECT IDENTIFIER). Форматы &lt;descr&gt; и &lt;numericoid&gt; определены в [<a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
+
+<p>Не ожидается, что реализации будут динамически обновлять свою базу знаний зарегистрированных коротких имён. Однако, в реализациях следует (SHOULD) предусматривать механизм, который позволял бы обновлять их базу знаний зарегистрированных коротких имён.</p>
+
+<h3><a name="section-2.4">2.4</a>. Конвертирование AttributeValue из ASN.1 в строку</h3>
+
+<p>Если AttributeType в точечно-цифровой форме, то AttributeValue представляется в виде символа решётки ('#' U+0023), за которым следуют шестнадцатеричные коды каждого октета закодированного в BER значения AttributeValue X.500. Также эта форма используется, когда у синтаксиса AttributeValue нет определённого для него специфичного для LDAP кодирования в строку (<a href="http://tools.ietf.org/html/rfc4517#section-3.1">раздел 3.1 [RFC4517]</a>), либо когда специфичное для LDAP кодирование в строку не ограничивается закодированными в UTF-8 символами Unicode. Эта форма также может быть использована и в других случаях, например, когда требуется обратимое строковое представление (смотрите <a href="#section-5.2">раздел 5.2</a>).</p>
+
+<p>В противном случае, если у синтаксиса AttributeValue имеется специфичное для LDAP кодирование в строку, значение сначала конвертируется в строку символов Unicode, закодированных UTF-8, в соответствии со спецификацией синтаксиса этого значения (примеры смотрите в <a href="http://tools.ietf.org/html/rfc4517#section-3.3">разделе 3.3 [RFC4517]</a>). Если в этой закодированной UTF-8 строке Unicode не содержится каких-либо из приведённых ниже символов, требующих экранирования, то эта строка может быть использована как строковое представление данного значения.</p>
+
+<p>Символы, которые необходимо экранировать:</p>
+<ul>
+<li>символ пробела (' ' U+0020) или решётки ('#' U+0023), находящийся в начале строки;</li>
+<li>символ пробела (' ' U+0020), находящийся в конце строки;</li>
+<li>один из символов '"', '+', ',', ';', '&lt;', '&gt;' или '\' (U+0022, U+002B, U+002C, U+003B, U+003C, U+003E или U+005C, соответственно);</li>
+<li>символ null (U+0000).</li>
+</ul>
+
+<p>Могут быть экранированы и другие символы.</p>
+
+<p>Каждый байт экранируемого символа заменяется обратным слешем и двумя шестнадцатеричными цифрами, таким образом оформляется один октет в коде символа. С другой стороны, если экранируемый символ является одним из символов
+<blockquote>
+      ' ', '"', '#', '+', ',', ';', '&lt;', '=', '&gt;' или '\' (U+0020, U+0022, U+0023, U+002B, U+002C, U+003B, U+003C, U+003D, U+003E, U+005C, соответственно)
+</blockquote>
+(и только в этом случае), его можно просто предварить обратным слешем ('\' U+005C).</p>
+
+<p>Примеры данного механизма экранирования приведены в <a href="#section-4">разделе 4</a>.</p>
+
+<h2><a name="section-3">3</a>. Обратный разбор строки в уникальное имя</h2>
+
+<p>Строковое представление уникального имени ограничивается символами Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированными UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. Структура этого строкового представления определяется с использованием следующей грамматики ABNF [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:
+
+<pre class="list">
+      distinguishedName = [ relativeDistinguishedName
+          *( COMMA relativeDistinguishedName ) ]
+      relativeDistinguishedName = attributeTypeAndValue
+          *( PLUS attributeTypeAndValue )
+      attributeTypeAndValue = attributeType EQUALS attributeValue
+      attributeType = descr / numericoid
+      attributeValue = string / hexstring
+
+      ; Следующие символы должны экранироваться, если они встречаются
+      ; в кодируемом значении: ESC, один из &lt;escaped&gt;, начальные
+      ; SHARP или SPACE, конечный SPACE, а также NULL.
+      string =   [ ( leadchar / pair ) [ *( stringchar / pair )
+         ( trailchar / pair ) ] ]
+
+      leadchar = LUTF1 / UTFMB
+      LUTF1 = %x01-1F / %x21 / %x24-2A / %x2D-3A /
+         %x3D / %x3F-5B / %x5D-7F
+
+      trailchar  = TUTF1 / UTFMB
+      TUTF1 = %x01-1F / %x21 / %x23-2A / %x2D-3A /
+         %x3D / %x3F-5B / %x5D-7F
+
+      stringchar = SUTF1 / UTFMB
+      SUTF1 = %x01-21 / %x23-2A / %x2D-3A /
+         %x3D / %x3F-5B / %x5D-7F
+
+      pair = ESC ( ESC / special / hexpair )
+      special = escaped / SPACE / SHARP / EQUALS
+      escaped = DQUOTE / PLUS / COMMA / SEMI / LANGLE / RANGLE
+      hexstring = SHARP 1*hexpair
+      hexpair = HEX HEX
+</pre>
+
+<p>В этой грамматике конструкции &lt;descr&gt;, &lt;numericoid&gt;, &lt;COMMA&gt;, &lt;DQUOTE&gt;, &lt;EQUALS&gt;, &lt;ESC&gt;, &lt;HEX&gt;, &lt;LANGLE&gt;, &lt;NULL&gt;, &lt;PLUS&gt;, &lt;RANGLE&gt;, &lt;SEMI&gt;, &lt;SPACE&gt;, &lt;SHARP&gt; и &lt;UTFMB&gt; определены в [<a href="http://tools.ietf.org/html/rfc4512#section-1.4" title="LDAP: Directory Information Models">RFC4512</a>].</p>
+
+<p>Каждая из конструкций типа атрибута &lt;attributeType&gt;, представленная либо в виде &lt;descr&gt;, либо в виде &lt;numericoid&gt;, означает тип атрибута в утверждении значения атрибута (attribute value assertion, AVA). За &lt;attributeType&gt; следуют &lt;EQUALS&gt; и &lt;attributeValue&gt;. Конструкция значения атрибута &lt;attributeValue&gt; может быть либо в форме &lt;string&gt;, либо в форме &lt;hexstring&gt;.</p>
+
+<p>Если значение атрибута в форме &lt;string&gt;, то значение утверждения может быть получено из строкового представления LDAP путём замены (слева направо, нерекурсивной) каждой пары &lt;pair&gt;, имеющейся в строке &lt;string&gt;, следующим образом:</p>
+<blockquote>
+<p>&lt;ESC&gt;&lt;ESC&gt; заменяется на &lt;ESC&gt;;</p>
+<p>&lt;ESC&gt;&lt;special&gt; заменяется на &lt;special&gt;;</p>
+<p>&lt;ESC&gt;&lt;hexpair&gt; заменяется байтом, на который указывает &lt;hexpair&gt;.</>
+</blockquote>
+
+<p>Если значение атрибута в форме &lt;hexstring&gt;, значение может быть получено из BER-представления путём конвертирования каждой пары &lt;hexpair&gt; строки &lt;hexstring&gt; в байт, на который указывает &lt;hexpair&gt;.</p>
+
+<p>В относительном уникальном имени может быть одно или несколько утверждений значения атрибута, разделенных знаком &lt;PLUS&gt;.</p>
+
+<p>В уникальном имени может быть ноль или более относительных уникальных имён, разделенных знаком &lt;COMMA&gt;.</p>
+
+<p>Реализации должны (MUST) распознавать приведённые ниже строковые имена (дескрипторы) типов атрибутов AttributeType, но могут (MAY) распознавать и другие строковые имена.</p>
+
+<pre class="list">
+      Строка  X.500 AttributeType
+      ------  --------------------------------------------
+      CN      commonName (2.5.4.3)
+      L       localityName (2.5.4.7)
+      ST      stateOrProvinceName (2.5.4.8)
+      O       organizationName (2.5.4.10)
+      OU      organizationalUnitName (2.5.4.11)
+      C       countryName (2.5.4.6)
+      STREET  streetAddress (2.5.4.9)
+      DC      domainComponent (0.9.2342.19200300.100.1.25)
+      UID     userId (0.9.2342.19200300.100.1.1)
+</pre>
+
+<p>Эти типы атрибутов описаны в [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>].</p>
+
+<p>Реализации могут (MAY) распознавать другие строковые представления DN. Однако, поскольку требование о распознавании альтернативных строковых представлений DN не выдвигается (и не приводится возможных механизмов такого распознавания), реализациям следует (SHOULD) генерировать только строковые представления DN в соответствии с <a href="#section-2">разделом 2</a> этого документа.</p>
+
+<h2><a name="section-4">4</a>. Примеры</h2>
+
+<p>Данная нотация предназначена для удобного представления распространенных форм имени. В этом разделе даны несколько примеров уникальных имён, записанных с использованием этой нотации. Первый пример&thinsp;&mdash;&thinsp;имя, содержащее три относительных уникальных имени (RDN):</p>
+
+<pre class="list">
+      UID=jsmith,DC=example,DC=net
+</pre>
+
+<p>Пример имени, содержащего три RDN, первое из которых многозначное:</p>
+
+<pre class="list">
+      OU=Sales+CN=J.  Smith,DC=example,DC=net
+</pre>
+
+<p>В этом примере показан метод экранирования специальных символов, встречающихся в общепринятом имени (common name):</p>
+
+<pre class="list">
+      CN=James \"Jim\" Smith\, III,DC=example,DC=net
+</pre>
+
+<p>В следующем примере показан метод кодирования значения, содержащего символ возврата каретки:</p>
+
+<pre class="list">
+      CN=Before\0dAfter,DC=example,DC=net
+</pre>
+
+<p>В этом примере RDN тип атрибута RDN не распознан, а значение представляет собой BER-кодировку строки октетов (OCTET STRING), содержащей два октета (0x48 и 0x69):</p>
+
+<pre class="list">
+      1.3.6.1.4.1.1466.0=#04024869
+</pre>
+
+<p>Наконец, в этом примере показано RDN, значение commonName которого состоит из 5 букв:</p>
+
+<pre class="list">
+      Символ Unicode                   Код        UTF-8   Экранирование
+      -------------------------------  ------     ------  -------------
+      LATIN CAPITAL LETTER L           U+004C     0x4C    L
+      LATIN SMALL LETTER U             U+0075     0x75    u
+      LATIN SMALL LETTER C WITH CARON  U+010D     0xC48D  \C4\8D
+      LATIN SMALL LETTER I             U+0069     0x69    i
+      LATIN SMALL LETTER C WITH ACUTE  U+0107     0xC487  \C4\87
+</pre>
+
+<p>Его можно закодировать в виде символов ASCII [<a href="#ref-ASCII">ASCII</a>], пригодных для вывода на печать (может быть полезно при выполнении отладки), так:</p>
+
+<pre class="list">
+      CN=Lu\C4\8Di\C4\87
+</pre>
+
+<h2><a name="section-5">5</a>. О безопасности</h2>
+
+<p>Приводимые здесь соображения безопасности специфичны для работы с уникальными именами. Вопросы безопасности LDAP обсуждаются в [<a href="rfc4511.html#section-6" title="LDAP: Определение протокола">RFC4511</a>] и других документах, входящих в состав технической спецификации LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>].</p>
+
+<h3><a name="section-5.1">5.1</a>. Раскрытие информации</h3>
+
+<p>Обычно уникальные имена содержат описательную информацию о тех записях, которые они именуют (это могут быть люди, организации, устройства или другие объекты реального мира). Часто в них включаются какие-либо из следующих видов информации:</p>
+
+<ul>
+<li>общепринятое имя объекта (например, полное имя человека)</li>
+<li>адрес электронной почты или TCP/IP</li>
+<li>физическое расположение объекта (страна, местность, город, почтовый адрес)</li>
+<li>организационные атрибуты (такие как наименование подразделения или принадлежность группе)</li>
+</ul>
+
+<p>В некоторых случаях такая информация может считаться конфиденциальной. Во многих странах существуют законы о защите персональных данных, запрещающие раскрытие некоторых видов описательной информации (например, адресов электронной почты). Поэтому разработчикам серверов рекомендуется поддерживать правила структуры и формы имён информационного дерева каталога (Directory Information Tree, DIT) [<a href="rfc4512.html#section-4" title="LDAP: Информационные модели каталога">RFC4512</a>], так как они предоставляют администраторам механизм выбора подходящих атрибутов именования для записи. Администраторам рекомендуется использовать доступные механизмы, контроль доступа и другие виды административного контроля для ограничения использования атрибутов, содержащих конфиденциальную информацию, в именовании записей. Кроме того, должно предусматриваться использование сервисов аутентификации и обеспечения безопасности данных в LDAP [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>][<a href="rfc4511.html#section-6" title="LDAP: Определение протокола">RFC4511</a>].</p>
+
+<h3><a name="section-5.2">5.2</a>. Использование уникальных имён в приложениях, связанных с безопасностью</h3>
+
+<p>Трансформированные из формы X.501 в строковое представление LDAP значения AttributeValue не всегда возможно преобразовать обратно в ту же самую форму представления BER (Basic Encoding Rules) или DER (Distinguished Encoding Rules). В качестве примера ситуации, когда может понадобиться DER-форма уникального имени, можно привести верификацию сертификата X.509.</p>
+
+<p>Например, уникальное имя, состоящее из одного RDN с одним AVA, в котором тип атрибута commonName, а значение&thinsp;&mdash;&thinsp;вариант TeletexString с буквами 'Sam', будет представлено в LDAP как строка &lt;CN=Sam&gt;. Другое уникальное имя, в котором значение также 'Sam', но в варианте PrintableString, будет иметь то же самое представление &lt;CN=Sam&gt;.</p>
+
+<p>Приложениям, которым требуется реконструкция DER-формы значения, не следует (SHOULD NOT) использовать строковое представление синтаксисов атрибутов при конвертировании уникального имени в формат LDAP. Вместо этого, им следует (SHOULD) использовать шестнадцатеричную форму, перед которой указывается знак решётки ('#' U+0023), как описано в первом параграфе <a href="#section-2.4">раздела 2.4</a>.</p>
+
+<h2><a name="section-6">6</a>. Благодарности</h2>
+
+<p>Этот документ обновляет <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, авторы Mark Wahl, Tim Howes и Steve Kille. <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF ASID.</p>
+
+<p>Данный документ&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAPBIS.</p>
+
+<h2><a name="section-7">7</a>. Документы</h2>
+
+<h3><a name="section-7.1">7.1</a>. Нормативные документы</h3>
+
+<p>[<a name="ref-REGISTRY" id="ref-REGISTRY">REGISTRY</a>] IANA, Object Identifier Descriptors Registry, &lt;<a href="http://www.iana.org/assignments/ldap-parameters">http://www.iana.org/assignments/ldap-parameters</a>&gt;.</p>
+
+<p>[<a name="ref-Unicode" id="ref-Unicode">Unicode</a>] The Unicode Consortium, "The Unicode Standard, Version 3.2.0", определён в "The Unicode Standard, Version 3.0" (Reading, MA, Addison-Wesley, 2000. ISBN 0-201-61633-5), с поправками, внесенными в "Unicode Standard Annex #27: Unicode 3.1" (<a href="http://www.unicode.org/reports/tr27/">http://www.unicode.org/reports/tr27/</a>) и в "Unicode Standard Annex #28: Unicode 3.2" (<a href="http://www.unicode.org/reports/tr28/">http://www.unicode.org/reports/tr28/</a>).</p>
+
+<p>[<a name="ref-X.501" id="ref-X.501">X.501</a>] International Telecommunication Union - Telecommunication Standardization Sector, "The Directory: Models", X.501(1993) (also ISO/IEC 9594-2:1994).</p>
+
+<p>[<a name="ref-X.680" id="ref-X.680">X.680</a>] International Telecommunication Union - Telecommunication Standardization Sector, "Abstract Syntax Notation One (ASN.1) - Specification of Basic Notation", X.680(1997) (also ISO/IEC 8824-1:1998).</p>
+
+<p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
+
+<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="http://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003 г.</p>
+
+<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax  Specifications: ABNF", <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
+
+<p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map", <a href="http://tools.ietf.org/html/rfc4510">RFC4510</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4511" id="ref-RFC4511">RFC4511</a>] Под редакцией Sermersheim, J., "Lightweight Directory Access Protocol (LDAP): Определение протокола", <a href="rfc4511.html">RFC 4511</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Информационные модели каталога", <a href="rfc4512.html">RFC4512</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4513" id="ref-RFC4513">RFC4513</a>] Под редакцией Harrison, R., "Lightweight Directory Access Protocol (LDAP): Методы аутентификации и механизмы обеспечения безопасности", <a href="rfc4513.html">RFC 4513</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4517" id="ref-RFC4517">RFC4517</a>] Под редакцией Legg, S., "Lightweight Directory Access Protocol (LDAP): Syntaxes and Matching Rules", <a href="http://tools.ietf.org/html/rfc4517">RFC 4517</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4519" id="ref-RFC4519">RFC4519</a>] Под редакцией Sciberras, A., "Lightweight Directory Access Protocol (LDAP): Schema for User Applications", <a href="http://tools.ietf.org/html/rfc4519">RFC4519</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Internet Assigned Numbers Authority (IANA) Considerations for the Lightweight Directory Access Protocol (LDAP)", <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006 г.</p>
+
+<h3><a name="section-7.2">7.2</a>. Информативные документы</h3>
+
+<p>[<a name="ref-ASCII" id="ref-ASCII">ASCII</a>] Coded Character Set--7-bit American Standard Code for Information Interchange, ANSI X3.4-1986.</p>
+
+<p>[<a name="ref-CharModel" id="ref-CharModel">CharModel</a>] Whistler, K. and M. Davis, "Unicode Technical Report #17, Character Encoding Model", UTR17, &lt;<a href="http://www.unicode.org/unicode/reports/tr17/">http://www.unicode.org/unicode/reports/tr17/</a>&gt;, август 2000 г.</p>
+
+<p>[<a name="ref-Glossary" id="ref-Glossary">Glossary</a>] The Unicode Consortium, "Unicode Glossary", &lt;<a href="http://www.unicode.org/glossary/">http://www.unicode.org/glossary/</a>&gt;.</p>
+
+<p>[<a name="ref-X.500" id="ref-X.500">X.500</a>] International Telecommunication Union - Telecommunication Standardization Sector, "The Directory: Overview of concepts, models and services," X.500(1993) (также ISO/IEC 9594-1:1994).</p>
+
+<p>[<a name="ref-X.511" id="ref-X.511">X.511</a>] International Telecommunication Union - Telecommunication Standardization Sector, "The Directory: Abstract Service Definition", X.511(1993) (также ISO/IEC 9594-3:1993).</p>
+
+<p>[<a name="ref-X.690" id="ref-X.690">X.690</a>] International Telecommunication Union - Telecommunication Standardization Sector, "Specification of ASN.1 encoding rules: Basic Encoding Rules (BER), Canonical Encoding Rules (CER), and Distinguished Encoding Rules (DER)", X.690(1997) (также ISO/IEC 8825-1:1998).</p>
+
+<p>[<a name="ref-RFC2849" id="ref-RFC2849">RFC2849</a>] Good, G., "The LDAP Data Interchange Format (LDIF) - Техническая спецификация", <a href="rfc2849.html">RFC2849</a>, июнь 2000 г.</p>
+
+<h2><a name="appendix-A">Приложение A</a>. Вопросы представления</h2>
+
+<p>Это приложение приводится только в информационных целях; оно не является нормативной частью данной спецификации.</p>
+
+<p>Описанное в этом документе строковое представление не предназначено для отображения человеку без трансляции. Тем не менее, иногда может быть желательно представлять пользователям строки DN без трансляции. В этом разделе обсуждаются вопросы представления, связанные с нетранслированными строками DN. Вопросы представления транслированных строк DN в этом приложении не обсуждаются. Вопросы транскодирования также не обсуждаются в этом приложении.</p>
+
+<p>В этом приложении даётся руководство для тех программ, которые представляют строки DN пользователям. Этот раздел не является исчерпывающим; в нём не обсуждаются все вопросы представления, с которыми могут столкнуться разработчики.</p>
+
+<p>Не все пользовательские интерфейсы способны отобразить полный набор символов Unicode. Некоторые символы Unicode являются неотображаемыми.</p>
+
+<p>Рекомендуется, чтобы интерфейсы, рассчитанные на вывод информации человеку, использовали для формирования строковых представлений, пригодных для отображения пользователю, опциональный механизм экранирования шестнадцатеричных пар (<a href="#section-2.3">раздел 2.3</a>). Например, приложение может генерировать для отображения строку DN, в которой заэкранированы все непечатные символы, встречающиеся в строковом представлении AttributeValue (как показано в последнем примере <a href="#section-4">раздела 4</a>).</p>
+
+<p>Если строка DN встречается в произвольном тексте, возникает необходимость отличать строку DN от окружающего текста. Хотя часто это делается с помощью пробельных символов (как показано в <a href="#section-4">разделе 4</a>), следует иметь ввиду, что строки DN могут заканчиваться пробельным символом. Внимательные читатели <a href="#section-3">раздела 3</a> помнят, что символы '&lt;' (U+003C) и '&gt;' (U+003E) могут встречаться в строке DN, только если они экранированы. Эти символы предназначены для того, чтобы можно было отделить строку DN от окружающего текста в произвольном тексте. Например, &lt;CN=Sam\ &gt; отделяет строковое представление DN, состоящего из одного RDN с одним AVA (атрибут commonName (CN) со значением 'Sam ') от окружающего текста. Пользователям следует помнить, что символы-ограничители '&lt;' и '&gt;' не являются частью строки DN.</p>
+
+<p>Строки DN могут быть достаточно длинными. Часто возникает потребность переносить слишком длинные строки DN при их выводе. Перенос строк следует осуществлять путём вставки пробельного символа после символа-разделителя RDN или, при необходимости, после символа-разделителя AVA. Пользователям следует помнить, что вставленные пробельные символы не являются частью строки DN, и их нужно удалить перед использованием строки DN в LDAP. Пример длинной строки DN:</p>
+
+<pre class="list">
+         CN=Kurt D.  Zeilenga,OU=Engineering,L=Redwood Shores,
+         O=OpenLDAP Foundation,ST=California,C=US
+</pre>
+
+<p>Она была разбита на две для повышения читабельности. Перед использованием в LDAP дополнительные пробельные символы необходимо удалить из строки DN.</p>
+
+<p>Вставка пробельных символов не рекомендуется, поскольку для пользователя может быть не очевидно, какие из них являются частью строки DN, а какие были добавлены для повышения читабельности.</p>
+
+<p>Альтернативный вариант&thinsp;&mdash;&thinsp;использовать формат обмена данными LDAP (LDAP Data Interchange Format, LDIF) [<a href="rfc2849.html" title="LDIF - техническая спецификация">RFC2849</a>]. Например:</p>
+
+<pre class="list">
+         # У этой записи длинное DN...
+         dn: CN=Kurt D.  Zeilenga,OU=Engineering,L=Redwood Shores,
+          O=OpenLDAP Foundation,ST=California,C=US
+         CN: Kurt D.  Zeilenga
+         SN: Zeilenga
+         objectClass: person
+</pre>
+
+<h2><a name="appendix-B">Приложение B</a>. Изменения, внесённые в RFC 2253</h2>
+
+<p>Это приложение приводится только в информационных целях; оно не является нормативной частью данной спецификации.</p>
+
+<p>Основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>:</p>
+<ul>
+<li>Удалено примечание IESG. Поднимаемые в нём вопросы были решены.</li>
+<li>Все ссылки на ISO 10646-1 заменены на [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>].</li>
+<li>Уточнено (в <a href="#section-1">разделе 1</a>), что в этом документе не определяется каноническое строковое представление.</li>
+<li>Уточнено, что в <a href="#section-2">разделе 2</a> описывается рекомендуемый (RECOMMENDED) алгоритм кодирования и что разрешены альтернативные алгоритмы. Некоторые опции кодирования, описанные в <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, в данной спецификации рассматриваются как альтернативные алгоритмы.</li>
+<li>Пересмотрена спецификация (в <a href="#section-2">разделе 2</a>): в строковом представлении DN разрешены короткие имена любых зарегистрированных типов атрибутов, а не только "приведённых в таблице". Убраны формулировки "в качестве примера". Добавлено заявление (в <a href="#section-3">разделе 3</a>), обязывающее распознавать приведённые в таблице имена, но также позволяющее распознавать дополнительные имена. Сама таблица обязательных для распознавания имён теперь находится в <a href="#section-3">разделе 3</a>.</li>
+<li>Удалена спецификация дополнительных требований для реализаций LDAPv2, также поддерживающих LDAPv3 (<a href="http://tools.ietf.org/html/rfc2253#section-4">раздел 4 RFC 2253</a>), поскольку LDAPv2 сейчас считается историческим протоколом.</li>
+<li>Разрешено распознавание альтернативных строковых представлений.</li>
+<li>Обновлён <a href="#section-2.4">раздел 2.4</a>: разрешено экранирование в виде шестнадцатеричных пар всех символов, а также уточнён порядок экранирования при наличии кодировок UTF-8 в несколько байт. Указано, что символ null (U+0000) должен экранироваться. Указано, что символ знака равенства ('=' U+003D) может экранироваться как '\='.</li>
+<li><a href="#section-3">Раздел 3</a> переписан так, чтобы использованная в нём ABNF соответствовала <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>.</li>
+<li>Обновлена ABNF в <a href="#section-3">разделе 3</a>. Изменения:
+    <ul>
+    <li>разрешены короткие имена AttributeType длиной 1 символ (например, 'L'),</li>
+    <li>в AttributeTypes использована более ограниченная конструкция &lt;oid&gt;,</li>
+    <li>не требуется экранирование символа знака равенства ('=' U+003D),</li>
+    <li>не требуется экранирование символов знака решётки ('#' U+0023), если они не находятся в начале строки,</li>
+    <li>разрешено экранирование пробела (' ' U+0020) как '\ ',</li>
+    <li>требуется шестнадцатеричное экранирование символов null (U+0000), и</li>
+    <li>удалены конструкции, касавшиеся только LDAPv2.</li>
+    </ul>
+</li>
+<li>Обновлён <a href="#section-3">раздел 3</a>: добавлено описание того, как разбирать элементы грамматики.</li>
+<li>Переписаны примеры.</li>
+<li>Добавлены ссылки на документацию, содержащую общие вопросы безопасности LDAP.</li>
+<li>Добавлено обсуждение вопросов представления (приложение A).</li>
+<li>Добавлено это приложение.</li>
+</ul>
+
+<p>Кроме того, выполнено множество редакторских правок.</p>
+
+<h2>Адрес редактора</h2>
+<p>Kurt D.  Zeilenga</p>
+<p>OpenLDAP Foundation</p>
+<p>EMail: Kurt@OpenLDAP.org</p>
+
+<h2>Полное заявление авторских прав</h2>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+
+<p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
+
+<h2>Интеллектуальная собственность</h2>
+
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a target="_blank" href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a target="_blank" href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+
+<p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
+
+<h2>Признание заслуг</h2>
+
+<p>Финансирование функций RFC Editor обеспечивается IETF Administrative Support Activity (IASA).</p>
+
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+</body></html>

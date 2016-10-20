@@ -1,0 +1,1926 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Ресурсы проекта Pro-LDAP.ru. RFC по службам каталогов и LDAP." />
+<meta name="keywords" content="Pro-LDAP.ru,LDAP,OpenLDAP,slapd,по-русски,на русском,перевод,документация,RFC" />
+<link rel="stylesheet" href="/pro-ldap.css" type="text/css">
+<title>RFC 4517</title>
+<script src="/pro-ldap.js"></script>
+</head>
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+
+<pre>
+Network Working Group
+<strong>Request for Comments: 4517</strong>
+Категория: Standards Track
+Под редакцией S. Legg, eB2Bcom
+Июнь 2006 года
+Отменяет: <a href="http://tools.ietf.org/html/rfc2252">2252</a>, <a href="http://tools.ietf.org/html/rfc2256">2256</a>
+Обновляет: <a href="http://tools.ietf.org/html/rfc3698">3698</a>
+</pre>
+
+<h1>Lightweight Directory Access Protocol (LDAP): Синтаксисы и правила соответствия</h1>
+
+<h3>Статус документа</h3>
+
+<p>Этот документ определяет проект стандарта протокола Интернет для сообщества Интернет, а также приглашает к обсуждению и подаче предложений по его усовершенствованию. Пожалуйста, сверяйтесь с текущей редакцией "Официальных стандартов протоколов Интернет" (STD 1), чтобы узнать состояние стандартизации и статус этого протокола. Ограничений на распространение данного документа не накладывается.</p>
+
+<h3>Уведомление об авторских правах</h3>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<h3>Тезисы</h3>
+
+<p>У каждого хранящегося в каталоге Lightweight Directory Access Protocol (LDAP) атрибута, значение которого может быть передано в протоколе LDAP, имеется определённый синтаксис, ограничивающий структуру и формат его значений. Семантики сравнения для значений какого-либо синтаксиса не являются частью определения этого синтаксиса, а предоставляются с помощью определяемых отдельно правил соответствия. В правилах соответствия задаётся аргумент,&thinsp;&mdash;&thinsp;значение утверждения,&thinsp;&mdash;&thinsp;который также имеет определённый синтаксис. В этом документе определяется базовый набор синтаксисов и правил соответствия для использования в определениях атрибутов каталогов LDAP.</p>
+
+<h3>Содержание</h3>
+<div class="contents">
+<ul>
+<li>1. <a href="#section-1"> Введение</a></li>
+<li>2. <a href="#section-2">Соглашения</a></li>
+<li>3. <a href="#section-3">Синтаксисы</a>
+  <ul>
+  <li>3.1. <a href="#section-3.1">Общие замечания</a></li>
+  <li>3.2. <a href="#section-3.2">Общие определения</a></li>
+  <li>3.3. <a href="#section-3.3">Определения синтаксисов</a>
+    <ul>
+    <li>3.3.1. <a href="#section-3.3.1">Attribute Type Description</a></li>
+    <li>3.3.2. <a href="#section-3.3.2">Bit String</a></li>
+    <li>3.3.3. <a href="#section-3.3.3">Boolean</a></li>
+    <li>3.3.4. <a href="#section-3.3.4">Country String</a></li>
+    <li>3.3.5. <a href="#section-3.3.5">Delivery Method</a></li>
+    <li>3.3.6. <a href="#section-3.3.6">Directory String</a></li>
+    <li>3.3.7. <a href="#section-3.3.7">DIT Content Rule Description</a></li>
+    <li>3.3.8. <a href="#section-3.3.8">DIT Structure Rule Description</a></li>
+    <li>3.3.9. <a href="#section-3.3.9">DN</a></li>
+    <li>3.3.10. <a href="#section-3.3.10">Enhanced Guide</a></li>
+    <li>3.3.11. <a href="#section-3.3.11">Facsimile Telephone Number</a></li>
+    <li>3.3.12. <a href="#section-3.3.12">Fax</a></li>
+    <li>3.3.13. <a href="#section-3.3.13">Generalized Time</a></li>
+    <li>3.3.14. <a href="#section-3.3.14">Guide</a></li>
+    <li>3.3.15. <a href="#section-3.3.15">IA5 String</a></li>
+    <li>3.3.16. <a href="#section-3.3.16">Integer</a></li>
+    <li>3.3.17. <a href="#section-3.3.17">JPEG</a></li>
+    <li>3.3.18. <a href="#section-3.3.18">LDAP Syntax Description</a></li>
+    <li>3.3.19. <a href="#section-3.3.19">Matching Rule Description</a></li>
+    <li>3.3.20. <a href="#section-3.3.20">Matching Rule Use Description</a></li>
+    <li>3.3.21. <a href="#section-3.3.21">Name and Optional UID</a></li>
+    <li>3.3.22. <a href="#section-3.3.22">Name Form Description</a></li>
+    <li>3.3.23. <a href="#section-3.3.23">Numeric String</a></li>
+    <li>3.3.24. <a href="#section-3.3.24">Object Class Description</a></li>
+    <li>3.3.25. <a href="#section-3.3.25">Octet String</a></li>
+    <li>3.3.26. <a href="#section-3.3.26">OID</a></li>
+    <li>3.3.27. <a href="#section-3.3.27">Other Mailbox</a></li>
+    <li>3.3.28. <a href="#section-3.3.28">Postal Address</a></li>
+    <li>3.3.29. <a href="#section-3.3.29">Printable String</a></li>
+    <li>3.3.30. <a href="#section-3.3.30">Substring Assertion</a></li>
+    <li>3.3.31. <a href="#section-3.3.31">Telephone Number</a></li>
+    <li>3.3.32. <a href="#section-3.3.32">Teletex Terminal Identifier</a></li>
+    <li>3.3.33. <a href="#section-3.3.33">Telex Number</a></li>
+    <li>3.3.34. <a href="#section-3.3.34">UTC Time</a></li>
+    </ul>
+  </li>
+  </ul>
+</li>
+<li>4. <a href="#section-4">Правила соответствия</a>
+  <ul>
+  <li>4.1. <a href="#section-4.1">Общие замечания</a></li>
+  <li>4.2. <a href="#section-4.2">Определения правил соответствия</a>
+    <ul>
+    <li>4.2.1. <a href="#section-4.2.1">bitStringMatch</a></li>
+    <li>4.2.2. <a href="#section-4.2.2">booleanMatch</a></li>
+    <li>4.2.3. <a href="#section-4.2.3">caseExactIA5Match</a></li>
+    <li>4.2.4. <a href="#section-4.2.4">caseExactMatch</a></li>
+    <li>4.2.5. <a href="#section-4.2.5">caseExactOrderingMatch</a></li>
+    <li>4.2.6. <a href="#section-4.2.6">caseExactSubstringsMatch</a></li>
+    <li>4.2.7. <a href="#section-4.2.7">caseIgnoreIA5Match</a></li>
+    <li>4.2.8. <a href="#section-4.2.8">caseIgnoreIA5SubstringsMatch</a></li>
+    <li>4.2.9. <a href="#section-4.2.9">caseIgnoreListMatch</a></li>
+    <li>4.2.10. <a href="#section-4.2.10">caseIgnoreListSubstringsMatch</a></li>
+    <li>4.2.11. <a href="#section-4.2.11">caseIgnoreMatch</a></li>
+    <li>4.2.12. <a href="#section-4.2.12">caseIgnoreOrderingMatch</a></li>
+    <li>4.2.13. <a href="#section-4.2.13">caseIgnoreSubstringsMatch</a></li>
+    <li>4.2.14. <a href="#section-4.2.14">directoryStringFirstComponentMatch</a></li>
+    <li>4.2.15. <a href="#section-4.2.15">distinguishedNameMatch</a></li>
+    <li>4.2.16. <a href="#section-4.2.16">generalizedTimeMatch</a></li>
+    <li>4.2.17. <a href="#section-4.2.17">generalizedTimeOrderingMatch</a></li>
+    <li>4.2.18. <a href="#section-4.2.18">integerFirstComponentMatch</a></li>
+    <li>4.2.19. <a href="#section-4.2.19">integerMatch</a></li>
+    <li>4.2.20. <a href="#section-4.2.20">integerOrderingMatch</a></li>
+    <li>4.2.21. <a href="#section-4.2.21">keywordMatch</a></li>
+    <li>4.2.22. <a href="#section-4.2.22">numericStringMatch</a></li>
+    <li>4.2.23. <a href="#section-4.2.23">numericStringOrderingMatch</a></li>
+    <li>4.2.24. <a href="#section-4.2.24">numericStringSubstringsMatch</a></li>
+    <li>4.2.25. <a href="#section-4.2.25">objectIdentifierFirstComponentMatch</a></li>
+    <li>4.2.26. <a href="#section-4.2.26">objectIdentifierMatch</a></li>
+    <li>4.2.27. <a href="#section-4.2.27">octetStringMatch</a></li>
+    <li>4.2.28. <a href="#section-4.2.28">octetStringOrderingMatch</a></li>
+    <li>4.2.29. <a href="#section-4.2.29">telephoneNumberMatch</a></li>
+    <li>4.2.30. <a href="#section-4.2.30">telephoneNumberSubstringsMatch</a></li>
+    <li>4.2.31. <a href="#section-4.2.31">uniqueMemberMatch</a></li>
+    <li>4.2.32. <a href="#section-4.2.32">wordMatch</a></li>
+    </ul>
+  </li>
+  </ul>
+</li>
+<li>5. <a href="#section-5">О безопасности</a></li>
+<li>6. <a href="#section-6">Благодарности</a></li>
+<li>7. <a href="#section-7">Регистрация в IANA</a></li>
+<li>8. <a href="#section-8">Документы</a>
+  <ul>
+  <li>8.1. <a href="#section-8.1">Нормативные документы</a></li>
+  <li>8.2. <a href="#section-8.2">Информативные документы</a></li>
+  </ul>
+</li>
+<li>Приложение A. <a href="#appendix-A">Сводка идентификаторов объектов синтаксисов</a></li>
+<li>Приложение B. <a href="#appendix-B">Изменения, внесённые в RFC 2252</a></li>
+</ul>
+</div>
+
+<h2><a name="section-1">1</a>. Введение</h2>
+
+<p>У каждого хранящегося в каталоге LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>] атрибута, значение которого может быть передано в протоколе LDAP [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>], имеется определённый синтаксис (то есть, тип данных), ограничивающий структуру и формат его значений. Семантики сравнения для значений какого-либо синтаксиса не являются частью определения этого синтаксиса, а предоставляются с помощью определяемых отдельно правил соответствия. В правилах соответствия задаётся аргумент,&thinsp;&mdash;&thinsp;значение утверждения,&thinsp;&mdash;&thinsp;который также имеет определённый синтаксис. В этом документе определяется базовый набор синтаксисов и правил соответствия для использования в определениях атрибутов каталогов LDAP.</p>
+
+<p>Читателям рекомендуется ознакомиться с информационными моделями каталога [<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>] перед тем, как читать этот документ далее. В <a href="#section-3">разделе 3</a> приводятся определения базового набора синтаксисов LDAP. В <a href="#section-4">разделе 4</a> приводятся определения базового набора правил соответствия LDAP.</p>
+
+<p>Данный документ является неотъемлемой частью технической спецификации LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>], полностью отменяющей ранее определённую техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>.</p>
+
+<p>Разделы <a href="http://tools.ietf.org/html/rfc2252#section-4">4</a>, <a href="http://tools.ietf.org/html/rfc2252#section-5">5</a> и <a href="http://tools.ietf.org/html/rfc2252#section-7">7</a> <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> отменены <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> отменена этим документом. Разделы <a href="http://tools.ietf.org/html/rfc2256#section-6">6</a> и <a href="http://tools.ietf.org/html/rfc2256#section-8">8</a> <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменены этим документом. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменена <a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC 4519</a> и <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>. <a href="http://tools.ietf.org/html/rfc3698">RFC 3698</a>, за исключением <a href="http://tools.ietf.org/html/rfc3698#section-2.11">раздела 2.11</a>, отменён этим документом.</p>
+
+<p>Некоторые элементы схемы данных, включённые в предыдущую ревизию технической спецификации LDAP, не включены в данную ревизию LDAP. Элементы схемы данных, касающиеся инфраструктуры открытых ключей (Public Key Infrastructure), теперь определяются в <a href="http://tools.ietf.org/html/rfc4523" title="Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509 Certificates">RFC 4523</a>. Остальные исключённые элементы схемы данных, если они не переопределяются в последующих технических спецификациях, должны рассматриваться как исторические.</p>
+
+<p>Изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, описаны в <a href="#appendix-B">приложении B</a> этого документа.</p>
+
+<h2><a name="section-2">2</a>. Соглашения</h2>
+
+<p>Ключевые слова "MUST" (необходимо), "MUST NOT" (недопустимо), "REQUIRED" (требуется), "SHALL" (нужно), "SHALL NOT" (не нужно), "SHOULD" (следует), "SHOULD NOT" (не следует), "RECOMMENDED" (рекомендуется), "MAY" (возможно) и "OPTIONAL" (необязательно) в данном документе должны интерпретироваться так, как описано в <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC 2119</a>.</p>
+
+<p>Определения синтаксисов составлены в соответствии с правилом ABNF [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>] &lt;SyntaxDescription&gt;, определённом в <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>, а определения правил соответствия составлены в соответствии с правилом ABNF &lt;MatchingRuleDescription&gt;, определённом в <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>, за исключением того, что приведённые в этом документе определения синтаксисов и правил соответствия разбиты на строки для повышения читабельности. Когда такие определения передаются в протоколе LDAP как значения атрибута (например, как значения атрибутов ldapSyntaxes и  matchingRules [<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>], соответственно), такие значения не должны содержать переносов строк.</p>
+
+<h2><a name="section-3">3</a>. Синтаксисы</h2>
+
+<p>Определения синтаксисов содержат структуру значений атрибутов, хранящихся в каталоге LDAP, а также определяют представления атрибутов и значений утверждений, передаваемых в протоколе LDAP.</p>
+
+<p>В этом разделе приводятся спецификации синтаксисов, требуемых для работы каталога, либо часто используемых. Серверам следует (SHOULD) распознавать все перечисленные в этом документе синтаксисы, но какой-либо иной поддержки этих синтаксисов от них не требуется. Кроме того, они могут (MAY) распознавать или поддерживать другие синтаксисы. Однако, определение дополнительных произвольных синтаксисов не рекомендуется, так как это будет препятствовать совместимости. Реализации клиентов и серверов обычно не могут динамически распознавать новые синтаксисы.</p>
+
+<h3><a name="section-3.1">3.1</a>. Общие замечания</h3>
+
+<p>Описание каждого синтаксиса определяет, как соответствующие этому синтаксису значения атрибута или утверждения должны быть представлены при передаче в протоколе LDAP [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>]. Это представление называется специфичной для LDAP кодировкой (LDAP-specific encoding). Такое именование позволяет отличать её от других методов кодирования значений атрибутов (например, кодировки Basic Encoding Rules (BER) [<a href="#ref-BER" title="Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER)">BER</a>], используемой в каталогах X.500 [<a href="#ref-X.500" title="Information Technology - Open Systems Interconnection - The Directory: Overview of concepts">X.500</a>]).</p>
+
+<p>Специфичная для LDAP кодировка заданного синтаксиса атрибута всегда выдаёт значения, выровненные по границе октета (длина которых кратна восьми битам). Везде, где это возможно, правила кодирования для синтаксисов LDAP должны выдавать символьные строки, которые могут отображаться клиентскими реализациями LDAP с минимальными преобразованиями, либо вообще без преобразований. Однако, клиенты не должны (MUST NOT) подразумевать, что специфичная для LDAP кодировка значения с нераспознанным синтаксисом является символьной строкой, пригодной для чтения человеком. В некоторых случаях (например, при <a href="#section-3.3.17">синтаксисе JPEG</a>) нецелесообразно выдавать пригодное для чтения человеком представление.</p>
+
+<p>Каждый синтаксис LDAP уникально идентифицируется <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">идентификатором объекта</a> [<a href="#ref-ASN.1">ASN.1</a>], представленном в точечно-цифровом формате (<a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">короткие описательные имена</a> для синтаксисов не определяются). Такие идентификаторы объектов не предназначены для отображения пользователям. В <a href="#appendix-A">приложении A</a> собраны все идентификаторы объектов для синтаксисов, определённых в этом документе.</p>
+
+<p>Рекомендуемая минимальная верхняя граница (по количеству символов в значениях атрибутов с синтаксисами, основанными на строках, либо по количеству байт в значениях с любыми другими синтаксисами), может (MAY) быть указана путём добавления числа в фигурных скобках вслед за идентификатором объекта синтаксиса в определении типа атрибута (смотрите правило &lt;noidlen&gt; в <a href="rfc4512.html#section-4.1" title="LDAP: Информационные модели каталога">RFC 4512</a>). Такая граница не рассматривается как часть идентификатора синтаксиса.</p>
+
+<p>Например, в формулировке "1.3.6.1.4.1.1466.115.121.1.15{64}" в определении атрибута рекомендуется, чтобы сервер каталога позволял значению этого атрибута быть длиной в 64 символа, но он может позволить и более длинные строки. Имейте ввиду, что один символ в синтаксисе Directory String может быть закодирован более чем одним октетом, поскольку UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>] является кодировкой с переменным размером символа.  Поэтому строка в 64 символа может быть длиной более 64 байт.</p>
+
+<h3><a name="section-3.2">3.2</a>. Общие определения</h3>
+
+<p>Следующие правила ABNF используются в некоторых определениях синтаксисов в <a href="#section-3.3">разделе 3.3</a>.</p>
+
+<pre class="list">
+      PrintableCharacter = ALPHA / DIGIT / SQUOTE / LPAREN / RPAREN /
+                           PLUS / COMMA / HYPHEN / DOT / EQUALS /
+                           SLASH / COLON / QUESTION / SPACE
+      PrintableString    = 1*PrintableCharacter
+      IA5String          = *(%x00-7F)
+      SLASH              = %x2F  ; прямой слеш ("/")
+      COLON              = %x3A  ; двоеточие (":")
+      QUESTION           = %x3F  ; знак вопроса ("?")
+</pre>
+
+<p>Правила &lt;ALPHA&gt;, &lt;DIGIT&gt;, &lt;SQUOTE&gt;, &lt;LPAREN&gt;, &lt;RPAREN&gt;, &lt;PLUS&gt;, &lt;COMMA&gt;, &lt;HYPHEN&gt;, &lt;DOT&gt;, &lt;EQUALS&gt; и &lt;SPACE&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<h3><a name="section-3.3">3.3</a>. Определения синтаксисов</h3>
+
+<h4><a name="section-3.3.1">3.3.1</a>. Attribute Type Description</h4>
+
+<p>Значением синтаксиса Attribute Type Description является определение типа атрибута. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;AttributeTypeDescription&gt; в <a href="rfc4512.html#section-4.1.2" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Например, следующее определение атрибута createTimestamp из <a href="rfc4512.html#section-3.4.2" title="LDAP: Информационные модели каталога">RFC 4512</a> представляет собой значение синтаксиса Attribute Type Description (примечание: переносы строк добавлены для лучшей читабельности; при передаче в протоколе они не включаются в значение):</p>
+
+<pre class="list">
+         ( 2.5.18.1 NAME 'createTimestamp'
+            EQUALITY generalizedTimeMatch
+            ORDERING generalizedTimeOrderingMatch
+            SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+            SINGLE-VALUE NO-USER-MODIFICATION
+            USAGE directoryOperation )
+</pre>
+
+<p>Определение LDAP для синтаксиса Attribute Type Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.3 DESC 'Attribute Type Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу AttributeTypeDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.2">3.3.2</a>. Bit String</h4>
+
+<p>Значением синтаксиса Bit String является последовательность двоичных цифр. Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      BitString    = SQUOTE *binary-digit SQUOTE "B"
+      binary-digit = "0" / "1"
+</pre>
+
+<p>Правило &lt;SQUOTE&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         '0101111101'B
+</pre>
+
+<p>Определение LDAP для синтаксиса Bit String:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.6 DESC 'Bit String' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу BIT STRING из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.3">3.3.3</a>. Boolean</h4>
+
+<p>Значением синтаксиса Boolean является одно из логических значений, истина или ложь. Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      Boolean = "TRUE" / "FALSE"
+</pre>
+
+<p>Определение LDAP для синтаксиса Boolean:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.7 DESC 'Boolean' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу BOOLEAN из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.4">3.3.4</a>. Country String</h4>
+
+<p>Значением синтаксиса Country String является один из двухсимвольных кодов представления страны из ISO 3166 [<a href="#ref-ISO3166" title="Codes for the representation of names of countries">ISO3166</a>]. Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      CountryString  = 2(PrintableCharacter)
+</pre>
+
+<p>Правило &lt;PrintableCharacter&gt; определено в <a href="#section-3.2">разделе 3.2</a>.</p>
+
+<p>Примеры:</p>
+
+<pre class="list">
+         US
+         AU
+</pre>
+
+<p>Определение LDAP для синтаксиса Country String:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.11 DESC 'Country String' )
+</pre>
+
+<p>Данный синтаксис соответствует следующему ASN.1-типу из [<a href="#ref-X.520">X.520</a>]:</p>
+
+<pre class="list">
+      PrintableString (SIZE (2)) -- только коды ISO 3166
+</pre>
+
+<h4><a name="section-3.3.5">3.3.5</a>. Delivery Method</h4>
+
+<p>Значением синтаксиса Delivery Method является последовательность пунктов, указывающих, в порядке предпочтения, сервис (сервисы), с помощью которых сущность желает и/или может получать сообщения. Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      DeliveryMethod = pdm *( WSP DOLLAR WSP pdm )
+
+      pdm = "any" / "mhs" / "physical" / "telex" / "teletex" /
+            "g3fax" / "g4fax" / "ia5" / "videotex" / "telephone"
+</pre>
+
+<p>Правила &lt;WSP&gt; и &lt;DOLLAR&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         telephone $ videotex
+</pre>
+
+<p>Определение LDAP для синтаксиса Delivery Method:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.14 DESC 'Delivery Method' )
+</pre>
+
+<p>Данный синтаксис соответствует следующему ASN.1-типу из [<a href="#ref-X.520">X.520</a>]:</p>
+
+<pre class="list">
+      SEQUENCE OF INTEGER {
+          any-delivery-method     (0),
+          mhs-delivery            (1),
+          physical-delivery       (2),
+          telex-delivery          (3),
+          teletex-delivery        (4),
+          g3-facsimile-delivery   (5),
+          g4-facsimile-delivery   (6),
+          ia5-terminal-delivery   (7),
+          videotex-delivery       (8),
+          telephone-delivery      (9) }
+</pre>
+
+<h4><a name="section-3.3.6">3.3.6</a>. Directory String</h4>
+
+<p>Значением синтаксиса Directory String является строка из одного или нескольких произвольных символов из набора Universal Character Set (UCS) [<a href="#ref-UCS">UCS</a>]. Строки нулевой длины не допускаются. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой строку символов, закодированных в UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. Такая кодировка соответствует следующей ABNF:</p>
+
+<pre class="list">
+      DirectoryString = 1*UTF8
+</pre>
+
+<p>Правило &lt;UTF8&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         This is a value of Directory String containing #!%#@.
+</pre>
+
+<p>Серверы и клиенты должны (MUST) быть готовы получать произвольные кодовые элементы UCS, в том числе кодовые элементы за пределами диапазона печатных символов ASCII, а также кодовые элементы, которые в настоящее время не относятся к какому-либо символу.</p>
+
+<p>Определения типов атрибутов, использующие синтаксис <a href="#section-3.3.6">Directory String</a>, не должны накладывать дополнительных ограничений на формат значений <a href="#section-3.3.6">Directory String</a>, например, путём выдвижения требований, чтобы строка символов удовлетворяла определённому шаблону, описанному с помощью ABNF. В этих случаях должен определяться новый синтаксис.</p>
+
+<p>Определение LDAP для синтаксиса Directory String:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.15 DESC 'Directory String' )
+</pre>
+
+<p>Данный синтаксис соответствует параметризованному ASN.1-типу DirectoryString из [<a href="#ref-X.520">X.520</a>].</p>
+
+<p>ASN.1-тип DirectoryString позволяет выбирать между ASN.1-типами TeletexString, PrintableString, или UniversalString из [<a href="#ref-ASN.1">ASN.1</a>]. Однако имейте ввиду, что выбранная альтернатива не указывается в специфичной для LDAP кодировке значения Directory String.</p>
+
+<p>Реализации, выполняющие конвертирование значений Directory String из специфичной для LDAP кодировки в кодировку BER, используемую в X.500, должны выбирать ту альтернативу, которая допускает использование конкретных символов в итоговой строке, а также должны осуществлять конвертирование символов из кодировки UTF-8 в кодировку символов выбранной альтернативы. При конвертировании значений Directory String из кодировки BER в специфичную для LDAP кодировку, символы должны быть сконвертированы из кодировки символов выбранной альтернативы в кодировку UTF-8. Эти преобразования следует (SHOULD) выполнять в соответствии с <a href="rfc4518.html#section-2.1" title="LDAP: Подготовка интернационализированных строк">шагом транскодирования (Transcode)</a> алгоритмов подготовки строк для LDAP [<a href="rfc4518.html#section-2.1" title="LDAP: Подготовка интернационализированных строк">RFC4518</a>].</p>
+
+<h4><a name="section-3.3.7">3.3.7</a>. DIT Content Rule Description</h4>
+
+<p>Значением синтаксиса DIT Content Rule Description является определение правила содержимого DIT (Directory Information Tree). Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;DITContentRuleDescription&gt; в <a href="rfc4512.html#section-4.1.6" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         ( 2.5.6.4 DESC 'content rule for organization'
+            NOT ( x121Address $ telexNumber ) )
+</pre>
+
+<p>Примечание: перенос строки добавлен для лучшей читабельности; он не является частью значения.</p>
+
+<p>Определение LDAP для синтаксиса DIT Content Rule Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.16
+         DESC 'DIT Content Rule Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу DITContentRuleDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.8">3.3.8</a>. DIT Structure Rule Description</h4>
+
+<p>Значением синтаксиса DIT Structure Rule Description  является определение правила структуры DIT. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;DITStructureRuleDescription&gt; в <a href="rfc4512.html#section-4.1.7" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         ( 2 DESC 'organization structure rule' FORM 2.5.15.3 )
+</pre>
+
+<p>Определение LDAP для синтаксиса DIT Structure Rule Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.17
+         DESC 'DIT Structure Rule Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу DITStructureRuleDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.9">3.3.9</a>. DN</h4>
+
+<p>Значением синтаксиса DN является (предполагаемое) уникальное имя (DN) записи [<a href="rfc4512.html#section-2.3.2" title="LDAP: Информационные модели каталога">RFC4512</a>]. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;distinguishedName&gt; из строкового представления уникальных имён [<a href="rfc4514.html#section-3" title="LDAP: Строковое представление уникальных имён">RFC4514</a>].</p>
+
+<p>Примеры (из <a href="rfc4514.html#section-4" title="LDAP: Строковое представление уникальных имён">RFC 4514</a>):</p>
+
+<pre class="list">
+         UID=jsmith,DC=example,DC=net
+         OU=Sales+CN=J. Smith,DC=example,DC=net
+         CN=John Smith\, III,DC=example,DC=net
+         CN=Before\0dAfter,DC=example,DC=net
+         1.3.6.1.4.1.1466.0=#04024869,DC=example,DC=com
+         CN=Lu\C4\8Di\C4\87
+</pre>
+
+<p>Определение LDAP для синтаксиса DN:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.12 DESC 'DN' )
+</pre>
+
+<p>Синтаксис DN соответствует ASN.1-типу DistinguishedName из [<a href="#ref-X.501">X.501</a>]. Обратите внимание, что уникальные имена, закодированные в BER (как в X.500), при их перекодировании в специфичную для LDAP кодировку не обязательно обратимы в оригинальную BER-кодировку, поскольку выбранный тип строки в каком-либо компоненте DirectoryString уникального имени не указывается в специфичной для LDAP кодировке этого уникального имени (смотрите <a href="#section-3.3.6">раздел 3.3.6</a>).</p>
+
+<h4><a name="section-3.3.10">3.3.10</a>. Enhanced Guide</h4>
+
+<p>Значение синтаксиса Enhanced Guide представляет собой предполагаемый критерий, состоящий из комбинации типов атрибутов и операторов фильтрации, который должен использоваться при построении фильтров для поиска записей конкретных объектных классов. Синтаксис Enhanced Guide усовершенствует синтаксис <a href="#section-3.3.14">Guide</a>, позволяя указывать рекомендуемую глубину поиска.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      EnhancedGuide = object-class SHARP WSP criteria WSP
+                         SHARP WSP subset
+      object-class  = WSP oid WSP
+      subset        = "baseobject" / "oneLevel" / "wholeSubtree"
+
+      criteria   = and-term *( BAR and-term )
+      and-term   = term *( AMPERSAND term )
+      term       = EXCLAIM term /
+                   attributetype DOLLAR match-type /
+                   LPAREN criteria RPAREN /
+                   true /
+                   false
+      match-type = "EQ" / "SUBSTR" / "GE" / "LE" / "APPROX"
+      true       = "?true"
+      false      = "?false"
+      BAR        = %x7C  ; вертикальная черта ("|")
+      AMPERSAND  = %x26  ; амперсанд ("&amp;")
+      EXCLAIM    = %x21  ; восклицательный знак ("!")
+</pre>
+
+<p>Правила &lt;SHARP&gt;, &lt;WSP&gt;, &lt;oid&gt;, &lt;LPAREN&gt;, &lt;RPAREN&gt;, &lt;attributetype&gt; и &lt;DOLLAR&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Enhanced Guide:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.21 DESC 'Enhanced Guide' )
+</pre>
+
+<p>Пример:</p>
+
+<pre class="list">
+         person#(sn$EQ)#oneLevel
+</pre>
+
+<p>Синтаксис Enhanced Guide соответствует ASN.1-типу EnhancedGuide из [<a href="#ref-X.520">X.520</a>]. Тип EnhancedGuide ссылается на ASN.1-тип Criteria, также из [<a href="#ref-X.520">X.520</a>]. Указанное выше правило &lt;true&gt; представляет собой пустое выражение "and" в значении типа Criteria. Указанное выше правило &lt;false&gt;  представляет собой пустое выражение "or" в значении типа Criteria.</p>
+
+<h4><a name="section-3.3.11">3.3.11</a>. Facsimile Telephone Number</h4>
+
+<p>Значением синтаксиса Facsimile Telephone Number является номер факсимильного аппарата в коммутируемой телефонной сети общего пользования. Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      fax-number       = telephone-number *( DOLLAR fax-parameter )
+      telephone-number = PrintableString
+      fax-parameter    = "twoDimensional" /
+                         "fineResolution" /
+                         "unlimitedLength" /
+                         "b4Length" /
+                         "a3Width" /
+                         "b4Width" /
+                         "uncompressed"
+</pre>
+
+<p>&lt;telephone-number&gt; представляет собой строку печатных символов, соответствующую международно-согласованному формату представления международных телефонных номеров [<a href="#ref-E.123" title=" ITU-T Recommendation E.123">E.123</a>]. Правило &lt;PrintableString&gt; определено в <a href="#section-3.2">разделе 3.2</a>. Правило &lt;DOLLAR&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Facsimile Telephone Number:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.22 DESC 'Facsimile Telephone Number')
+</pre>
+
+<p>Синтаксис Facsimile Telephone Number соответствует ASN.1-типу FacsimileTelephoneNumber из [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.12">3.3.12</a>. Fax</h4>
+
+<p>Значением синтаксиса Fax является изображение, создаваемое с помощью факсимильного процесса Group 3 [<a href="#ref-FAX" title="ITU-T Recommendation T.4">FAX</a>] с целью получения дубликата объекта, например, листа бумаги с записями. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой строку октетов для факсимильного изображения Group 3, как определено в [<a href="#ref-FAX" title="ITU-T Recommendation T.4">FAX</a>].</p>
+
+<p>Определение LDAP для синтаксиса Fax:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.23 DESC 'Fax' )
+</pre>
+
+<p>ASN.1-тип, соответствующий синтаксису Fax, определяется следующим образом (в конструкции предполагаются явные теги EXPLICIT TAGS):</p>
+
+<pre class="list">
+      Fax ::= CHOICE {
+        g3-facsimile  [3] G3FacsimileBodyPart
+      }
+</pre>
+
+<p>ASN.1-тип G3FacsimileBodyPart определён в [<a href="#ref-X.420">X.420</a>].</p>
+
+<h4><a name="section-3.3.13">3.3.13</a>. Generalized Time</h4>
+
+<p>Значением синтаксиса Generalized Time является строка символов, представляющая собой дату и время. Специфичная для LDAP кодировка значения этого синтаксиса&thinsp;&mdash;&thinsp;это ограниченное подмножество формата, определённого в [<a href="#ref-ISO8601" title="Data elements and interchange formats - Information interchange - Representation of dates and times">ISO8601</a>]. Она описывается следующей ABNF:</p>
+
+<pre class="list">
+      GeneralizedTime = century year month day hour
+                           [ minute [ second / leap-second ] ]
+                           [ fraction ]
+                           g-time-zone
+
+      century = 2(%x30-39) ; от "00" до "99"
+      year    = 2(%x30-39) ; от "00" до "99"
+      month   =   ( %x30 %x31-39 ) ; от "01" (January) до "09"
+                / ( %x31 %x30-32 ) ; от "10" до "12"
+      day     =   ( %x30 %x31-39 )    ; от "01" до "09"
+                / ( %x31-32 %x30-39 ) ; от "10" до "29"
+                / ( %x33 %x30-31 )    ; от "30" до "31"
+      hour    = ( %x30-31 %x30-39 ) / ( %x32 %x30-33 ) ; от "00" до "23"
+      minute  = %x30-35 %x30-39                        ; от "00" до "59"
+
+      second      = ( %x30-35 %x30-39 ) ; от "00" до "59"
+      leap-second = ( %x36 %x30 )       ; "60"
+
+      fraction        = ( DOT / COMMA ) 1*(%x30-39)
+      g-time-zone     = %x5A  ; "Z"
+                        / g-differential
+      g-differential  = ( MINUS / PLUS ) hour [ minute ]
+      MINUS           = %x2D  ; знак "минус" ("-")
+</pre>
+
+<p>Правила &lt;DOT&gt;, &lt;COMMA&gt; и &lt;PLUS&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Приведённой выше ABNF могут соответствовать строки символов, которые не являются правильной датой (по Григорианскому календарю) и/или правильным временем (например, February 31, 1994). Такие строки символов следует (SHOULD) считать неверными для данного синтаксиса.</p>
+
+<p>Значение времени представляет собой всемирное координированное время (эквивалент среднего времени по Гринвичу), если используется форма "Z" правила &lt;g-time-zone&gt;; в противном случае, это значение представляет собой локальное время в часовом поясе, который указывается правилом &lt;g-differential&gt;.  В последнем случае всемирное координированное время может быть вычислено путем вычитания дифференциала из локального времени. Использование формы "Z" правила &lt;g-time-zone&gt; следует (SHOULD) считать более предпочтительным, чем использование правила &lt;g-differential&gt;.</p>
+
+<p>Если поле &lt;minute&gt; опущено, то поле &lt;fraction&gt; представляет собой долю часа; если поле &lt;minute&gt; присутствует, а поля &lt;second&gt; и &lt;leap-second&gt; опущены, то поле &lt;fraction&gt;  представляет собой долю минуты; в противном случае, поле &lt;fraction&gt;  представляет собой долю секунды.</p>
+
+<p>Примеры:</p>
+<pre class="list">
+         199412161032Z
+         199412160532-0500
+</pre>
+
+<p>В обоих примерах значения представляют собой одно и то же всемирное координированное время: 10:32 AM, December 16, 1994.</p>
+
+<p>Определение LDAP для синтаксиса Generalized Time:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.24 DESC 'Generalized Time' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу GeneralizedTime из [<a href="#ref-ASN.1">ASN.1</a>] с тем ограничением, что локальное время без дифференциала использовать не следует (SHALL NOT).</p>
+
+<h4><a name="section-3.3.14">3.3.14</a>. Guide</h4>
+
+<p>Значение синтаксиса Guide представляет собой предполагаемый критерий, состоящий из комбинации типов атрибутов и операторов фильтрации, который должен использоваться при построении фильтров для поиска записей конкретных объектных классов. Синтаксис Guide является устаревшим и не должен использоваться для определения новых типов атрибутов.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      Guide = [ object-class SHARP ] criteria
+</pre>
+
+<p>Правила &lt;object-class&gt; и &lt;criteria&gt; определены в <a href="#section-3.3.10">разделе 3.3.10</a>. Правило &lt;SHARP&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Guide:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.25 DESC 'Guide' )
+</pre>
+
+<p>Синтаксис Guide соответствует ASN.1-типу Guide из [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.15">3.3.15</a>. IA5 String</h4>
+
+<p>Значением синтаксиса IA5 String является строка из нуля, одного или более символов из International Alphabet 5 (IA5) [<a href="#ref-T.50" title="ITU-T Recommendation T.50">T.50</a>], международной версии набора символов ASCII. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой неизменённую строку символов, удовлетворяющую правилу &lt;IA5String&gt; из <a href="#section-3.2">раздела 3.2</a>.</p>
+
+<p>Определение LDAP для синтаксиса IA5 String:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.26 DESC 'IA5 String' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу IA5String из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.16">3.3.16</a>. Integer</h4>
+
+<p>Значением синтаксиса Integer является целое число неограниченной величины. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой строковое представление числа, состоящее из необязательного знака и символов десятичных цифр (например, число 1321 будет представлено строкой символов "1321"). Такая кодировка определяется следующей ABNF:</p>
+
+<pre class="list">
+      Integer = ( HYPHEN LDIGIT *DIGIT ) / number
+</pre>
+
+<p>Правила &lt;HYPHEN&gt;, &lt;LDIGIT&gt;, &lt;DIGIT&gt; и &lt;number&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Integer:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.27 DESC 'INTEGER' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу INTEGER из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.17">3.3.17</a>. JPEG</h4>
+
+<p>Значением синтаксиса JPEG является изображение в формате JPEG File Interchange Format (JFIF), как описано в [<a href="#ref-JPEG" title="September 1">JPEG</a>]. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой последовательность октетов изображения в кодировке JFIF.</p>
+
+<p>Определение LDAP для синтаксиса JPEG:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.28 DESC 'JPEG' )
+</pre>
+
+<p>Синтаксис JPEG соответствует следующему ASN.1-типу:</p>
+
+<pre class="list">
+      JPEG ::= OCTET STRING (CONSTRAINED BY
+           { -- октеты содержимого представляют собой изображение в формате --
+                     -- JPEG File Interchange Format -- })
+</pre>
+
+<h4><a name="section-3.3.18">3.3.18</a>. LDAP Syntax Description</h4>
+
+<p>Значением синтаксиса LDAP Syntax Description является описание синтаксиса LDAP. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;SyntaxDescription&gt; в <a href="rfc4512.html#section-4.1.5" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса LDAP Syntax Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.54 DESC 'LDAP Syntax Description' )
+</pre>
+
+<p>Данное определение LDAP для синтаксиса LDAP Syntax Description само по себе является правильным значением синтаксиса LDAP Syntax Description.</p>
+
+<p>ASN.1-тип, соответствующий синтаксису LDAP Syntax Description, определяется следующим образом (в конструкции предполагаются явные теги EXPLICIT TAGS):</p>
+
+<pre class="list">
+      LDAPSyntaxDescription ::= SEQUENCE {
+          identifier      OBJECT IDENTIFIER,
+          description     DirectoryString { ub-schema } OPTIONAL }
+</pre>
+
+<p>Параметризованный ASN.1-тип DirectoryString определён в [<a href="#ref-X.520">X.520</a>].</p>
+
+<p>Значение ub-schema (целое число) определяется при реализации. Ненормативное определение есть в [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.19">3.3.19</a>. Matching Rule Description</h4>
+
+<p>Значением синтаксиса Matching Rule Description является определение правила соответствия. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;MatchingRuleDescription&gt; в <a href="rfc4512.html#section-4.1.3" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         ( 2.5.13.2 NAME 'caseIgnoreMatch'
+            SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Примечание: перенос строки добавлен для лучшей читабельности; он не является частью синтаксиса.</p>
+
+<p>Определение LDAP для синтаксиса Matching Rule Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.30 DESC 'Matching Rule Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу MatchingRuleDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.20">3.3.20</a>. Matching Rule Use Description</h4>
+
+<p>В значении синтаксиса Matching Rule Use Description указываются типы атрибутов, к которым может применяться правило соответствия в поисковом фильтре extensibleMatch [<a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">RFC4511</a>]. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;MatchingRuleUseDescription&gt; в <a href="rfc4512.html#section-4.1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+<pre class="list">
+         ( 2.5.13.16 APPLIES ( givenName $ surname ) )
+</pre>
+
+<p>Определение LDAP для синтаксиса Matching Rule Use Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.31
+         DESC 'Matching Rule Use Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу MatchingRuleUseDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.21">3.3.21</a>. Name and Optional UID</h4>
+
+<p>Значением синтаксиса Name and Optional UID является уникальное имя [<a href="rfc4512.html#section-2.3.2" title="LDAP: Информационные модели каталога">RFC4512</a>] сущности, которое может опционально сопровождаться уникальным идентификатором, служащим для того, чтобы отличить данную сущность от других с идентичным уникальным именем.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      NameAndOptionalUID = distinguishedName [ SHARP BitString ]
+</pre>
+
+<p>Правило &lt;BitString&gt; определено в <a href="#section-3.3.2">разделе 3.3.2</a>. Правило &lt;distinguishedName&gt; определяется в <a href="rfc4514.html#section-3" title="LDAP: String Representation of Distinguished Names">RFC 4514</a>. Правило &lt;SHARP&gt; определяется в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Обратите внимание, что символ '#' также может встречаться в строковом представлении уникального имени, при этом, когда &lt;distinguishedName&gt; кодируется в &lt;NameAndOptionalUID&gt;, дополнительного экранирования данного символа не осуществляется.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB#'0101'B
+</pre>
+
+<p>Определение LDAP для синтаксиса Name and Optional UID:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.34 DESC 'Name And Optional UID' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу NameAndOptionalUID из [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.22">3.3.22</a>. Name Form Description</h4>
+
+<p>Значением синтаксиса Name Form Description является определение формы имени, регулирующей то, как запись может именоваться.  Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом  &lt;NameFormDescription&gt; в <a href="rfc4512.html#section-4.1.7.2" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         ( 2.5.15.3 NAME 'orgNameForm' OC organization MUST o )
+</pre>
+
+<p>Определение LDAP для синтаксиса Name Form Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.35 DESC 'Name Form Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу NameFormDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.23">3.3.23</a>. Numeric String</h4>
+
+<p>Значением синтаксиса Numeric String является последовательность из одной или нескольких цифр и пробелов. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой оставленную без изменений строку символов, удовлетворяющую следующей ABNF:</p>
+
+<pre class="list">
+      NumericString = 1*(DIGIT / SPACE)
+</pre>
+
+<p>Правила &lt;DIGIT&gt; и &lt;SPACE&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         15 079 672 281
+</pre>
+
+<p>Определение LDAP для синтаксиса Numeric String:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.36 DESC 'Numeric String' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу NumericString из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.24">3.3.24</a>. Object Class Description</h4>
+
+<p>Значением синтаксиса Object Class Description является определение объектного класса. Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;ObjectClassDescription&gt; в <a href="rfc4512.html#section-4.1.1" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         ( 2.5.6.2 NAME 'country' SUP top STRUCTURAL MUST c
+            MAY ( searchGuide $ description ) )
+</pre>
+
+<p>Примечание: перенос строки добавлен для лучшей читабельности; он не является частью синтаксиса.</p>
+
+<p>Определение LDAP для синтаксиса Object Class Description:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.37 DESC 'Object Class Description' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу ObjectClassDescription из [<a href="#ref-X.501">X.501</a>].</p>
+
+<h4><a name="section-3.3.25">3.3.25</a>. Octet String</h4>
+
+<p>Значением синтаксиса Octet String является последовательность из нуля, одного или более произвольных октетов. Специфичная для LDAP кодировка значения этого синтаксиса представляет собой оставленную без изменений последовательность октетов, удовлетворяющую следующей ABNF:</p>
+
+<pre class="list">
+      OctetString = *OCTET
+</pre>
+
+<p>Правило &lt;OCTET&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>. В общем случае значения этого синтаксиса не предназначены для чтения человеком.</p>
+
+<p>Определение LDAP для синтаксиса Octet String:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.40 DESC 'Octet String' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу OCTET STRING из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.26">3.3.26</a>. OID</h4>
+
+<p>Значением синтаксиса OID является идентификатор объекта: последовательность из двух или более положительных целых чисел, уникально идентифицирующая некоторый объект или элемент спецификации. Многие используемые в LDAP идентификаторы объектов также имеют зарегистрированные IANA имена [<a href="http://tools.ietf.org/html/rfc4520" title="Internet Assigned Numbers Authority (IANA) Considerations for LDAP">RFC4520</a>].</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется правилом &lt;oid&gt; в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Примеры:</p>
+
+<pre class="list">
+         1.2.3.4
+         cn
+</pre>
+<p>Определение LDAP для синтаксиса OID:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.38 DESC 'OID' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу OBJECT IDENTIFIER из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.27">3.3.27</a>. Other Mailbox</h4>
+
+<p>Значение синтаксиса Other Mailbox идентифицирует электронный почтовый ящик в почтовой системе с определённым именем. Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      OtherMailbox = mailbox-type DOLLAR mailbox
+      mailbox-type = PrintableString
+      mailbox      = IA5String
+</pre>
+
+<p>Правило &lt;mailbox-type&gt; представляет собой тип почтовой системы, в которой находится данный почтовый ящик (например, "MCIMail"), а &lt;mailbox&gt;&thinsp;&mdash;&thinsp;это собственно почтовый ящик в почтовой системе, описанной в правиле &lt;mailbox-type&gt;. Правила &lt;PrintableString&gt; и &lt;IA5String&gt; определены в <a href="#section-3.2">разделе 3.2</a>. Правило &lt;DOLLAR&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Other Mailbox:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.39 DESC 'Other Mailbox' )
+</pre>
+
+<p>ASN.1-тип, соответствующий синтаксису Other Mailbox, определяется следующим образом (в конструкции предполагаются явные теги EXPLICIT TAGS):</p>
+
+<pre class="list">
+      OtherMailbox ::= SEQUENCE {
+          mailboxType  PrintableString,
+          mailbox      IA5String
+      }
+</pre>
+
+<h4><a name="section-3.3.28">3.3.28</a>. Postal Address</h4>
+
+<p>Значением синтаксиса Postal Address является последовательность строк, состоящих из одного или более произвольных символов UCS, формирующих адрес в физической почтовой системе.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      PostalAddress = line *( DOLLAR line )
+      line          = 1*line-char
+      line-char     = %x00-23
+                      / (%x5C "24")  ; экранированный символ "$"
+                      / %x25-5B
+                      / (%x5C "5C")  ; экранированный символ "\"
+                      / %x5D-7F
+                      / UTFMB
+</pre>
+
+<p>Каждая строка символов (то есть, &lt;line&gt;) значения почтового адреса кодируется как строка UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>], за исключением того, что символы "\" и "$", если таковые присутствуют в этой строке, экранируются символом "\", за которым следует код данного символа в виде двух шестнадцатеричных цифр. Правила &lt;DOLLAR&gt; и &lt;UTFMB&gt; определены в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Многие серверы ограничивают размер почтового адреса не более чем шестью строками, каждая из которых может быть не более тридцати символов.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         1234 Main St.$Anytown, CA 12345$USA
+         \241,000,000 Sweepstakes$PO Box 1000000$Anytown, CA 12345$USA
+</pre>
+
+<p>Определение LDAP для синтаксиса Postal Address:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.41 DESC 'Postal Address' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу PostalAddress из [<a href="#ref-X.520">X.520</a>]:</p>
+
+<pre class="list">
+      PostalAddress ::= SEQUENCE SIZE(1..ub-postal-line) OF
+          DirectoryString { ub-postal-string }
+</pre>
+
+<p>Значения (целочисленные) элементов ub-postal-line и ub-postal-string определяются при реализации. Ненормативные определения даны в стандарте [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.29">3.3.29</a>. Printable String</h4>
+
+<p>Значением синтаксиса Printable String является строка из одной или более букв латинского алфавита, цифр и некоторых символов пунктуации, как определено правилом &lt;PrintableCharacter&gt; в <a href="#section-3.2">разделе 3.2</a>.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса представляет собой оставленную без изменений строку символов, удовлетворяющих правилу &lt;PrintableString&gt; в <a href="#section-3.2">разделе 3.2</a>.</p>
+
+<p>Пример:</p>
+
+<pre class="list">
+         This is a PrintableString.
+</pre>
+
+<p>Определение LDAP для синтаксиса PrintableString:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.44 DESC 'Printable String' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу PrintableString из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h4><a name="section-3.3.30">3.3.30</a>. Substring Assertion</h4>
+
+<p>Значением синтаксиса Substring Assertion является последовательность из нуля, одной или более символьных подстрок, используемых в качестве аргумента в расширенном сравнении (extensible match) подстрок со значениями атрибутов, имеющих синтаксис символьной строки; то есть в качестве matchValue в конструкции MatchingRuleAssertion [<a href="rfc4511.html#section-4.5.1" title="LDAP: Определение протокола">RFC4511</a>]. Каждая подстрока представляет собой строку из одного или более произвольных символов из универсального набора символов (Universal Character Set, UCS) [<a href="#ref-UCS">UCS</a>]. Подстроки нулевой длины не допускаются.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      SubstringAssertion = [ initial ] any [ final ]
+
+      initial  = substring
+      any      = ASTERISK *(substring ASTERISK)
+      final    = substring
+      ASTERISK = %x2A  ; символ звёздочки ("*")
+
+      substring           = 1*substring-character
+      substring-character = %x00-29
+                            / (%x5C "2A")  ; экранированный символ "*"
+                            / %x2B-5B
+                            / (%x5C "5C")  ; экранированный символ "\"
+                            / %x5D-7F
+                            / UTFMB
+</pre>
+
+<p>Каждая подстрока &lt;substring&gt; из значения Substring Assertion кодируется как строка UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>], за исключением того, что символы "\" и "*", если таковые присутствуют в этой строке, экранируются символом "\", за которым следует код данного символа в виде двух шестнадцатеричных цифр.</p>
+
+<p>Синтаксис Substring Assertion используется только в качестве синтаксиса значений утверждений в поисковых фильтрах <a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">extensible match</a>. Он не используется в качестве синтаксиса атрибутов или в фильтрах SubstringFilter [<a href="rfc4511.html#section-4.5.1.7.2" title="LDAP: Определение протокола">RFC4511</a>].</p>
+
+<p>Определение LDAP для синтаксиса Substring Assertion:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.58 DESC 'Substring Assertion' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу SubstringAssertion из [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.31">3.3.31</a>. Telephone Number</h4>
+
+<p>Значением синтаксиса Telephone Number является строка пригодных для печати символов, удовлетворяющих международно-согласованному формату для представления международных телефонных номеров [<a href="#ref-E.123" title=" ITU-T Recommendation E.123">E.123</a>].</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса представляет собой оставленную без изменений строку символов, удовлетворяющих правилу &lt;PrintableString&gt; в <a href="#section-3.2">разделе 3.2</a>.</p>
+
+<p>Примеры:</p>
+
+<pre class="list">
+         +1 512 315 0280
+         +1-512-315-0280
+         +61 3 9896 7830
+</pre>
+
+<p>Определение LDAP для синтаксиса Telephone Number:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.50 DESC 'Telephone Number' )
+</pre>
+
+<p>Синтаксис Telephone Number соответствует следующему ASN.1-типу из [<a href="#ref-X.520">X.520</a>]:</p>
+
+<pre class="list">
+      PrintableString (SIZE(1..ub-telephone-number))
+</pre>
+
+<p>Значение (целочисленное) элемента ub-telephone-number определяется при реализации. Ненормативное определение дано в стандарте [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.32">3.3.32</a>. Teletex Terminal Identifier</h4>
+
+<p>Значение данного синтаксиса определяет идентификатор и (опционально) параметры терминала телетекста.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      teletex-id = ttx-term *(DOLLAR ttx-param)
+      ttx-term   = PrintableString          ; terminal identifier
+      ttx-param  = ttx-key COLON ttx-value  ; parameter
+      ttx-key    = "graphic" / "control" / "misc" / "page" / "private"
+      ttx-value  = *ttx-value-octet
+
+      ttx-value-octet = %x00-23
+                        / (%x5C "24")  ; экранированный символ "$"
+                        / %x25-5B
+                        / (%x5C "5C")  ; экранированный символ "\"
+                        / %x5D-FF
+</pre>
+
+<p>Правила &lt;PrintableString&gt; и &lt;COLON&gt; определены в <a href="#section-3.2">разделе 3.2</a>. Правило &lt;DOLLAR&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Teletex Terminal Identifier:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.51
+         DESC 'Teletex Terminal Identifier' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу TeletexTerminalIdentifier из [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.33">3.3.33</a>. Telex Number</h4>
+
+<p>Значение синтаксиса Telex Number определяет номер телекса, код страны и код автоответа терминала телекса.</p>
+
+<p>Специфичная для LDAP кодировка значения этого синтаксиса определяется следующей ABNF:</p>
+
+<pre class="list">
+      telex-number  = actual-number DOLLAR country-code
+                         DOLLAR answerback
+      actual-number = PrintableString
+      country-code  = PrintableString
+      answerback    = PrintableString
+</pre>
+
+<p>Правило &lt;PrintableString&gt; определено в <a href="#section-3.2">разделе 3.2</a>. Правило &lt;DOLLAR&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Определение LDAP для синтаксиса Telex Number:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.52 DESC 'Telex Number' )
+</pre>
+
+<p>Данный синтаксис соответствует ASN.1-типу TelexNumber из [<a href="#ref-X.520">X.520</a>].</p>
+
+<h4><a name="section-3.3.34">3.3.34</a>. UTC Time</h4>
+
+<p>Значением синтаксиса UTC Time является строка символов, представляющая дату и время с точностью до одной минуты или одной секунды. Год задаётся двумя цифрами. Специфичная для LDAP кодировка значения этого синтаксиса следует определённому в [<a href="#ref-ASN.1">ASN.1</a>] формату для типа UTCTime и описывается следующей ABNF:</p>
+
+<pre class="list">
+      UTCTime         = year month day hour minute [ second ]
+                           [ u-time-zone ]
+      u-time-zone     = %x5A  ; "Z"
+                        / u-differential
+      u-differential  = ( MINUS / PLUS ) hour minute
+</pre>
+
+<p>Правила &lt;year&gt;, &lt;month&gt;, &lt;day&gt;, &lt;hour&gt;, &lt;minute&gt;, &lt;second&gt; и &lt;MINUS&gt; определены в <a href="#section-3.3.13">разделе 3.3.13</a>. Правило &lt;PLUS&gt; определено в <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>.</p>
+
+<p>Приведённой выше ABNF могут соответствовать строки символов, которые не являются правильной датой (по Григорианскому календарю) и/или правильным временем. Такие строки символов следует (SHOULD) считать неверными для данного синтаксиса.</p>
+
+<p>Значение времени представляет собой всемирное координированное время (эквивалент среднего времени по Гринвичу), если используется форма "Z" правила &lt;u-time-zone&gt;; в противном случае, это значение представляет собой локальное время. В последнем случае, если приведено значение дифференциала, определяемое правилом &lt;u-differential&gt;, всемирное координированное время может быть вычислено путём вычитания этого дифференциала из локального времени. Значение, определяемое правилом &lt;u-time-zone&gt;,  должно (SHOULD) присутствовать в значениях времени. Использование формы "Z" правила &lt;u-time-zone&gt; следует (SHOULD) считать более предпочтительным, чем использование правила &lt;u-differential&gt;.</p>
+
+<p>Определение LDAP для синтаксиса UTC Time:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.115.121.1.53 DESC 'UTC Time' )
+</pre>
+
+<p>Примечание: Данный синтаксис является устаревшим в пользу синтаксиса <a href="#section-3.3.13">Generalized Time</a>.</p>
+
+<p>Синтаксис UTC Time соответствует ASN.1-типу UTCTime из [<a href="#ref-ASN.1">ASN.1</a>].</p>
+
+<h2><a name="section-4">4</a>. Правила соответствия</h2>
+
+<p>Правила соответствия используются в реализациях каталогов для сравнения значений атрибутов со значениями утверждений при выполнении операций поиска <a href="rfc4511.html#section-4.5" title="LDAP: Определение протокола">Search</a> и сравнения <a href="rfc4511.html#section-4.10" title="LDAP: Определение протокола">Compare</a> [<a href="rfc4511.html#section-4.5" title="LDAP: Определение протокола">RFC4511</a>]. Также они используются при сравнении предполагаемого уникального имени [<a href="rfc4512.html#section-2.3.2" title="LDAP: Информационные модели каталога">RFC4512</a>] с именем записи. При модификации записей правила соответствия используются для идентификации значений, которые необходимо удалить, а также для предотвращения дублирования значений атрибута.</p>
+
+<p>В этом разделе определяются правила соответствия, которые требуются для работы каталога, либо широко используются.</p>
+
+<h3><a name="section-4.1">4.1</a>. Общие замечания</h3>
+
+<p>Правило соответствия применяется к значениям атрибута посредством его использования в конструкциях <a href="rfc4511.html#section-4.1.6" title="LDAP: Определение протокола">AttributeValueAssertion</a> или <a href="rfc4511.html#section-4.5.1" title="LDAP: Определение протокола">MatchingRuleAssertion</a> [<a href="rfc4511.html#section-4.1.6" title="LDAP: Определение протокола">RFC4511</a>]. Условия, при которых конструкции AttributeValueAssertion или MatchingRuleAssertion оцениваются как Undefined, определены в других документах [<a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">RFC4511</a>]. Если утверждение оценено не как Undefined, то результатом этого утверждения является результат применения выбранного правила соответствия. Правило соответствия оценивается как TRUE (и, в некоторых случаях, как Undefined) согласно определению, приведённому в описании этого правила соответствия; в противном случае оно оценивается как FALSE.</p>
+
+<p>Каждое утверждение содержит значение утверждения. В определении каждого правила соответствия указывается синтаксис для этого значения утверждения. Обычно (но не обязательно) синтаксис значения утверждения совпадает с синтаксисом значения атрибута, к которому может быть применено данное правило соответствия. Обратите внимание, значение AssertionValue в фильтрах SubstringFilter [<a href="rfc4511.html#section-4.5.1.7.2" title="LDAP: Определение протокола">RFC4511</a>] соответствует синтаксису утверждения правила соответствия equality, а не правила соответствия substrings для данного типа атрибута. Концептуально, перед применением правила соответствия substrings вся конструкция SubstringFilter преобразуется в значение утверждения этого правила соответствия.</p>
+
+<p>В определении каждого правила соответствия указываются синтаксисы атрибутов, к которым данное правило может быть применено, путём задания условий, которым должны удовлетворять соответствующие ASN.1-типы синтаксисов атрибутов-кандидатов. Эти условия также считаются выполненными, если соответствующий ASN.1-тип является тэгированной или ограниченной производной от ASN.1-типа, явно упоминаемого в описании правила (то есть, тэги и ограничения ASN.1 при проверке возможности применения правила игнорируются), либо если соответствующий ASN.1-тип представляет собой альтернативное ссылочное обозначение для явно указанного типа. В описании каждого правила соответствия перечисляется (в качестве примера применимых синтаксисов атрибутов) полный список синтаксисов, к которым применяется данное правило соответствия (определения этих синтаксисов даны в этом документе). Правило соответствия может применяться к дополнительным синтаксисам, определённым в других документах, если такие синтаксисы удовлетворяют условиям, выдвигаемым к соответствующим ASN.1-типам.</p>
+
+<p>В описании каждого правила соответствия указывается, применяется ли это правило как правило соответствия equality (EQUALITY), правило соответствия ordering (ORDERING) или правило соответствия substrings (SUBSTR) в определении типа атрибута [<a href="rfc4512.html#section-4.1.2" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
+
+<p>Каждое правило соответствия уникально идентифицируется <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">идентификатором объекта</a>. Впоследствии определение правила соответствия не должно изменяться. Если требуется внести изменение в правило соответствия, то вместо этого определяется новое правило соответствия с другим идентификатором объекта.</p>
+
+<p>Серверы могут (MAY) реализовывать правила соответствия <a href="#section-4.2.32">wordMatch</a> и <a href="#section-4.2.21">keywordMatch</a>, остальные правила соответствия из <a href="#section-4.2">раздела 4.2</a> они должны (SHOULD) реализовывать. Серверы могут (MAY) реализовывать дополнительные правила соответствия.</p>
+
+<p>Серверам, реализующим фильтры <a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">extensibleMatch</a>, следует (SHOULD) разрешать использовать в фильтрах <a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">extensibleMatch</a> правила соответствия, перечисленные в <a href="#section-4.2">разделе 4.2</a>, а также следует (SHOULD) разрешать использовать правила соответствия со всеми известными серверу типами атрибута, если синтаксис утверждения правила соответствия совпадает с синтаксисом значения атрибута.</p>
+
+<p>Серверы должны (MUST) публиковать в атрибуте <a href="rfc4512.html#section-4.2.3" title="LDAP: Информационные модели каталога">matchingRules</a> определения правил соответствия, на которые ссылаются значения атрибутов <a href="rfc4512.html#section-4.2.2" title="LDAP: Информационные модели каталога">attributeTypes</a> и <a href="rfc4512.html#section-4.2.4" title="LDAP: Информационные модели каталога">matchingRuleUse</a> в той же записи <a href="rfc4512.html#section-4.2" title="LDAP: Информационные модели каталога">subschema</a> сервера. В атрибуте <a href="rfc4512.html#section-4.2.3" title="LDAP: Информационные модели каталога">matchingRules</a> могут (MAY) быть опубликованы другие правила соответствия, на которые не ссылаются значения указанных выше атрибутов.</p>
+
+<p>Если сервер поддерживает фильтры <a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">extensibleMatch</a>, то он может (MAY) использовать атрибут <a href="rfc4512.html#section-4.2.4" title="LDAP: Информационные модели каталога">matchingRuleUse</a>, чтобы указать на возможность применения (в фильтрах <a href="rfc4511.html#section-4.5.1.7.7" title="LDAP: Определение протокола">extensibleMatch</a>) конкретных правил соответствия к предлагаемым типам атрибутов.</p>
+
+<h3><a name="section-4.2">4.2</a>. Определения правил соответствия</h3>
+
+<p>Предлагаемые строки символов в утверждениях и значениях атрибутов подготавливаются в соответствии с алгоритмами подготовки строк для LDAP [<a href="rfc4518.html" title="LDAP: Подготовка интернационализированных строк">RFC4518</a>] при их сопоставлении со следующими правилами соответствия:</p>
+
+<blockquote>
+      numericStringMatch,<br>
+      numericStringSubstringsMatch,<br>
+      caseExactMatch,<br>
+      caseExactOrderingMatch,<br>
+      caseExactSubstringsMatch,<br>
+      caseExactIA5Match,<br>
+      caseIgnoreIA5Match,<br>
+      caseIgnoreIA5SubstringsMatch,<br>
+      caseIgnoreListMatch,<br>
+      caseIgnoreListSubstringsMatch,<br>
+      caseIgnoreMatch,<br>
+      caseIgnoreOrderingMatch,<br>
+      caseIgnoreSubstringsMatch,<br>
+      directoryStringFirstComponentMatch,<br>
+      telephoneNumberMatch,<br>
+      telephoneNumberSubstringsMatch и<br>
+      wordMatch.
+</blockquote>
+
+<p>Шаги <a href="rfc4518.html#section-2.1" title="LDAP: Подготовка интернационализированных строк">транскодирования</a>, <a href="rfc4518.html#section-2.3" title="LDAP: Подготовка интернационализированных строк">нормализации</a>, <a href="rfc4518.html#section-2.4" title="LDAP: Подготовка интернационализированных строк">запрета</a> и <a href="rfc4518.html#section-2.5" title="LDAP: Подготовка интернационализированных строк">проверки двунаправленности</a> являются одинаковыми для всех перечисленных правил соответствия. Однако шаги <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> и <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> зависят от конкретного правила (смотрите пояснения, приведённые в описании этих правил соответствия в подразделах ниже).</p>
+
+<h4><a name="section-4.2.1">4.2.1</a>. bitStringMatch</h4>
+
+<p>С помощью правила bitStringMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.2">Bit String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу BIT STRING (например, синтаксис <a href="#section-3.3.2">Bit String</a>).</p>
+
+<p>Если у соответствующего синтаксису атрибута ASN.1-типа нет списка именованных бит [<a href="#ref-ASN.1">ASN.1</a>] (как в случае с синтаксисом <a href="#section-3.3.2">Bit String</a>), то данное правило оценивается как TRUE, если и только если значение атрибута состоит из такого же количества бит, что и значение утверждения, и эти биты совпадают на побитовой основе.</p>
+
+<p>Если у соответствующего ASN.1-типа есть список именованных бит, то правило bitStringMatch работает также, как описано выше, за исключением того, что конечные нулевые биты в значениях атрибута и утверждения интерпретируются как отсутствующие.</p>
+
+<p>Определение LDAP для правила bitStringMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.16 NAME 'bitStringMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.6 )
+</pre>
+
+<p>Правило bitStringMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.2">4.2.2</a>. booleanMatch</h4>
+
+<p>С помощью правила booleanMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.3">Boolean</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу BOOLEAN (например, синтаксис <a href="#section-3.3.3">Boolean</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута и значение утверждения одновременно являются либо TRUE, либо FALSE.</p>
+
+<p>Определение LDAP для правила booleanMatch:</p>
+
+<pre class="list">
+
+      ( 2.5.13.13 NAME 'booleanMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+</pre>
+
+<p>Правило booleanMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.3">4.2.3</a>. caseExactIA5Match</h4>
+
+<p>С помощью правила caseExactIA5Match выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.15">IA5 String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу IA5String (например, синтаксис <a href="#section-3.3.15">IA5 String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если подготовленная строка символов в значении атрибута и подготовленная строка символов в значении утверждения имеют одинаковое количество символов и коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения, на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseExactIA5Match:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.109.114.1 NAME 'caseExactIA5Match'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+</pre>
+
+<p>Правило caseExactIA5Match является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.4">4.2.4</a>. caseExactMatch</h4>
+
+<p>С помощью правила caseExactMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString или одному из альтернативных по отношению к DirectoryString строковых типов, таких как PrintableString (другие альтернативные строковые типы ASN.1 не соответствуют каким-либо определённым в этом документе синтаксисам). Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a>, <a href="#section-3.3.4">Country String</a> или <a href="#section-3.3.31">Telephone Number</a>.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если подготовленная строка символов в значении атрибута и подготовленная строка символов в значении утверждения имеют одинаковое количество символов и коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения, на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseExactMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.5 NAME 'caseExactMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Правило caseExactMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.5">4.2.5</a>. caseExactOrderingMatch</h4>
+
+<p>С помощью правила caseExactOrderingMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString или одному из альтернативных по отношению к DirectoryString строковых типов. Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a>, <a href="#section-3.3.4">Country String</a> или <a href="#section-3.3.31">Telephone Number</a>.</p>
+
+<p>Данное правило оценивается как TRUE (с учётом того, что порядок символов определяется по значению их кода), если и только если подготовленная строка символов в значении атрибута располагается раньше, чем подготовленная строка символов в значении утверждения; то есть, значение атрибута "меньше чем" значение утверждения.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения, на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseExactOrderingMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.6 NAME 'caseExactOrderingMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Правило caseExactOrderingMatch является правилом соответствия ordering.</p>
+
+<h4><a name="section-4.2.6">4.2.6</a>. caseExactSubstringsMatch</h4>
+
+<p>С помощью правила caseExactSubstringsMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.30">Substring Assertion</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString или одному из альтернативных по отношению к DirectoryString строковых типов. Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a>, <a href="#section-3.3.4">Country String</a> или <a href="#section-3.3.31">Telephone Number</a>.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если: (1) подготовленные подстроки в значении утверждения соответствуют непересекающимся частям подготовленной строки символов в значении атрибута в том порядке, в котором эти подстроки представлены в значении утверждения; (2) подстрока &lt;initial&gt;, если таковая присутствует, соответствует началу подготовленной строки символов в значении атрибута; (3) подстрока &lt;final&gt;, если таковая присутствует, соответствует окончанию подготовленной строки символов в значении атрибута. Подготовленная подстрока соответствует части подготовленной строки символов в значении атрибута, если коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и подстрок значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseExactSubstringsMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.7 NAME 'caseExactSubstringsMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.58 )
+</pre>
+
+<p>Правило caseExactSubstringsMatch является правилом соответствия substrings.</p>
+
+<h4><a name="section-4.2.7">4.2.7</a>. caseIgnoreIA5Match</h4>
+
+<p>С помощью правила caseIgnoreIA5Match выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.15">IA5 String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу IA5String (например, синтаксис <a href="#section-3.3.15">IA5 String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если подготовленная строка символов в значении атрибута и подготовленная строка символов в значении утверждения имеют одинаковое количество символов и коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения, на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseIgnoreIA5Match:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.109.114.2 NAME 'caseIgnoreIA5Match'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+</pre>
+
+<p>Правило caseIgnoreIA5Match является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.8">4.2.8</a>. caseIgnoreIA5SubstringsMatch</h4>
+
+<p>С помощью правила caseIgnoreIA5SubstringsMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.30">Substring Assertion</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу IA5String (например, синтаксис <a href="#section-3.3.15">IA5 String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если: (1) подготовленные подстроки в значении утверждения соответствуют непересекающимся частям подготовленной строки символов в значении атрибута в том порядке, в котором эти подстроки представлены в значении утверждения; (2) подстрока &lt;initial&gt;, если таковая присутствует, соответствует началу подготовленной строки символов в значении атрибута; (3) подстрока &lt;final&gt;, если таковая присутствует, соответствует окончанию подготовленной строки символов в значении атрибута. Подготовленная подстрока соответствует части подготовленной строки символов в значении атрибута, если коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и подстрок значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseIgnoreIA5SubstringsMatch:</p>
+
+<pre class="list">
+      ( 1.3.6.1.4.1.1466.109.114.3 NAME 'caseIgnoreIA5SubstringsMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.58 )
+</pre>
+
+<p>Правило caseIgnoreIA5SubstringsMatch является правилом соответствия substrings.</p>
+
+<h4><a name="section-4.2.9">4.2.9</a>. caseIgnoreListMatch</h4>
+
+<p>С помощью правила caseIgnoreListMatch выполняется сравнение значения утверждения, представляющего собой последовательность строк, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу, представляющему собой последовательность (SEQUENCE OF) ASN.1-типов DirectoryString (например, синтаксис <a href="#section-3.3.28">Postal Address</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута и значение утверждения состоят из одинакового количества строк, и соответствующие (по позициям) строки совпадают согласно правилу соответствия <a href="#section-4.2.11">caseIgnoreMatch</a>.</p>
+
+<p>В [<a href="#ref-X.520">X.520</a>] синтаксис утверждения для данного правила соответствия определяется как:</p>
+
+<pre class="list">
+      SEQUENCE OF DirectoryString {ub-match}
+</pre>
+
+<p>То есть, оно отличается от определения типа, соответствующего синтаксису <a href="#section-3.3.28">Postal Address</a>. В LDAP выбор синтаксиса <a href="#section-3.3.28">Postal Address</a> для синтаксиса утверждения правила caseIgnoreListMatch не следует рассматривать как ограничение, налагаемое на это правило соответствия. Оно может применяться не только к атрибутам с синтаксисом <a href="#section-3.3.28">Postal Address</a>.</p>
+
+<p>Определение LDAP для правила caseIgnoreListMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.11 NAME 'caseIgnoreListMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 )
+</pre>
+
+<p>Правило caseIgnoreListMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.10">4.2.10</a>. caseIgnoreListSubstringsMatch</h4>
+
+<p>С помощью правила caseIgnoreListSubstringsMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.30">Substring Assertion</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу, представляющему собой последовательность (SEQUENCE OF) ASN.1-типов DirectoryString (например, синтаксис <a href="#section-3.3.28">Postal Address</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение утверждения соответствует (по правилу <a href="#section-4.2.13">caseIgnoreSubstringsMatch</a>) строке символов, сформированной путём конкатенации строк из значения атрибута, за исключением того, что ни одна из подстрок &lt;initial&gt;, &lt;any&gt; или &lt;final&gt; из значения утверждения не считается совпавшей с частью строки, полученной в результате конкатенации, если эта часть охватывает более чем одну оригинальную строку из значения атрибута.</p>
+
+<p>Обратите внимание, что с точки зрения специфичной для LDAP кодировки синтаксиса <a href="#section-3.3.28">Postal Address</a>, в конкатентированной строке опускаются разделители строк &lt;DOLLAR&gt;, а также экранируются символы "\" и "$".</p>
+
+<p>Определение LDAP для правила caseIgnoreListSubstringsMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.12 NAME 'caseIgnoreListSubstringsMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.58 )
+</pre>
+
+<p>Правило caseIgnoreListSubstringsMatch является правилом соответствия substrings.</p>
+
+<h4><a name="section-4.2.11">4.2.11</a>. caseIgnoreMatch</h4>
+
+<p>С помощью правила caseIgnoreMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString или одному из альтернативных по отношению к DirectoryString строковых типов. Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a>, <a href="#section-3.3.4">Country String</a> или <a href="#section-3.3.31">Telephone Number</a>.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если подготовленная строка символов в значении атрибута и подготовленная строка символов в значении утверждения имеют одинаковое количество символов и коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseIgnoreMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.2 NAME 'caseIgnoreMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>The caseIgnoreMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.12">4.2.12</a>. caseIgnoreOrderingMatch</h4>
+
+<p>С помощью правила caseIgnoreOrderingMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString или одному из альтернативных по отношению к DirectoryString строковых типов. Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a>, <a href="#section-3.3.4">Country String</a> или <a href="#section-3.3.31">Telephone Number</a>.</p>
+
+<p>Данное правило оценивается как TRUE (с учётом того, что порядок символов определяется по значению их кода), если и только если подготовленная строка символов в значении атрибута располагается раньше, чем подготовленная строка символов в значении утверждения; то есть, значение атрибута "меньше чем" значение утверждения.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseIgnoreOrderingMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.3 NAME 'caseIgnoreOrderingMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Правило caseIgnoreOrderingMatch является правилом соответствия ordering.</p>
+
+<h4><a name="section-4.2.13">4.2.13</a>. caseIgnoreSubstringsMatch</h4>
+
+<p>С помощью правила caseIgnoreSubstringsMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.30">Substring Assertion</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString или одному из альтернативных по отношению к DirectoryString строковых типов. Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a>, <a href="#section-3.3.4">Country String</a> или <a href="#section-3.3.31">Telephone Number</a>.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если: (1) подготовленные подстроки в значении утверждения соответствуют непересекающимся частям подготовленной строки символов в значении атрибута в том порядке, в котором эти подстроки представлены в значении утверждения; (2) подстрока &lt;initial&gt;, если таковая присутствует, соответствует началу подготовленной строки символов в значении атрибута; (3) подстрока &lt;final&gt;, если таковая присутствует, соответствует окончанию подготовленной строки символов в значении атрибута. Подготовленная подстрока соответствует части подготовленной строки символов в значении атрибута, если коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и подстрок значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.1">обработка малозначительных пробельных символов</a>.</p>
+
+<p>Определение LDAP для правила caseIgnoreSubstringsMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.4 NAME 'caseIgnoreSubstringsMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.58 )
+</pre>
+
+<p>The caseIgnoreSubstringsMatch является правилом соответствия substrings.</p>
+
+<h4><a name="section-4.2.14">4.2.14</a>. directoryStringFirstComponentMatch</h4>
+
+<p>С помощью правила directoryStringFirstComponentMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу, представляющему собой последовательность (SEQUENCE), в которой обязательный первый компонент имеет ASN.1-тип DirectoryString.</p>
+
+<p>Обратите внимание, что синтаксис утверждения в данном правиле соответствия отличается от синтаксиса атрибутов для тех атрибутов, по отношению к которым это правило является правилом соответствия equality.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение утверждения совпадает с первым компонентом значения атрибута согласно правилу соответствия <a href="#section-4.2.11">caseIgnoreMatch</a>.</p>
+
+<p>Определение LDAP для правила соответствия directoryStringFirstComponentMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.31 NAME 'directoryStringFirstComponentMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<p>Правило directoryStringFirstComponentMatch является правилом соответствия equality. При использовании directoryStringFirstComponentMatch для сравнения двух значений атрибутов (синтаксис которых позволяет применять это правило), значение утверждения сначала должно быть получено из значения одного из этих атрибутов. Значение утверждения может быть получено из значения атрибута путём выделения первого компонента этого значения атрибута.</p>
+
+<h4><a name="section-4.2.15">4.2.15</a>. distinguishedNameMatch</h4>
+
+<p>С помощью правила distinguishedNameMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.9">DN</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DistinguishedName (например, синтаксис <a href="#section-3.3.9">DN</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута и значение утверждения состоят из одинакового количества относительных уникальных имён и соответствующие (по позициям) относительные уникальные имена совпадают. Отноcительное уникальное имя (RDN) в значении утверждения совпадает с RDN в значении атрибута, если и только если они состоят из одинакового количества утверждений значений атрибутов (AVA) и каждое AVA первого RDN совпадает с AVA с тем же типом атрибута из второго RDN. Порядок следования AVA в RDN не существенен. Также имейте ввиду, что конкретный тип атрибута может присутствовать максимум в одном AVA в RDN. Два AVA с одним и тем же типом атрибута являются одинаковыми, если их значения эквивалентны согласно правилу соответствия equality данного типа атрибута. Если сравнения одного или нескольких AVA  оцениваются как Undefined, а оставшиеся сравнения AVA возвращают TRUE, то правило distinguishedNameMatch оценивается как Undefined.</p>
+
+<p>Определение LDAP для правила distinguishedNameMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.1 NAME 'distinguishedNameMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+</pre>
+
+<p>Правило distinguishedNameMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.16">4.2.16</a>. generalizedTimeMatch</h4>
+
+<p>С помощью правила generalizedTimeMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.13">Generalized Time</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу GeneralizedTime (например, синтаксис <a href="#section-3.3.13">Generalized Time</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута представляет собой то же самое всемирное координированное время, что и значение утверждения. Если в определении времени отсутствуют минуты и секунды, то подразумевается, что число минут и секунд (соответственно) равно нулю.</p>
+
+<p>Определение LDAP для правила generalizedTimeMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.27 NAME 'generalizedTimeMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 )
+</pre>
+
+<p>Правило generalizedTimeMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.17">4.2.17</a>. generalizedTimeOrderingMatch</h4>
+
+<p>С помощью правила generalizedTimeOrderingMatch выполняется сравнение порядка следования величин времени в значении утверждения, имеющего синтаксис <a href="#section-3.3.13">Generalized Time</a>, и в значении атрибута, имеющего синтаксис, соответствующий ASN.1-типу GeneralizedTime (например, синтаксис <a href="#section-3.3.13">Generalized Time</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута представляет собой всемирное координированное время, которое является более ранним по отношению ко всемирному координированному времени, представленному в значении утверждения.</p>
+
+<p>Определение LDAP для правила generalizedTimeOrderingMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.28 NAME 'generalizedTimeOrderingMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.24 )
+</pre>
+
+<p>Правило generalizedTimeOrderingMatch является правилом соответствия ordering.</p>
+
+<h4><a name="section-4.2.18">4.2.18</a>. integerFirstComponentMatch</h4>
+
+<p>С помощью правила integerFirstComponentMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.16">Integer</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу, представляющему собой последовательность (SEQUENCE), в которой обязательный первый компонент имеет ASN.1-тип INTEGER (например, синтаксис <a href="#section-3.3.8">DIT Structure Rule Description</a>).</p>
+
+<p>Обратите внимание, что синтаксис утверждения в данном правиле соответствия отличается от синтаксиса атрибутов для тех атрибутов, по отношению к которым это правило является правилом соответствия equality.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение утверждения и первый компонент значения атрибута являются одним и тем же целочисленным значением.</p>
+
+<p>Определение LDAP для правила соответствия integerFirstComponentMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.29 NAME 'integerFirstComponentMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+</pre>
+
+<p>Правило integerFirstComponentMatch является правилом соответствия equality. При использовании integerFirstComponentMatch для сравнения двух значений атрибутов (синтаксис которых позволяет применять это правило), значение утверждения сначала должно быть получено из значения одного из этих атрибутов. Значение утверждения может быть получено из значения атрибута путём выделения первого компонента этого значения атрибута.</p>
+
+<h4><a name="section-4.2.19">4.2.19</a>. integerMatch</h4>
+
+<p>С помощью правила integerMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.16">Integer</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу INTEGER (например, синтаксис <a href="#section-3.3.16">Integer</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута и значение утверждения являются одним и тем же целочисленным значением.</p>
+
+<p>Определение LDAP для правила integerMatch matching:</p>
+
+<pre class="list">
+      ( 2.5.13.14 NAME 'integerMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+</pre>
+
+<p>Правило integerMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.20">4.2.20</a>. integerOrderingMatch</h4>
+
+<p>С помощью правила integerOrderingMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.16">Integer</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу INTEGER (например, синтаксис <a href="#section-3.3.16">Integer</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если целочисленное значение в значении атрибута меньше, чем  целочисленное значение в значении утверждения.</p>
+
+<p>Определение LDAP для правила соответствия integerOrderingMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.15 NAME 'integerOrderingMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+</pre>
+
+<p>Правило integerOrderingMatch является правилом соответствия ordering.</p>
+
+<h4><a name="section-4.2.21">4.2.21</a>. keywordMatch</h4>
+
+<p>С помощью правила keywordMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString (например, синтаксис <a href="#section-3.3.6">Directory String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если строка символов в значении утверждения совпадает с любым ключевым словом в значении атрибута. Идентификация ключевых слов в значении атрибута и определение точности совпадения определяются разработчиками реализации.</p>
+
+<p>Определение LDAP для правила keywordMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.33 NAME 'keywordMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<h4><a name="section-4.2.22">4.2.22</a>. numericStringMatch</h4>
+
+<p>С помощью правила numericStringMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.23">Numeric String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу NumericString (например, синтаксис <a href="#section-3.3.23">Numeric String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если подготовленная строка символов в значении атрибута и подготовленная строка символов в значении утверждения имеют одинаковое количество символов и коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.2">обработка малозначительных символов для строк numericString</a>.</p>
+
+<p>Определение LDAP для правила соответствия numericStringMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.8 NAME 'numericStringMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
+</pre>
+
+<p>Правило numericStringMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.23">4.2.23</a>. numericStringOrderingMatch</h4>
+
+<p>С помощью правила numericStringOrderingMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.23">Numeric String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу NumericString (например, синтаксис <a href="#section-3.3.23">Numeric String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если (с учётом того, что порядок символов определяется по значению их кода) подготовленная строка символов в значении атрибута располагается раньше, чем подготовленная строка символов в значении утверждения; то есть, значение атрибута "меньше чем" значение утверждения.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.2">обработка малозначительных символов для строк numericString</a>.</p>
+
+<p>Данное правило идентично правилу <a href="#section-4.2.12">caseIgnoreOrderingMatch</a>, за исключением того, что во время сравнения все пробельные символы пропускаются (регистр символов не имеет значения, поскольку все символы в строке числовые).</p>
+
+<p>Определение LDAP для правила соответствия numericStringOrderingMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.9 NAME 'numericStringOrderingMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.36 )
+</pre>
+
+<p>Правило numericStringOrderingMatch является правилом соответствия ordering.</p>
+
+<h4><a name="section-4.2.24">4.2.24</a>. numericStringSubstringsMatch</h4>
+
+<p>С помощью правила numericStringSubstringsMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.30">Substring Assertion</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу NumericString (например, синтаксис <a href="#section-3.3.23">Numeric String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если: (1) подготовленные подстроки в значении утверждения соответствуют непересекающимся частям подготовленной строки символов в значении атрибута в том порядке, в котором эти подстроки представлены в значении утверждения; (2) подстрока &lt;initial&gt;, если таковая присутствует, соответствует началу подготовленной строки символов в значении атрибута; (3) подстрока &lt;final&gt;, если таковая присутствует, соответствует окончанию подготовленной строки символов в значении атрибута. Подготовленная подстрока соответствует части подготовленной строки символов в значении атрибута, если коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов сохраняется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.2">обработка малозначительных символов для строк numericString</a>.</p>
+
+<p>Определение LDAP для правила соответствия numericStringSubstringsMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.10 NAME 'numericStringSubstringsMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.58 )
+</pre>
+
+<p>Правило numericStringSubstringsMatch является правилом соответствия substrings.</p>
+
+<h4><a name="section-4.2.25">4.2.25</a>. objectIdentifierFirstComponentMatch</h4>
+
+<p>С помощью правила objectIdentifierFirstComponentMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.26">OID</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу, представляющему собой последовательность (SEQUENCE), в которой обязательный первый компонент имеет ASN.1-тип OBJECT IDENTIFIER. Примеры подходящих синтаксисов атрибутов LDAP: <a href="#section-3.3.1">Attribute Type Description</a>, <a href="#section-3.3.7">DIT Content Rule Description</a>, <a href="#section-3.3.18">LDAP Syntax Description</a>, <a href="#section-3.3.19">Matching Rule Description</a>, <a href="#section-3.3.20">Matching Rule Use Description</a>, <a href="#section-3.3.22">Name Form Description</a> или <a href="#section-3.3.24">Object Class Description</a>.</p>
+
+<p>Обратите внимание, что синтаксис утверждения в данном правиле соответствия отличается от синтаксиса атрибутов для тех атрибутов, по отношению к которым это правило является правилом соответствия equality.</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение утверждения совпадает с первым компонентом значения атрибута согласно правилу соответствия <a href="#section-4.2.26">objectIdentifierMatch</a>.</p>
+
+<p>Определение LDAP для правила соответствия objectIdentifierFirstComponentMatch:</p>
+
+<pre class="list">
+
+      ( 2.5.13.30 NAME 'objectIdentifierFirstComponentMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
+</pre>
+
+<p>Правило objectIdentifierFirstComponentMatch является правилом соответствия equality. При использовании objectIdentifierFirstComponentMatch для сравнения двух значений атрибутов (синтаксис которых позволяет применять это правило), значение утверждения сначала должно быть получено из значения одного из этих атрибутов. Значение утверждения может быть получено из значения атрибута путём выделения первого компонента этого значения атрибута.</p>
+
+<h4><a name="section-4.2.26">4.2.26</a>. objectIdentifierMatch</h4>
+
+<p>С помощью правила objectIdentifierMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.26">OID</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу OBJECT IDENTIFIER (например, синтаксис <a href="#section-3.3.26">OID</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение утверждения и значение атрибута представляют собой один и тот же идентификатор объекта; то есть, одну и ту же последовательность целых чисел &lt;oid&gt;, либо явно представленную в форме &lt;numericoid&gt;, либо неявно в форме &lt;descr&gt; (смотрите <a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC 4512</a>).</p>
+
+<p>Если LDAP-клиент предоставил значение утверждения в форме &lt;descr&gt;, но выбранный дескриптор не распознан сервером, правило objectIdentifierMatch оценивается как Undefined.</p>
+
+<p>Определение LDAP для правила соответствия objectIdentifierMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.0 NAME 'objectIdentifierMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
+</pre>
+
+<p>Правило objectIdentifierMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.27">4.2.27</a>. octetStringMatch</h4>
+
+<p>С помощью правила octetStringMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.25">Octet String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу OCTET STRING (например, синтаксисы <a href="#section-3.3.25">Octet String</a> или <a href="#section-3.3.17">JPEG</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута и значение утверждения имеют одинаковую длину и соответствующие (по позициям) октеты совпадают.</p>
+
+<p>Определение LDAP для правила соответствия octetStringMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.17 NAME 'octetStringMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+</pre>
+
+<p>Правило octetStringMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.28">4.2.28</a>. octetStringOrderingMatch</h4>
+
+<p>С помощью правила octetStringOrderingMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.25">Octet String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу OCTET STRING (например, синтаксисы <a href="#section-3.3.25">Octet String</a> или <a href="#section-3.3.17">JPEG</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если значение атрибута располагается раньше (в порядке сопоставления), чем значение утверждения. Правило сравнивает строки октетов от первого октета до последнего, и, внутри октета, от самого старшего бита до самого младшего. Порядок следования строк определяется при нахождении первого несовпадающего бита. Бит "ноль" предшествует биту "один". Если количество октетов в строках разное, но более длинная строка идентична более короткой вплоть до окончания короткой строки, то более короткая строка предшествует более длинной.</p>
+
+<p>Определение LDAP для правила соответствия octetStringOrderingMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.18 NAME 'octetStringOrderingMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.40 )
+</pre>
+
+<p>Правило octetStringOrderingMatch является правилом соответствия ordering.</p>
+
+<h4><a name="section-4.2.29">4.2.29</a>. telephoneNumberMatch</h4>
+
+<p>С помощью правила telephoneNumberMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.31">Telephone Number</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу PrintableString, представляющему номер телефона (например, синтаксис <a href="#section-3.3.31">Telephone Number</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если подготовленная строка символов в значении атрибута и подготовленная строка символов в значении утверждения имеют одинаковое количество символов и коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.3">обработка малозначительных символов для строк telephoneNumber</a>.</p>
+
+<p>Определение LDAP для правила соответствия telephoneNumberMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.20 NAME 'telephoneNumberMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.50 )
+</pre>
+
+<p>Правило telephoneNumberMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.30">4.2.30</a>. telephoneNumberSubstringsMatch</h4>
+
+<p>С помощью правила telephoneNumberSubstringsMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.30">Substring Assertion</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу PrintableString, представляющему номер телефона (например, синтаксис <a href="#section-3.3.31">Telephone Number</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если: (1) подготовленные подстроки в значении утверждения соответствуют непересекающимся частям подготовленной строки символов в значении атрибута в том порядке, в котором эти подстроки представлены в значении утверждения; (2) подстрока &lt;initial&gt;, если таковая присутствует, соответствует началу подготовленной строки символов в значении атрибута; (3) подстрока &lt;final&gt;, если таковая присутствует, соответствует окончанию подготовленной строки символов в значении атрибута. Подготовленная подстрока соответствует части подготовленной строки символов в значении атрибута, если коды соответствующих символов совпадают.</p>
+
+<p>При подготовке значения атрибута и подстрок значения утверждения для выполнения сравнения на шаге <a href="rfc4518.html#section-2.2" title="LDAP: Подготовка интернационализированных строк">отображения</a> регистр символов унифицируется, а на шаге <a href="rfc4518.html#section-2.6" title="LDAP: Подготовка интернационализированных строк">обработки малозначительных символов</a> выполняется только <a href="rfc4518.html#section-2.6.3">обработка малозначительных символов для строк telephoneNumber</a>.</p>
+
+<p>Определение LDAP для правила соответствия telephoneNumberSubstringsMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.21 NAME 'telephoneNumberSubstringsMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.58 )
+</pre>
+
+<p>Правило telephoneNumberSubstringsMatch является правилом соответствия substrings.</p>
+
+<h4><a name="section-4.2.31">4.2.31</a>. uniqueMemberMatch</h4>
+
+<p>С помощью правила uniqueMemberMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.21">Name And Optional UID</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу NameAndOptionalUID (например, синтаксис <a href="#section-3.3.21">Name And Optional UID</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если компоненты &lt;distinguishedName&gt; в значении утверждения и в значении атрибута совпадают (по правилу <a href="#section-4.2.15">distinguishedNameMatch</a>), а также: либо (1) &lt;BitString&gt; отсутствует как в значении атрибута, так и в значении утверждения, либо (2) компонент &lt;BitString&gt; присутствует как в значении атрибута, так и в значении утверждения, и компонент &lt;BitString&gt; в значении утверждения совпадает с компонентом &lt;BitString&gt; в значении атрибута по правилу <a href="#section-4.2.1">bitStringMatch</a>.</p>
+
+<p>Обратите внимание, что данное правило соответствия отличается от описанного в X.520 [<a href="#ref-X.520">X.520</a>]. Изменения были внесены для того, чтобы сделать данное правило соответствия коммутативным. Разработчикам сервера следует рассмотреть возможность использования оригинальной семантики X.520 (в которой соответствие определяется менее точно), чтобы иметь возможность использовать uniqueMemberMatch как правило соответствия equality для выполнения приблизительного сравнения атрибутов.</p>
+
+<p>Определение LDAP для правила соответствия uniqueMemberMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.23 NAME 'uniqueMemberMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 )
+</pre>
+
+<p>Правило uniqueMemberMatch является правилом соответствия equality.</p>
+
+<h4><a name="section-4.2.32">4.2.32</a>. wordMatch</h4>
+
+<p>С помощью правила wordMatch выполняется сравнение значения утверждения, имеющего синтаксис <a href="#section-3.3.6">Directory String</a>, со значением атрибута, имеющего синтаксис, соответствующий ASN.1-типу DirectoryString (например, синтаксис <a href="#section-3.3.6">Directory String</a>).</p>
+
+<p>Данное правило оценивается как TRUE, если и только если слово в значении утверждения совпадает (по семантике правила <a href="#section-4.2.11">caseIgnoreMatch</a>) с любым словом в значении атрибута.  Конкретное определение того, что является словом, отдано на откуп разработчикам реализации.</p>
+
+<p>Определение LDAP для правила wordMatch:</p>
+
+<pre class="list">
+      ( 2.5.13.32 NAME 'wordMatch'
+         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+</pre>
+
+<h2><a name="section-5">5</a>. О безопасности</h2>
+
+<p>В целом, приведённая в этом документе специфичная для LDAP кодировка синтаксисов не определяет каноническое кодирование. То есть, трансформация из специфичной для LDAP кодировки в какую-то другую (например, BER) и обратно не обязательно приведёт к воспроизведению в точности последовательности байт оригинальной специфичной для LDAP кодировки. Поэтому там, где требуется каноническое кодирование, использовать специфичную для LDAP кодировку не следует.</p>
+
+<p>Более того, специфичная для LDAP кодировка не всегда позволяет реконструировать альтернативные кодировки значений с синтаксисами <a href="#section-3.3.6">Directory String</a> и <a href="#section-3.3.9">DN</a>; например, трансформация из кодировки Distinguished Encoding Rules (DER) [<a href="#ref-BER" title=" Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER)">BER</a>] в специфичную для LDAP кодировку и обратно может не привести к воспроизведению оригинальной кодировки DER. Поэтому там, где требуется обеспечить обратимость в DER-кодировку, использовать специфичную для LDAP кодировку не следует; например, для проверки подлинности цифровых подписей. Вместо неё следует использовать DER или DER-обратимые кодировки.</p>
+
+<p>При интерпретации значимых для безопасности полей (в частности, тех, которые используются для предоставления или запрета доступа), разработчики должны (MUST) убедиться, что любые сравнения по правилам соответствия производятся с первоначальным абстрактным значением, независимо от применяемой в конкретном случае кодировки.</p>
+
+<h2><a name="section-6">6</a>. Благодарности</h2>
+
+<p>В основном данный документ представляет собой ревизию <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, авторы M. Wahl, A. Coulbeck, T. Howes и S. Kille. <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF ASID.</p>
+
+<p>Этот документ основан на входных данных рабочей группы IETF LDAPBIS. Автор благодарит Kathy Dally за редактирование черновых материалов этого документа, а также Jim Sermersheim и Kurt Zeilenga за их значительный вклад в эту работу.</p>
+
+<h2><a name="section-7">7</a>. Регистрация в IANA</h2>
+
+<p>Администрация адресного пространства Интернет (Internet Assigned Numbers Authority, IANA) обновила регистр дескрипторов LDAP [<a href="http://tools.ietf.org/html/rfc4520">BCP64</a>] как указано в следующей форме:</p>
+
+<pre class="list">
+      Subject: Request for LDAP Descriptor Registration Update
+      Descriptor (short name): see comment
+      Object Identifier: see comment
+      Person &amp; email address to contact for further information:
+        Steven Legg &lt;steven.legg@eb2bcom.com&gt;
+      Usage: see comment
+      Specification: RFC 4517
+      Author/Change Controller: IESG
+
+      NAME                              Type  OID
+      ------------------------------------------------------------------
+      bitStringMatch                       M  2.5.13.16
+      booleanMatch                         M  2.5.13.13
+      caseExactIA5Match                    M  1.3.6.1.4.1.1466.109.114.1
+      caseExactMatch                       M  2.5.13.5
+      caseExactOrderingMatch               M  2.5.13.6
+      caseExactSubstringsMatch             M  2.5.13.7
+      caseIgnoreIA5Match                   M  1.3.6.1.4.1.1466.109.114.2
+      caseIgnoreListMatch                  M  2.5.13.11
+      caseIgnoreListSubstringsMatch        M  2.5.13.12
+      caseIgnoreMatch                      M  2.5.13.2
+      caseIgnoreOrderingMatch              M  2.5.13.3
+      caseIgnoreSubstringsMatch            M  2.5.13.4
+      directoryStringFirstComponentMatch   M  2.5.13.31
+      distinguishedNameMatch               M  2.5.13.1
+      generalizedTimeMatch                 M  2.5.13.27
+      generalizedTimeOrderingMatch         M  2.5.13.28
+      integerFirstComponentMatch           M  2.5.13.29
+      integerMatch                         M  2.5.13.14
+      integerOrderingMatch                 M  2.5.13.15
+      keywordMatch                         M  2.5.13.33
+      numericStringMatch                   M  2.5.13.8
+      numericStringOrderingMatch           M  2.5.13.9
+      numericStringSubstringsMatch         M  2.5.13.10
+      objectIdentifierFirstComponentMatch  M  2.5.13.30
+      octetStringMatch                     M  2.5.13.17
+      octetStringOrderingMatch             M  2.5.13.18
+      telephoneNumberMatch                 M  2.5.13.20
+      telephoneNumberSubstringsMatch       M  2.5.13.21
+      uniqueMemberMatch                    M  2.5.13.23
+      wordMatch                            M  2.5.13.32
+</pre>
+
+<p>В <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a> дескриптор для идентификтора объекта 2.5.13.0 был некорректно зарегистрирован как objectIdentifiersMatch (лишняя \`s'). Регистрация была изменена следующим образом (со ссылкой на RFC 4517):</p>
+
+<pre class="list">
+      NAME                              Type  OID
+      ------------------------------------------------------------------
+      objectIdentifierMatch                M  2.5.13.0
+
+      Subject: Request for LDAP Descriptor Registration
+      Descriptor (short name): caseIgnoreIA5SubstringsMatch
+      Object Identifier: 1.3.6.1.4.1.1466.109.114.3
+      Person &amp; email address to contact for further information:
+        Steven Legg &lt;steven.legg@eb2bcom.com&gt;
+      Usage: other (M)
+      Specification: RFC 4517
+      Author/Change Controller: IESG
+</pre>
+
+<h2><a name="section-8">8</a>. Документы</h2>
+
+<h3><a name="section-8.1">8.1</a>. Нормативные документы</h3>
+
+<p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
+
+<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="http://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003 г.</p>
+
+<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Под редакцией Crocker, D., и P. Overell, "Augmented BNF for Syntax Specifications: ABNF", <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
+
+<p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map", <a href="http://tools.ietf.org/html/rfc4510">RFC 4510</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4511" id="ref-RFC4511">RFC4511</a>] Под редакцией Sermersheim, J., "Lightweight Directory Access Protocol (LDAP): Определение протокола", <a href="rfc4511.html">RFC 4511</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Информационные модели каталога", <a href="rfc4512.html">RFC 4512</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4514" id="ref-RFC4514">RFC4514</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Строковое представление уникальных имён", <a href="rfc4514.html">RFC 4514</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4518" id="ref-RFC4518">RFC4518</a>]  Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Подготовка интернационализированных строк", <a href="http://tools.ietf.org/html/rfc4518">RFC 4518</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>]  Zeilenga, K., "Internet Assigned Numbers Authority (IANA) Considerations for the Lightweight Directory Access Protocol (LDAP)", <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-E.123" id="ref-E.123">E.123</a>] Notation for national and international telephone numbers, ITU-T Recommendation E.123, 1988.</p>
+
+<p>[<a name="ref-FAX" id="ref-FAX">FAX</a>] Standardization of Group 3 facsimile apparatus for document transmission - Terminal Equipment and Protocols for Telematic Services, ITU-T Recommendation T.4, 1993.</p>
+
+<p>[<a name="ref-T.50" id="ref-T.50">T.50</a>] International Reference Alphabet (IRA) (Formerly International Alphabet No. 5 or IA5) Information  Technology - 7-Bit Coded Character Set for Information  Interchange, ITU-T Recommendation T.50, 1992</p>
+
+<p>[<a name="ref-X.420" id="ref-X.420">X.420</a>] ITU-T Recommendation X.420 (1996) | ISO/IEC 10021-7:1997, Information Technology - Message Handling Systems (MHS): Interpersonal messaging system</p>
+
+<p>[<a name="ref-X.501" id="ref-X.501">X.501</a>] ITU-T Recommendation X.501 (1993) | ISO/IEC 9594-2:1994, Information Technology - Open Systems Interconnection - The Directory: Models</p>
+
+<p>[<a name="ref-X.520" id="ref-X.520">X.520</a>] ITU-T Recommendation X.520 (1993) | ISO/IEC 9594-6:1994, Information Technology - Open Systems Interconnection -  The Directory: Selected attribute types</p>
+
+<p>[<a name="ref-ASN.1" id="ref-ASN.1">ASN.1</a>] ITU-T Recommendation X.680 (07/02) | ISO/IEC 8824-1:2002, Information technology - Abstract Syntax Notation One  (ASN.1): Specification of basic notation</p>
+
+<p>[<a name="ref-ISO3166" id="ref-ISO3166">ISO3166</a>] ISO 3166, "Codes for the representation of names of countries".</p>
+
+<p>[<a name="ref-ISO8601" id="ref-ISO8601">ISO8601</a>] ISO 8601:2004, "Data elements and interchange formats -- Information interchange -- Representation of dates and times".</p>
+
+<p>[<a name="ref-UCS" id="ref-UCS">UCS</a>] Universal Multiple-Octet Coded Character Set (UCS) -  Architecture and Basic Multilingual Plane, ISO/IEC 10646- 1: 1993 (with amendments).</p>
+
+<p>[<a name="ref-JPEG" id="ref-JPEG">JPEG</a>] JPEG File Interchange Format (Version 1.02). Eric  Hamilton, C-Cube Microsystems, Milpitas, CA, September 1, 1992.</p>
+
+<h3><a name="section-8.2">8.2</a>. Информативные документы</h3>
+
+<p>[<a name="ref-RFC4519" id="ref-RFC4519">RFC4519</a>]  Sciberras, A., Ed., "Lightweight Directory Access Protocol (LDAP): Schema for User Applications", <a href="http://tools.ietf.org/html/rfc4519">RFC 4519</a>, июнь 2006 г.</p>
+
+[<a name="ref-RFC4523" id="ref-RFC4523">RFC4523</a>] Zeilenga, K., "Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509 Certificates", <a href="http://tools.ietf.org/html/rfc4523">RFC 4523</a>, июнь 2006 г.</p>
+
+<p>[<a name="ref-X.500" id="ref-X.500">X.500</a>] ITU-T Recommendation X.500 (1993) | ISO/IEC 9594-1:1994, Information Technology - Open Systems Interconnection - The Directory: Overview of concepts, models and services</p>
+
+<p>[<a name="ref-BER" id="ref-BER">BER</a>] ITU-T Recommendation X.690 (07/02) | ISO/IEC 8825-1:2002, Information technology - ASN.1 encoding rules:  Specification of Basic Encoding Rules (BER), Canonical  Encoding Rules (CER) and Distinguished Encoding Rules (DER)</p>
+
+<h2><a name="appendix-A">Приложение A</a>. Сводка идентификаторов объектов синтаксисов</h2>
+
+<p>В следующем списке приведена сводка идентификаторов объектов, присвоенных определённым в этом документе синтаксисам:</p>
+
+<pre class="list">
+      Синтаксис                        Идентификатор объекта
+      ==============================================================
+      Attribute Type Description       1.3.6.1.4.1.1466.115.121.1.3
+      Bit String                       1.3.6.1.4.1.1466.115.121.1.6
+      Boolean                          1.3.6.1.4.1.1466.115.121.1.7
+      Country String                   1.3.6.1.4.1.1466.115.121.1.11
+      Delivery Method                  1.3.6.1.4.1.1466.115.121.1.14
+      Directory String                 1.3.6.1.4.1.1466.115.121.1.15
+      DIT Content Rule Description     1.3.6.1.4.1.1466.115.121.1.16
+      DIT Structure Rule Description   1.3.6.1.4.1.1466.115.121.1.17
+      DN                               1.3.6.1.4.1.1466.115.121.1.12
+      Enhanced Guide                   1.3.6.1.4.1.1466.115.121.1.21
+      Facsimile Telephone Number       1.3.6.1.4.1.1466.115.121.1.22
+      Fax                              1.3.6.1.4.1.1466.115.121.1.23
+      Generalized Time                 1.3.6.1.4.1.1466.115.121.1.24
+      Guide                            1.3.6.1.4.1.1466.115.121.1.25
+      IA5 String                       1.3.6.1.4.1.1466.115.121.1.26
+      Integer                          1.3.6.1.4.1.1466.115.121.1.27
+      JPEG                             1.3.6.1.4.1.1466.115.121.1.28
+      LDAP Syntax Description          1.3.6.1.4.1.1466.115.121.1.54
+      Matching Rule Description        1.3.6.1.4.1.1466.115.121.1.30
+      Matching Rule Use Description    1.3.6.1.4.1.1466.115.121.1.31
+      Name And Optional UID            1.3.6.1.4.1.1466.115.121.1.34
+      Name Form Description            1.3.6.1.4.1.1466.115.121.1.35
+      Numeric String                   1.3.6.1.4.1.1466.115.121.1.36
+      Object Class Description         1.3.6.1.4.1.1466.115.121.1.37
+      Octet String                     1.3.6.1.4.1.1466.115.121.1.40
+      OID                              1.3.6.1.4.1.1466.115.121.1.38
+      Other Mailbox                    1.3.6.1.4.1.1466.115.121.1.39
+      Postal Address                   1.3.6.1.4.1.1466.115.121.1.41
+      Printable String                 1.3.6.1.4.1.1466.115.121.1.44
+      Substring Assertion              1.3.6.1.4.1.1466.115.121.1.58
+      Telephone Number                 1.3.6.1.4.1.1466.115.121.1.50
+      Teletex Terminal Identifier      1.3.6.1.4.1.1466.115.121.1.51
+      Telex Number                     1.3.6.1.4.1.1466.115.121.1.52
+      UTC Time                         1.3.6.1.4.1.1466.115.121.1.53
+</pre>
+
+<h2><a name="appendix-B">Приложение B</a>. Изменения, внесённые в RFC 2252</h2>
+
+<p>В этом приложении перечислены значимые отличия данной спецификации от <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>.</p>
+
+<p>Это приложение приводится только в информационных целях. Оно не является нормативной частью данной спецификации.</p>
+
+<ol>
+<li>Удалено примечание IESG.</li>
+
+<li>Основная часть разделов <a href="http://tools.ietf.org/html/rfc2252#section-4">4</a>, <a href="http://tools.ietf.org/html/rfc2252#section-5">5</a> и <a href="http://tools.ietf.org/html/rfc2252#section-7">7</a> была пересмотрена и перемещена в <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>. Внесённые в данные разделы изменения описаны в <a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC 4512</a>.</li>
+
+<li>BNF-описания форматов синтаксисов заменены на ABNF-спецификации [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>].</li>
+
+<li>Неоднозначные формулировки в <a href="http://tools.ietf.org/html/rfc2252#section-4.3">разделе 4.3 RFC 2252</a>, касающиеся использования механизма экранирования с помощью обратного слеша для экранирования разделительных символов, были удалены. Теперь механизм экранирования явно представлен в ABNF-спецификациях тех синтаксисов, в которых он применяется.</li>
+
+<li>Описание каждого <a href="#section-3">синтаксиса LDAP</a> было расширено, теперь их интерпретация меньше зависит от знания стандартов X.500.</li>
+
+<li>Были даны явные указания на взаимосвязь синтаксисов LDAP с соответствующими ASN.1-типами.</li>
+
+<li>Набор разрешённых в &lt;PrintableString&gt; (ранее &lt;printablestring&gt;) символов был подкорректирован для согласования с ASN.1-типом PrintableString в [<a href="#ref-ASN.1">ASN.1</a>]. В частности, был удалён символ двойных кавычек, добавлен символ одинарных кавычек и знак равенства.</li>
+
+<li>Добавлено требование, чтобы в значениях с синтаксисами <a href="#section-3.3.6">Directory String</a>, <a href="#section-3.3.29">Printable String</a> и <a href="#section-3.3.31">Telephone Number</a> был хотя бы один символ.</li>
+
+<li>Правила &lt;DITContentRuleDescription&gt;, &lt;NameFormDescription&gt; и &lt;DITStructureRuleDescription&gt; перемещены в <a href="rfc4512.html#section-4.1.6" title="LDAP: Информационные модели каталога">RFC 4512</a>.</li>
+
+<li>ASN.1-тип, соответствующий синтаксису <a href="#section-3.3.27">Other Mailbox</a>, был позаимствован из <a href="http://tools.ietf.org/html/rfc1274">RFC 1274</a>.</li>
+
+<li>Был разработан ASN.1-тип, соответствующий синтаксису <a href="#section-3.3.18">LDAP Syntax Description</a>.</li>
+
+<li>Был удалён синтаксис Binary, поскольку он не был должным образом определён и существовали реализации с несовместимыми друг с другом интерпретациями, а также потому, что его путали с опцией кодирования для транспортировки ;binary.</li>
+
+<li>Все обсуждения опций транспортировки, в том числе опции ";binary", были удалены. Все требования, касающиеся бинарной транспортировки значений, были удалены.</li>
+
+<li>Синтаксисы <a href="#section-3.3.5">Delivery Method</a>, <a href="#section-3.3.10">Enhanced Guide</a>, <a href="#section-3.3.14">Guide</a>, <a href="#section-3.3.25">Octet String</a>, <a href="#section-3.3.32">Teletex Terminal Identifier</a> и <a href="#section-3.3.33">Telex Number</a> были позаимствованы из <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>.</li>
+
+<li>Правило &lt;criteria&gt; для синтаксисов <a href="#section-3.3.10">Enhanced Guide</a> и <a href="#section-3.3.14">Guide</a> было расширено, чтобы оно могло вмещать пустые выражения "and" и "or".</li>
+
+<li>Была определена кодировка для правила &lt;ttx-value&gt; в синтаксисе <a href="#section-3.3.32">Teletex Terminal Identifier</a>.</li>
+
+<li>Синтаксисы, относящиеся к PKI (Certificate, Certificate List и Certificate Pair), были удалены. Они заново вводятся в <a href="http://tools.ietf.org/html/rfc4523" title="Lightweight Directory Access Protocol (LDAP) Schema Definitions for X.509 Certificates">RFC 4523</a> (как и синтаксис Supported Algorithm из <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>).</li>
+
+<li>Синтаксис MHS OR Address был удалён, поскольку его спецификация (в <a href="http://tools.ietf.org/html/rfc2156">RFC 2156</a>) не соответствует уровню draft standard.</li>
+
+<li>Синтаксис DL Submit Permission был удалён, поскольку он зависит от синтаксиса MHS OR Address.</li>
+
+<li>Синтаксис Presentation Address был удалён, поскольку его спецификация (в <a href="http://tools.ietf.org/html/rfc1278">RFC 1278</a>) не соответствует уровню draft standard.</li>
+
+<li>Синтаксисы ACI Item, Access Point, Audio, Data Quality, DSA Quality, DSE Type, LDAP Schema Description, Master And Shadow Access Points, Modify Rights, Protocol Information, Subtree Specification, Supplier Information, Supplier Or Consumer и Supplier And Consumer были удалены. Эти синтаксисы упоминаются в <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, но не определены.</li>
+
+<li>Синтаксис LDAP Schema Definition (определённый в <a href="http://tools.ietf.org/html/rfc2927">RFC 2927</a>) и синтаксис Mail Preference были удалены на том основании, что они выходят за рамки для основной спецификации.</li>
+
+<li>Описание каждого <a href="#section-4">правила соответствия</a> было расширено, теперь их интерпретация меньше зависит от знания стандартов X.500.</li>
+
+<li>Было добавлено правило соответствия <a href="#section-4.2.8">caseIgnoreIA5SubstringsMatch</a> из <a href="http://tools.ietf.org/html/rfc2798">RFC 2798</a>.</li>
+
+<li>Правила соответствия <a href="#section-4.2.10">caseIgnoreListSubstringsMatch</a>, <a href="#section-4.2.12">caseIgnoreOrderingMatch</a> и <a href="#section-4.2.13">caseIgnoreSubstringsMatch</a> были добавлены в список правил соответствия, на которые распространяется <a href="rfc4518.html#section-2.6.1" title="LDAP: Подготовка интернационализированных строк">обработка начальных, конечных и множественных примыкающих пробельных символов</a> (теперь она выполняется при <a href="rfc4518.html" title="LDAP: Подготовка интернационализированных строк">подготовке строки</a>). Это совместимо с определениями данных правил соответствия в X.500. В этот список также было добавлено правило <a href="#section-4.2.8">caseIgnoreIA5SubstringsMatch</a>.</li>
+
+<li>Спецификация правила соответствия <a href="#section-4.2.27">octetStringMatch</a> из <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> была добавлена в этот документ.</li>
+
+<li>Правило соответствия presentationAddressMatch было удалено, поскольку оно зависело от синтаксиса утверждения, не соответствовавшего уровню draft standard (Presentation Address).</li>
+
+<li>Правило соответствия protocolInformationMatch было удалено, поскольку оно зависело от неопределённого синтаксиса утверждения (Protocol Information).</li>
+
+<li>Стандарт, определяющий ASN.1, был изменён с X.208 на X.680, поскольку на эту версию ASN.1 ссылается стандарт X.500.</li>
+
+<li>Была добавлена спецификация правила соответствия <a href="#section-4.2.10">caseIgnoreListSubstringsMatch</a> из <a href="http://tools.ietf.org/html/rfc2798">RFC 2798</a> и X.520.</li>
+
+<li>К правилам соответствия символьных строк были применены <a href="rfc4518.html" title="LDAP: Подготовка интернационализированных строк">алгоритмы подготовки строк</a>.</li>
+
+<li>Были добавлены спецификации правил соответствия <a href="#section-4.2.2">booleanMatch</a>, <a href="#section-4.2.4">caseExactMatch</a>, <a href="#section-4.2.5">caseExactOrderingMatch</a>, <a href="#section-4.2.6">caseExactSubstringsMatch</a>, <a href="#section-4.2.14">directoryStringFirstComponentMatch</a>, <a href="#section-4.2.20">integerOrderingMatch</a>, <a href="#section-4.2.21">keywordMatch</a>, <a href="#section-4.2.23">numericStringOrderingMatch</a>, <a href="#section-4.2.28">octetStringOrderingMatch</a> и <a href="#section-4.2.32">wordMatch</a> из <a href="http://tools.ietf.org/html/rfc3698">RFC 3698</a> и X.520.</li>
+</ol>
+
+<h2>Адрес автора</h2>
+<p>Steven Legg</p>
+<p>eB2Bcom, Suite3, Woodhouse Corporate Centre, 935 Station Street, Box Hill North, Victoria 3129, AUSTRALIA</p>
+<p>Телефон: +61 3 9896 7830</p>
+<p>Факс: +61 3 9896 7801</p>
+<p>EMail: steven.legg@eb2bcom.com</p>
+
+<h2>Полное заявление авторских прав</h2>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+
+<p>Это документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
+
+<h2>Интеллектуальная собственность</h2>
+
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a target="_blank" href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a target="_blank" href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+
+<p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
+
+<h2>Признание заслуг</h2>
+
+<p>Финансирование функций RFC Editor обеспечивается IETF Administrative Support Activity (IASA).</p>
+
+<div style="font-size:90%;font-answerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalanswerback code of a telex terminalstyle:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+</body></html>

@@ -1,0 +1,705 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Ресурсы проекта Pro-LDAP.ru. RFC по службам каталогов и LDAP." />
+<meta name="keywords" content="Pro-LDAP.ru,LDAP,OpenLDAP,slapd,по-русски,на русском,перевод,документация,RFC" />
+<link rel="stylesheet" href="/pro-ldap.css" type="text/css">
+<title>RFC 2307</title>
+<script src="/pro-ldap.js"></script>
+</head>
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+
+<pre>Network Working Group
+<strong>Request for Comments: 2307</strong>
+L. Howard, независимый консультант
+Категория: Experimental
+Март 1998 года
+</pre>
+<h1>Подход к использованию LDAP в качестве Сетевой Информационной Службы (Network Information Service)</h1>
+
+<h3>Статус документа</h3>
+
+<p>В этом документе определяется экспериментальный протокол Интернет для сообщества Интернет. Он не определяет какого-либо рода стандарт Интернет. Принимаются обсуждения и предложения по улучшению этого документа. Ограничений на распространение этого документа не накладывается.</p>
+
+<h3>Уведомление об авторских правах</h3>
+
+<p>Copyright (C) Internet Society (1998). Все права защищены.</p>
+
+<h3>Тезисы</h3>
+
+<p>В этом документе описан экспериментальный механизм для отображения объектов, связанных с TCP/IP и системами UNIX, в записи X.500 [<a href="#ref-X500">X500</a>] так, чтобы с ними можно было работать посредством протокола Lightweight Directory Access Protocol [<a href="http://tools.ietf.org/html/rfc2251">RFC2251</a>]. Предлагается набор типов атрибутов и объектных классов, а также указания по их интерпретации.</p>
+
+<p>Идея этой работы состоит в оказании помощи при развертывании системы LDAP в качестве службы имен организации. Предлагаемый подход не предназначен для использования в качестве стандарта Интернет. Скорее, мы надеемся на появление общего консенсуса, который может стать приемлемым решением подобного рода проблем и в конечном итоге привести к принятию стандарта. Уже есть успешный опыт реализации предлагаемого механизма.</p>
+
+<h2><a name="section-1">1</a>. Предпосылки и мотивация</h2>
+
+<p>В операционной системе UNIX (R) и её производных (в частности, тех, которые поддерживают TCP/IP и соответствуют спецификации X/Open Single UNIX [<a href="#ref-XOPEN">XOPEN</a>]) требуется наличие средства просмотра объектов путём сопоставления их с критериями поиска или путём перечисления. (Другие операционные системы, поддерживающие TCP/IP, могут предоставлять некоторые средства разрешения некоторых из этих объектов. Данная схема также применима к подобным средам.)</p>
+
+<p>Упомянутые объекты включают в себя пользователей, группы, IP-службы (которые отображают имена в IP-порты и протоколы, и обратно), IP-протоколы (которые отображают имена в номера IP-протоколов и обратно), RPC (которые отображают имена в номера ONC Remote Procedure Call [<a href="http://tools.ietf.org/html/rfc1057">RFC1057</a>] и обратно), сетевые группы NIS, информацию по загрузке (параметры загрузки и отображение MAC-адресов), монтирование файловых систем, IP-хосты и сети, а также почтовые псевдонимы <a href="http://tools.ietf.org/html/rfc822">RFC822</a>.</p>
+
+<p>Запросы на преобразование выполняются посредством набора C-функций, предоставляемых в системной библиотеке UNIX. Например, системная утилита UNIX "ls", перечисляющая содержимое директории файловой системы, использует библиотечную функцию C getpwuid() для отображения идентификаторов пользователей в регистрационные имена (логины). После того, как запрос был сделан, он будет разрешен с использованием "службы имен", которая поддерживается клиентской библиотекой. В простейшем случае в качестве такой службы имён может выступать набор файлов в локальной файловой системе. Библиотека C открывает эти файлы и выполняется поиск по их содержимому. Другие распространённые службы имён&thinsp;&mdash;&thinsp;Network Information Service (NIS) и Domain Name System (DNS). (Последняя обычно используется для разрешения имён хостов, сервисов и сетей.) Преимущество обеих этих служб имён&thinsp;&mdash;&thinsp;то, что они имеют распределённую структуру, таким образом позволяя иметь на многих клиентах общий набор объектов.</p>
+
+<p>LDAP&thinsp;&mdash;&thinsp;это протокол доступа к распределённой иерархической службе каталогов, который используется для доступа к репозиториям сведений о пользователях и других связанных с сетью объектах. Поскольку LDAP часто не имеет тесной интеграции с операционной системой хоста, может потребоваться хранение сведений, например, о пользователях, как в LDAP, так и в поддерживаемой операционной системой службе имён, например, NIS. При использовании LDAP в качестве первичного средства разрешения таких объектов можно минимизировать указанную избыточность, а также воспользоваться преимуществами масштабируемости LDAP. (Для сравнения, базирующаяся на обычных файлах служба NIS не обладает масштабируемостью и расширяемостью LDAP или X.500.)</p>
+
+<p>Определяемые ниже объектные классы и атрибуты предназначены для представления вышеуказанных объектов в форме, совместимой со службами каталогов LDAP и X.500.</p>
+
+<h2><a name="section-2">2</a>. Общие вопросы</h2>
+
+<h3><a name="section-2.1">2.1</a>. Терминология</h3>
+
+<p>Ключевые слова "MUST" (необходимо), "SHOULD" (следует) и "MAY" (возможно) в данном документе должны интерпретироваться так, как описано в [<a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC2119</a>].</p>
+
+<p>В рамках этого документа термин "служба имён" ("nameservice") указывает на сервис (такой как NIS или обычные файлы), используемый операционной системой для разрешения объектов в пределах одного локального контекста именования. Сравните со "службой каталогов" ("directory service"), такой как LDAP, поддерживающей расширяемую схему данных и несколько контекстов именования.</p>
+
+<p>Термин "связанные с NIS объекты" ("NIS-related entities") в широком смысле относится к объектам, которые обычно разрешаются с помощью Network Information Service. (NIS раньше называлась YP.) Развертывание LDAP для разрешения этих объектов не подразумевает, что будет использоваться NIS, ни в качестве шлюза, ни каким-либо другим способом. В частности, классы для хоста и сети подходят для задач общего назначения, и их можно применить в системах, где LDAP или X.500 используются для разрешения хостов и сетей.</p>
+
+<p>Термин "DUA",&thinsp;&mdash;&thinsp;пользовательский агент каталога (directory user agent),&thinsp;&mdash;&thinsp;указывает на клиент LDAP, запрашивающий эти объекты, такой как шлюз LDAP-NIS или библиотека C.  Термин "клиент" ("client") указывает на приложение, которое в конечном итоге позволяет использовать информацию, возвращаемую в результате разрешения. Не имеет значения, находятся ли DUA и клиент в одном адресном пространстве. Действие DUA по доведению этой информации до клиента называется "перепубликацией" ("republishing").</p>
+
+<p>Во избежание путаницы, термин "логин" ("login name") указывает на регистрационное имя пользователя (является значением атрибута uid), а термин "идентификатор пользователя" ("user ID") указывает на целочисленный идентификационный номер пользователя (является значением атрибута uidNumber).</p>
+
+<p>Фразы "разрешение объекта" ("resolving an entity") и "разрешение объектов" ("resolution of entities") указывают, соответственно, на перечисление связанных с NIS объектов заданного типа, и на сравнение их с заданными критериями поиска. В результате успешного "разрешения" ("resolution") возвращаются один или несколько объектов (в результате "совпадения" ("match") возвращается только один объект).</p>
+
+<p>Использование термина UNIX не говорит о том, что этот набор схемы данных одобрен владельцами торговой марки UNIX. Там, где это необходимо, термин "объект TCP/IP" ("TCP/IP entity") используется для указания на протоколы, службы, хосты и сети, а термин "объект UNIX" ("UNIX entity") на все остальные объекты. (Первая категория не требует от операционной системы хоста поддержки интерфейсов, необходимых для разрешения объектов UNIX.)</p>
+
+<p>Определяемые ниже OID наследуются от iso(1) org(3) dod(6) internet(1) directory(1) nisSchema(1).</p>
+
+<h3><a name="section-2.2">2.2</a>. Атрибуты</h3>
+
+<p>Ниже кратко изложены атрибуты и классы, определённые в данном документе.</p>
+
+<p>В данном документе определены следующие атрибуты:</p>
+
+<pre class="list">
+           uidNumber
+           gidNumber
+           gecos
+           homeDirectory
+           loginShell
+           shadowLastChange
+           shadowMin
+           shadowMax
+           shadowWarning
+           shadowInactive
+           shadowExpire
+           shadowFlag
+           memberUid
+           memberNisNetgroup
+           nisNetgroupTriple
+           ipServicePort
+           ipServiceProtocol
+           ipProtocolNumber
+           oncRpcNumber
+           ipHostNumber
+           ipNetworkNumber
+           ipNetmaskNumber
+           macAddress
+           bootParameter
+           bootFile
+           nisMapName
+           nisMapEntry
+</pre>
+
+<p>Кроме того, требуются некоторые атрибуты, определённые в [<a href="http://tools.ietf.org/html/rfc2256">RFC2256</a>].</p>
+
+<h3><a name="section-2.3">2.3</a>. Объектные классы</h3>
+
+<p>В данном документе определены следующие объектные классы:</p>
+
+<pre class="list">
+           posixAccount
+           shadowAccount
+           posixGroup
+           ipService
+           ipProtocol
+           oncRpc
+           ipHost
+           ipNetwork
+           nisNetgroup
+           nisMap
+           nisObject
+           ieee802Device
+           bootableDevice
+</pre>
+
+<p>Кроме того, требуются некоторые классы, определённые в [<a href="http://tools.ietf.org/html/rfc2256">RFC2256</a>].</p>
+
+<h3><a name="section-2.4">2.4</a>. Определения синтаксисов</h3>
+
+<p>Ниже представлены определения синтаксисов [<a href="http://tools.ietf.org/html/rfc2252">RFC2252</a>], используемые в этом наборе схемы. nisNetgroupTripleSyntax отражает триплеты сетевых групп NIS:</p>
+
+<pre class="list">
+           ( nisSchema.0.0 NAME 'nisNetgroupTripleSyntax'
+             DESC 'триплет сетевой группы NIS' )
+</pre>
+
+<p>Значения в этом синтаксисе:</p>
+
+<pre class="list">
+        nisnetgrouptriple = "(" hostname "," username "," domainname ")"
+        hostname          = "" / "-" / keystring
+        username          = "" / "-" / keystring
+        domainname        = "" / "-" / keystring
+</pre>
+
+<p>Серверы X.500 могут использовать следующее представление этого синтаксиса:</p>
+
+<pre class="list">
+        nisNetgroupTripleSyntax ::= SEQUENCE {
+         hostname  [0] IA5String OPTIONAL,
+         username  [1] IA5String OPTIONAL,
+         domainname  [2] IA5String OPTIONAL
+        }
+</pre>
+
+<p>Синтаксис bootParameterSyntax отражает параметры загрузки:</p>
+
+<pre class="list">
+           ( nisSchema.0.1 NAME 'bootParameterSyntax'
+             DESC 'Параметр загрузки' )
+</pre>
+
+<p>в нем:</p>
+
+<pre class="list">
+        bootparameter     = key "=" server ":" path
+        key               = keystring
+        server            = keystring
+        path              = keystring
+</pre>
+
+<p>Серверы X.500 могут использовать следующее представление этого синтаксиса:</p>
+
+<pre class="list">
+        bootParameterSyntax ::= SEQUENCE {
+         key     IA5String,
+         server  IA5String,
+         path    IA5String
+        }
+</pre>
+
+<p>Значения, соблюдающие эти синтаксисы, кодируются LDAP-серверами как строки.</p>
+
+<h2><a name="section-3">3</a>. Определения атрибутов</h2>
+
+<p>В этом разделе содержатся определения атрибутов, которые должны быть реализованы DUA, поддерживающими этот набор схемы данных.</p>
+
+<pre class="list">
+        ( nisSchema.1.0 NAME 'uidNumber'
+          DESC 'Целое число, уникально идентифицирующее пользователя
+                в административном домене'
+          EQUALITY integerMatch SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.1 NAME 'gidNumber'
+          DESC 'Целое число, уникально идентифицирующее группу
+                в административном домене'
+          EQUALITY integerMatch SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.2 NAME 'gecos'
+          DESC 'Поле GECOS; общепринятое имя'
+          EQUALITY caseIgnoreIA5Match
+          SUBSTRINGS caseIgnoreIA5SubstringsMatch
+          SYNTAX 'IA5String' SINGLE-VALUE )
+
+        ( nisSchema.1.3 NAME 'homeDirectory'
+          DESC 'Абсолютный путь к домашней директории'
+          EQUALITY caseExactIA5Match
+          SYNTAX 'IA5String' SINGLE-VALUE )
+
+        ( nisSchema.1.4 NAME 'loginShell'
+          DESC 'Путь к командной оболочке, назначаемой при входе в систему'
+          EQUALITY caseExactIA5Match
+          SYNTAX 'IA5String' SINGLE-VALUE )
+
+        ( nisSchema.1.5 NAME 'shadowLastChange'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.6 NAME 'shadowMin'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.7 NAME 'shadowMax'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.8 NAME 'shadowWarning'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.9 NAME 'shadowInactive'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.10 NAME 'shadowExpire'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.11 NAME 'shadowFlag'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.12 NAME 'memberUid'
+          EQUALITY caseExactIA5Match
+          SUBSTRINGS caseExactIA5SubstringsMatch
+          SYNTAX 'IA5String' )
+
+        ( nisSchema.1.13 NAME 'memberNisNetgroup'
+          EQUALITY caseExactIA5Match
+          SUBSTRINGS caseExactIA5SubstringsMatch
+          SYNTAX 'IA5String' )
+
+        ( nisSchema.1.14 NAME 'nisNetgroupTriple'
+          DESC 'Триплет сетевой группы'
+          SYNTAX 'nisNetgroupTripleSyntax' )
+
+        ( nisSchema.1.15 NAME 'ipServicePort'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.16 NAME 'ipServiceProtocol'
+          SUP name )
+
+        ( nisSchema.1.17 NAME 'ipProtocolNumber'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.18 NAME 'oncRpcNumber'
+          EQUALITY integerMatch
+          SYNTAX 'INTEGER' SINGLE-VALUE )
+
+        ( nisSchema.1.19 NAME 'ipHostNumber'
+          DESC 'IP-адрес в точечно-цифровой нотации, например, 192.168.1.1,
+                без начальных нулей'
+          EQUALITY caseIgnoreIA5Match
+          SYNTAX 'IA5String{128}' )
+
+        ( nisSchema.1.20 NAME 'ipNetworkNumber'
+          DESC 'IP-сеть в точечно-цифровой нотации, например, 192.168,
+                без начальных нулей'
+          EQUALITY caseIgnoreIA5Match
+          SYNTAX 'IA5String{128}' SINGLE-VALUE )
+
+        ( nisSchema.1.21 NAME 'ipNetmaskNumber'
+          DESC 'IP-маска в точечно-цифровой нотации, например, 255.255.255.0,
+                без начальных нулей'
+          EQUALITY caseIgnoreIA5Match
+          SYNTAX 'IA5String{128}' SINGLE-VALUE )
+
+        ( nisSchema.1.22 NAME 'macAddress'
+          DESC 'MAC-адрес в максимальной нотации, шестнадцатеричные цифры,
+                разделённые двоеточиями, например, 00:00:92:90:ee:e2'
+          EQUALITY caseIgnoreIA5Match
+          SYNTAX 'IA5String{128}' )
+
+        ( nisSchema.1.23 NAME 'bootParameter'
+          DESC 'Параметр rpc.bootparamd'
+          SYNTAX 'bootParameterSyntax' )
+
+        ( nisSchema.1.24 NAME 'bootFile'
+          DESC 'Имя загрузочного образа'
+          EQUALITY caseExactIA5Match
+          SYNTAX 'IA5String' )
+
+        ( nisSchema.1.26 NAME 'nisMapName'
+          SUP name )
+
+        ( nisSchema.1.27 NAME 'nisMapEntry'
+          EQUALITY caseExactIA5Match
+          SUBSTRINGS caseExactIA5SubstringsMatch
+          SYNTAX 'IA5String{1024}' SINGLE-VALUE )
+</pre>
+
+<h2><a name="section-4">4</a>. Определения классов</h2>
+
+<p>В этом разделе содержатся определения классов, которые должны быть реализованы DUA, поддерживающими этот набор схемы данных.</p>
+
+<p>Объектный класс rfc822MailGroup может (MAY) быть использован для представления почтовой группы в целях раскрытия псевдонимов. Существует несколько альтернативных наборов схемы данных для маршрутизации и доставки почты с использованием каталогов LDAP, рассмотрение которых выходит за рамки этого документа.</p>
+
+<pre class="list">
+        ( nisSchema.2.0 NAME 'posixAccount' SUP top AUXILIARY
+          DESC 'Абстракция учётной записи с POSIX-атрибутами'
+          MUST ( cn $ uid $ uidNumber $ gidNumber $ homeDirectory )
+          MAY ( userPassword $ loginShell $ gecos $ description ) )
+
+        ( nisSchema.2.1 NAME 'shadowAccount' SUP top AUXILIARY
+          DESC 'Дополнительные атрибуты для теневых паролей'
+          MUST uid
+          MAY ( userPassword $ shadowLastChange $ shadowMin
+                shadowMax $ shadowWarning $ shadowInactive $
+                shadowExpire $ shadowFlag $ description ) )
+
+        ( nisSchema.2.2 NAME 'posixGroup' SUP top STRUCTURAL
+          DESC 'Абстракция группы учётных записей'
+          MUST ( cn $ gidNumber )
+          MAY ( userPassword $ memberUid $ description ) )
+
+        ( nisSchema.2.3 NAME 'ipService' SUP top STRUCTURAL
+          DESC 'Абстракция службы Internet Protocol.
+                Отображает IP-порт и протокол (такой как tcp или udp)
+                в одно или более имён; в отличительном значении
+                атрибута cn указывается каноническое имя
+                сервиса'
+          MUST ( cn $ ipServicePort $ ipServiceProtocol )
+          MAY ( description ) )
+
+        ( nisSchema.2.4 NAME 'ipProtocol' SUP top STRUCTURAL
+          DESC 'Абстракция протокола IP. Отображает номер протокола
+                в одно или более имён. В отличительном значении
+                атрибута cn указывается каноническое имя протокола'
+          MUST ( cn $ ipProtocolNumber $ description )
+          MAY description )
+
+        ( nisSchema.2.5 NAME 'oncRpc' SUP top STRUCTURAL
+          DESC 'Абстракция привязки Open Network Computing (ONC)
+               [<a href="http://tools.ietf.org/html/rfc1057">RFC1057</a>] Remote Procedure Call (RPC).
+               Этот класс отображает номер ONC RPC в имя.
+               В отличительном значении атрибута cn указывается
+               каноническое имя сервиса RPC'
+          MUST ( cn $ oncRpcNumber $ description )
+          MAY description )
+
+        ( nisSchema.2.6 NAME 'ipHost' SUP top AUXILIARY
+
+          DESC 'Абстракция хоста, IP-устройства. В отличительном значении
+                атрибута cn указывается каноническое имя хоста. В качестве
+                структурного класса следует (SHOULD) использовать device'
+          MUST ( cn $ ipHostNumber )
+          MAY ( l $ description $ manager ) )
+
+        ( nisSchema.2.7 NAME 'ipNetwork' SUP top STRUCTURAL
+          DESC 'Абстракция сети. В отличительном значении
+                атрибута cn указывается каноническое имя сети'
+          MUST ( cn $ ipNetworkNumber )
+          MAY ( ipNetmaskNumber $ l $ description $ manager ) )
+
+        ( nisSchema.2.8 NAME 'nisNetgroup' SUP top STRUCTURAL
+          DESC 'Абстракция сетевой группы. Может ссылаться на другие сетевые группы'
+          MUST cn
+          MAY ( nisNetgroupTriple $ memberNisNetgroup $ description ) )
+
+        ( nisSchema.2.09 NAME 'nisMap' SUP top STRUCTURAL
+          DESC 'Общая абстракция карты NIS'
+          MUST nisMapName
+          MAY description )
+
+        ( nisSchema.2.10 NAME 'nisObject' SUP top STRUCTURAL
+          DESC 'Объект в карте NIS'
+          MUST ( cn $ nisMapEntry $ nisMapName )
+          MAY description )
+
+        ( nisSchema.2.11 NAME 'ieee802Device' SUP top AUXILIARY
+          DESC 'Устройство с MAC-адресом; В качестве структурного
+                класса следует (SHOULD) использовать device'
+          MAY macAddress )
+
+        ( nisSchema.2.12 NAME 'bootableDevice' SUP top AUXILIARY
+          DESC 'Устройство с параметрами загрузки; В качестве структурного
+                класса следует (SHOULD) использовать device'
+          MAY ( bootFile $ bootParameter ) )
+</pre>
+
+<h2><a name="section-5">5</a>. Детали реализации</h2>
+
+<h3><a name="section-5.1">5.1</a>. Предлагаемые методы разрешения</h3>
+
+<p>Предпочтительным средством перенацеливания клиентских приложений (использующих общие сервисы библиотеки C) на использование LDAP в качестве источника информации для перечисленных в <a href="#section-5.2">разделе 5.2</a> функций является модификация их исходного кода на выполнение прямых запросов LDAP. Поскольку исходные коды коммерческих библиотек C и приложений редко доступны конечному пользователю, есть вариант сэмулировать поведение поддерживаемой службы имён (такой как NIS). (Это позволяет также выполнять кэширование объектов через пространства адресов.) В случае NIS, общедоступны примеры реализации и описание интерфейса RPC.</p>
+
+<p>Средства, с помощью которых операционная система перенацеливается на использование LDAP, зависят от реализации. Например, некоторые операционные системы и библиотеки C поддерживают резольверы с возможностью расширения конечным пользователем посредством использования динамически подгружаемых библиотек и "переключателей" служб имён. Способы указания DUA местонахождения серверов LDAP также зависят от реализации.</p>
+
+<h3><a name="section-5.2">5.2</a>. Затрагиваемые библиотечные функции</h3>
+
+<p>Приведённые ниже функции обычно можно найти в библиотеках C большинства UNIX и POSIX-совместимых систем. Рядом с именем функции указан поисковый фильтр LDAP [<a href="http://tools.ietf.org/html/rfc2254">RFC2254</a>], который можно использовать для нахождения данных при вызове функции. Параметры обозначены шаблонами %s и %d для строковых и целочисленных аргументов, соответственно. Длинные строки разбиты на несколько.</p>
+
+<pre class="list">
+        getpwnam()              (&amp;(objectClass=posixAccount)(uid=%s))
+        getpwuid()              (&amp;(objectClass=posixAccount)
+                                (uidNumber=%d))
+        getpwent()              (objectClass=posixAccount)
+
+        getspnam()              (&amp;(objectClass=shadowAccount)(uid=%s))
+        getspent()              (objectClass=shadowAccount)
+
+        getgrnam()              (&amp;(objectClass=posixGroup)(cn=%s))
+        getgrgid()              (&amp;(objectClass=posixGroup)
+                                (gidNumber=%d))
+        getgrent()              (objectClass=posixGroup)
+
+        getservbyname()         (&amp;(objectClass=ipService)
+                                (cn=%s)(ipServiceProtocol=%s))
+        getservbyport()         (&amp;(objectClass=ipService)
+                                (ipServicePort=%d)
+                                (ipServiceProtocol=%s))
+        getservent()            (objectClass=ipService)
+
+        getrpcbyname()          (&amp;(objectClass=oncRpc)(cn=%s))
+        getrpcbynumber()        (&amp;(objectClass=oncRpc)(oncRpcNumber=%d))
+        getrpcent()             (objectClass=oncRpc)
+
+        getprotobyname()        (&amp;(objectClass=ipProtocol)(cn=%s))
+        getprotobynumber()      (&amp;(objectClass=ipProtocol)
+                                (ipProtocolNumber=%d))
+        getprotoent()           (objectClass=ipProtocol)
+
+        gethostbyname()         (&amp;(objectClass=ipHost)(cn=%s))
+        gethostbyaddr()         (&amp;(objectClass=ipHost)(ipHostNumber=%s))
+        gethostent()            (objectClass=ipHost)
+
+        getnetbyname()          (&amp;(objectClass=ipNetwork)(cn=%s))
+        getnetbyaddr()          (&amp;(objectClass=ipNetwork)
+                                (ipNetworkNumber=%s))
+        getnetent()             (objectClass=ipNetwork)
+
+        setnetgrent()           (&amp;(objectClass=nisNetgroup)(cn=%s))
+</pre>
+
+<h3><a name="section-5.3">5.3</a>. Интерпретация записей пользователей и групп</h3>
+
+<p>Разрешение пользователей и групп инициируется функциями с префиксами getpw и getgr, соответственно. В атрибуте uid содержится логин пользователя. В записях с объектным классом posixGroup в атрибуте cn содержится имя группы.</p>
+
+<p>Удобным структурным классом для posixAccount является объектный класс account. Его следует (SHOULD) использовать, если не требуется дополнительных атрибутов.</p>
+
+<p>Предполагается, что типы атрибутов uid и cn используются для формирования RDN в записях с объектными классами posixAccount и posixGroup, соответственно.</p>
+
+<p>Поле GECOS учётной записи в первую очередь определяется значением атрибута gecos. Если атрибут gecos отсутствует, должно (MUST) быть использовано значение атрибута cn. (Наличие атрибута gecos позволяет возвращать клиенту информацию, включаемую в поле GECOS, такую, как номер телефона пользователя, без изменения смысла значения атрибута cn. Этот атрибут также полезен в каталогах, где в поле "общепринятое имя" ("common name") содержатся данные, отличные от полного имени пользователя.)</p>
+
+<p>Записи классов posixAccount, posixGroup или shadowAccount без атрибута userPassword не должны (MUST NOT) использоваться для аутентификации. Клиенту следует возвращать пароль, по которому нельзя найти соответствия, такой как "x".</p>
+
+<p>Значения атрибута userPassword должны (MUST) быть представлены следующим синтаксисом:</p>
+
+<pre class="list">
+        passwordvalue          = schemeprefix encryptedpassword
+        schemeprefix           = "{" scheme "}"
+        scheme                 = "crypt" / "md5" / "sha" / altscheme
+        altscheme              = "x-" keystring
+        encryptedpassword      = encrypted password
+</pre>
+
+<p>Строка encrypted password содержит ключ, захэшированный с использованием алгоритма scheme.</p>
+
+<p>Значения атрибута userPassword, которые не придерживаются данного синтаксиса, не должны (MUST NOT) быть использованы для аутентификация. DUA должен (MUST) последовательно перебирать значения этого атрибута, пока не будет найдено значение, соответствующее указанному синтаксису. Считается, что у пользователя нет пароля, только если поле encryptedpassword представляет собой пустую строку. От DUA не требуется рассматривать схемы шифрования, которые клиент не сможет распознать; в большинстве случаев может быть достаточно рассмотреть только схему "crypt".</p>
+
+<p>Пример атрибута userPassword:</p>
+
+<pre class="list">
+        userPassword: {crypt}X5/DBrWPOQQaI
+</pre>
+
+<p>Будущий стандарт может определять LDAPv3-описание атрибута для представления хэшированных пользовательских паролей так, как приведено ниже. Данная схема не должна (MUST NOT) использоваться с LDAPv2 DUA и DSA.</p>
+
+<pre class="list">
+        attributetype           = attributename sep attributeoption
+        attributename           = "userPassword"
+        sep                     = ";"
+        attributeoption         = schemeclass "-" scheme
+        schemeclass             = "hash" / altschemeclass
+        scheme                  = "crypt" / "md5" / "sha" / altscheme
+        altschemeclass          = "x-" keystring
+        altscheme               = keystring
+</pre>
+
+<p>Пример атрибута userPassword, представленного с использованием LDAPv3-описания атрибута:</p>
+
+<pre class="list">
+        userPassword;hash-crypt: X5/DBrWPOQQaI
+</pre>
+
+<p>DUA может (MAY) использовать эти атрибуты в классе shadowAccount для предоставления сервиса теневых паролей (getspnam() и getspent()). В этом случае DUA не должен (MUST NOT) использовать атрибут userPassword в getpwnam() и подобных вызовах, и вместо этого должен (MUST) возвращать клиенту пароль, по которому нельзя найти соответствия (такой как "x").</p>
+
+<h3><a name="section-5.4">5.4</a>. Интерпретация хостов и сетей</h3>
+
+<p>Атрибуты ipHostNumber и ipNetworkNumber предназначены для использования вместо атрибута dNSRecord (определённого в <a href="http://tools.ietf.org/html/rfc1279">RFC1279</a>) с целью упрощения задачи DUA по интерпретации записей в каталоге. Значение атрибута dNSRecord выражает полное представление ресурса, в том числе данные о классе и времени жизни, что является избыточным для данной схемы.</p>
+
+<p>Кроме того, классы ipHost и ipNetwork позволяют представить хост и сеть (соответственно) и все их псевдонимы одной записью в каталоге. Это не всегда возможно, если запись ресурса DNS напрямую отображается в запись LDAP. Реализации, в которых планируется использовать LDAP для управления информацией по зонам DNS, не лишены такой возможности, в них можно просто не использовать классы ipHost и ipNetwork.</p>
+
+<p>В этом документе переопределяется (без претензий на исключительность) определённый в <a href="http://tools.ietf.org/html/rfc1279">RFC1279</a> класс ipNetwork, с целью достижения согласованного именования с классом ipHost. Атрибут ipNetworkNumber также используется в объектном классе siteContact [<a href="#ref-ROSE">ROSE</a>].</p>
+
+<p>Конечные нули в адресе сети должны (MUST) быть опущены. Можно использовать CIDR-стиль сетевых адресов (например, 192.168.1/24).</p>
+
+<p>IPv6-адреса хостов должны (MUST) быть записаны в их "предпочтительной" форме (как определено в <a href="http://tools.ietf.org/html/rfc1884#section-2.2">разделе 2.2.1 RFC1884</a>), где указываются все компоненты адреса и опускаются начальные нули каждого компонента. Такая форма записи обеспечивает согласованные средства разрешения ip-хостов по адресу.</p>
+
+<h3><a name="section-5.5">5.5</a>. Интерпретация других объектов</h3>
+
+<p>В общем случае, предлагается осуществлять однозначное отображение между объектами и записями LDAP, поэтому у каждого объекта должно быть ровно одно представление в DIT. В некоторых случаях это невозможно; например, служба, которая представлена более чем в одной разновидности протокола. Рассмотрим следующую запись:</p>
+
+<pre class="list">
+           dn: cn=domain, dc=aja, dc=com
+           cn: domain
+           cn: nameserver
+           objectClass: top
+           objectClass: ipService
+           ipServicePort: 53
+           ipServiceProtocol: tcp
+           ipServiceProtocol: udp
+</pre>
+
+<p>Эта запись должна (MUST) отображаться в следующие два объекта служб:</p>
+
+<pre class="list">
+           domain  53/tcp  nameserver
+           domain  53/udp  nameserver
+</pre>
+
+<p>Хотя эти два объекта могут быть представлены двумя отдельными записями LDAP с разными уникальными именами (например, cn=domain+ipServiceProtocol=tcp, ... и cn=domain+ipServiceProtocol=udp, ...), удобнее представлять их в виде одной записи. (Если служба представлена разновидностями протокола с разными портами, то требуется наличие нескольких записей; для формирования их уникальных имён могут быть использованы многозначные RDN.)</p>
+
+<p>За исключением значений атрибута userPassword, которые обрабатываются в соответствии с синтаксисом, рассмотренным в <a href="#section-5.2">разделе 5.2</a>, любые пустые значения (состоящие из строки нулевой длины) возвращаются DUA клиенту. DUA должен (MUST) отклонять любые записи, не удовлетворяющие схеме данных (отсутствие обязательных атрибутов). При перечислении записей следует (SHOULD) игнорировать те из них, которые не удовлетворяют схеме данных.</p>
+
+<p>Объектный класс nisObject может (MAY) быть использован как общее средство представления объектов NIS. Его использование не рекомендуется; если есть потребность в объектах, не описанных в этом наборе схемы данных, следует разработать соответствующий набор. Разработчикам LDAP-систем настоятельно рекомендуется поддерживать отображения между объектами NIS и объектными классами с возможностью расширения их конечным пользователем. (При использовании класса nisObject для формирования RDN записи может быть использован атрибут nisMapName.)</p>
+
+<h3><a name="section-5.6">5.6</a>. Определение канонического имени объекта при нескольких значениях атрибутов именования</h3>
+
+<p>Для таких объектов как хосты, службы, сети, протоколы и RPC, у которых могут быть один или несколько псевдонимов, для определения канонического имени следует (SHOULD) использовать относительное уникальное имя (RDN) соответствующей записи. Любые другие значения того же атрибута, что формирует RDN, используются в качестве псевдонимов. Например, каноническое имя службы, описанной в <a href="#section-5.5">разделе 5.5</a>,&thinsp;&mdash;&thinsp;"domain", а её единственный псевдоним&thinsp;&mdash;&thinsp;"nameserver".</p>
+
+<p>В наборе схемы из этого документа, как правило, определяется только один атрибут для каждого класса, который подходит для формирования отличительного имёни объекта (из претендентов на формирование отличительного имени исключаются любые атрибуты с целочисленным синтаксисом; предполагается, что записи будут отличаться по символьным именам объектов). Обычно используется атрибут common name (cn). Это помогает DUA в определении канонического имени объекта, так как он может проанализировать значение относительного уникального имени. Тогда псевдонимами считаются любые значения атрибута, используемого для формирования относительного уникального имени (например, cn), которые не совпадают с каноническим именем объекта.</p>
+
+<p>Если для формирования относительного уникального имени записи используется атрибут, не входящий в рассматриваемый набор схемы данных (такое может случиться при использовании вспомогательных объектных классов из данного набора), каноническое имя объекта может не присутствовать в RDN. В этом случае для представления канонического имени объекта DUA должен (MUST) выбрать одно из неотличительных значений атрибутов. Поскольку сервер каталогов не гарантирует соблюдения определённого порядка при выборке значений атрибутов, есть вероятность, что однозначно установить отличительное имя объекта не получится. Такая неоднозначность не должна (SHOULD NOT) разрешаться путём отображения одной записи каталога в несколько объектов.</p>
+
+<h2><a name="section-6">6</a>. О реализации</h2>
+
+<p>Был разработан сервер NIS, который использует LDAP вместо локальных файлов и поддерживает набор схемы данных, определённый в этом документе.</p>
+
+<p>Для Free Software Foundation была написана эталонная реализация библиотеки C с кодом разрешения. Могут применяться и другие библиотеки C, поддерживающие технологии Name Service Switch (NSS) или Information Retrieval Service (IRS).</p>
+
+<p>Автор документа выпустил в свободный доступ набор скриптов для представления сведений из локальных баз данных, таких как /etc/passwd и /etc/hosts, в форме, подходящей для загрузки в каталог LDAP.</p>
+
+<h2><a name="section-7">7</a>. О безопасности</h2>
+
+<p>Практически все приведённые соображения безопасности не относятся напрямую к области этого документа. Общеизвестно, что предоставлять доступ непривилегированным пользователям к паролям, захэшированным с помощью широко известных хэш-функций (таких, как crypt()), опасно, поскольку они могут быть подвергнуты атакам по словарю или методом "грубой силы". Возможность хэширования паролей с применением crypt() оставлена только для совместимости с существующими реализациями системы UNIX. В системах, для которых безопасность является критичной, следует (SHOULD) рассмотреть вопрос об использовании сервисов строгой аутентификации для проверки подлинности пользователей.</p>
+
+<p>С другой стороны, доступ к хэшированным паролям можно предоставлять только ряду привилегированных DUA, предоставляющих клиентским приложениям службу "теневых" паролей. Реализация этого подхода может оказаться нетривиальной задачей.</p>
+
+<p>Поскольку данный набор схемы представляет объекты уровня операционной системы, следует (SHOULD) разграничивать доступ к этим объектам (однако, нет практического смысла ограничивать доступ к данным, которые можно будет получить средствами операционной системы уже без ограничения доступа). В частности, важно, чтобы только администраторы могли модифицировать записи, построенные с использованием данного набора схемы, за исключением разрешения принципалам изменять свои пароли (что может быть сделано от имени пользователя клиентским приложением, выполняющим подсоединение к каталогу с правами суперпользователя, тогда можно не назначать пользователям особые права доступа к парольным атрибутам). Например, если пользователям разрешено изменять значение атрибута uidNumber, они могут назначить себе идентификатор, эквивалентный идентификатору суперпользователя, и, тем самым, поставить безопасность системы под угрозу.<p>
+
+<p>Поддерево DIT, сведения из которого публикуются DUA (таким, как шлюз NIS), должно (SHOULD) входить в тот административный домен, который представляет выполняющий публикацию DUA. Например, внешние по отношению к организации принципалы, несмотря на то, что они входят в DIT, не следует рассматривать с точки зрения предоставления тех же полномочий, что и принципалам, входящим в организацию.</p>
+
+<p>Наконец, следует проявлять осторожность при обработке целочисленных атрибутов особого рода (в частности, атрибутов uidNumber и gidNumber), содержащих значения нулевой длины. DUA могут (MAY) интерпретировать такие значения как относящиеся к пользователю "nobody" или группе "nogroup", соответственно.</p>
+
+<h2><a name="section-8">8</a>. Благодарности</h2>
+
+<p>Автор выражает признательность Leif Hedstrom из Netscape Communications Corporation, Michael Grant и Rosanna Lee из Sun Microsystems Inc., Ed Reed из Novell Inc. и Mark Wahl из Critical Angle Inc. за их существенный вклад в разработку данного набора схемы. Спасибо Andrew Josey из The Open Group за разъяснение аспектов использования торговой марки UNIX, а также Tim Howes и Peter J. Cherny за их поддержку.</p>
+
+<p>UNIX&thinsp;&mdash;&thinsp;зарегистрированная торговая марка Open Group.</p>
+
+<h2><a name="section-9">9</a>. Документы</h2>
+
+<p>[<a name="ref-RFC1057" id="ref-RFC1057">RFC1057</a>] Sun Microsystems, Inc., "RPC: Remote Procedure Call: Protocol Specification Version 2", <a href="http://tools.ietf.org/html/rfc1057">RFC 1057</a>, июнь 1988 г.</p>
+
+<p>[<a name="ref-RFC1279" id="ref-RFC1279">RFC1279</a>] Kille, S., "X.500 and Domains", <a href="http://tools.ietf.org/html/rfc1279">RFC 1279</a>, ноябрь 1991 г.</p>
+
+<p>[<a name="ref-RFC1884" id="ref-RFC1884">RFC1884</a>] Hinden, R. и S. Deering, "IP Version 6 Addressing Architecture", <a href="http://tools.ietf.org/html/rfc1884">RFC 1884</a>, декабрь 1995 г.</p>
+
+<p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, March 1997 г.</p>
+
+<p>[<a name="ref-RFC2251" id="ref-RFC2251">RFC2251</a>] Wahl, M., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3)", <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, декабрь 1997 г.</p>
+
+<p>[<a name="ref-RFC2252" id="ref-RFC2252">RFC2252</a>] Wahl, M., Coulbeck, A., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions", <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, декабрь 1997 г.</p>
+
+<p>[<a name="ref-RFC2254" id="ref-RFC2254">RFC2254</a>] Howes, T., "The String Representation of LDAP Search Filters", <a href="http://tools.ietf.org/html/rfc2254">RFC 2254</a>, декабрь 1997 г.</p>
+
+<p>[<a name="ref-RFC2256" id="ref-RFC2256">RFC2256</a>] Wahl, M., "A Summary of the X.500(96) User Schema for use with LDAPv3", <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>, декабрь 1997 г.</p>
+
+<p>[<a name="ref-ROSE" id="ref-ROSE">ROSE</a>] M. T. Rose, "The Little Black Book: Mail Bonding with OSI Directory Services", ISBN 0-13-683210-5, Prentice-Hall, Inc., 1992 г.</p>
+
+<p>[<a name="ref-X500" id="ref-X500">X500</a>] "Information Processing Systems - Open Systems Interconnection - The Directory: Overview of Concepts, Models and Service",
+        ISO/IEC JTC 1/SC21, International Standard 9594-1, 1988 г.</p>
+
+<p>[<a name="ref-XOPEN" id="ref-XOPEN">XOPEN</a>] ISO/IEC 9945-1:1990, Information Technology - Portable Operating Systems Interface (POSIX) - Part 1: Systems Application Programming Interface (API) [C Language]</p>
+
+<h2><a name="section-10">10</a>. Адрес автора</h2>
+
+<p>Luke Howard</p>
+<p>PO Box 59, Central Park Vic 3145, Australia</p>
+<p>EMail: lukeh@xedoc.com</p>
+
+<h2><a name="appendix-A">Приложение A</a>. Примеры записей</h2>
+
+<p>Примеры в этом разделе приведены для иллюстрации схемы данных, описываемой в этом документе. Они не являются исчерпывающими.</p>
+
+<p>Пример записи с объектным классом posixAccount:</p>
+
+<pre class="list">
+           dn: uid=lester, dc=aja, dc=com
+           objectClass: top
+           objectClass: account
+           objectClass: posixAccount
+           uid: lester
+           cn: Lester the Nightfly
+           userPassword: {crypt}X5/DBrWPOQQaI
+           gecos: Lester
+           loginShell: /bin/csh
+           uidNumber: 10
+           gidNumber: 10
+           homeDirectory: /home/lester
+</pre>
+
+<p>Соответствующая запись в системном файле паролей UNIX:</p>
+
+<pre class="list">
+        lester:X5/DBrWPOQQaI:10:10:Lester:/home/lester:/bin/sh
+</pre>
+
+<p>Пример записи с объектным классом ipHost:</p>
+
+<pre class="list">
+           dn: cn=peg.aja.com, dc=aja, dc=com
+           objectClass: top
+           objectClass: device
+           objectClass: ipHost
+           objectClass: bootableDevice
+           objectClass: ieee802Device
+           cn: peg.aja.com
+           cn: www.aja.com
+           ipHostNumber: 10.0.0.1
+           macAddress: 00:00:92:90:ee:e2
+           bootFile: mach
+           bootParameter: root=fs:/nfsroot/peg
+           bootParameter: swap=fs:/nfsswap/peg
+           bootParameter: dump=fs:/nfsdump/peg
+</pre>
+<p>Эта запись представляет хост с каноническим именем peg.aja.com и псевдонимом www.aja.com. Также указаны Ethernet-адрес и четыре параметра загрузки.</p>
+
+<p>Пример записи с объектным классом nisNetgroup:</p>
+
+<pre class="list">
+           dn: cn=nightfly, dc=aja, dc=com
+           objectClass: top
+           objectClass: nisNetgroup
+           cn: nightfly
+           nisNetgroupTriple: (charlemagne,peg,dunes.aja.com)
+           nisNetgroupTriple: (lester,-,)
+           memberNisNetgroup: kamakiriad
+</pre>
+
+<p>Эта запись представляет сетевую группу nightfly, содержащую два триплета (пользователь charlemagne, хост peg и домен dunes.aja.com; пользователь lester, хоста нет и любой домен) и одну сетевую группу-члена (kamakiriad).</p>
+
+<p>Наконец, пример использования объектного класса nisObject:</p>
+
+<pre class="list">
+           dn: nisMapName=tracks, dc=dunes, dc=aja, dc=com
+           objectClass: top
+           objectClass: nisMap
+           nisMapName: tracks
+
+           dn: cn=Maxine, nisMapName=tracks, dc=dunes, dc=aja, dc=com
+           objectClass: top
+           objectClass: nisObject
+           cn: Maxine
+           nisMapName: tracks
+           nisMapEntry: Nightfly$4
+</pre>
+
+<p>Эти записи представляют NIS-карту tracks и один объект карты.</p>
+
+<h2>Полное заявление авторских прав</h2>
+
+<p>Copyright (C) Internet Society (1998). Все права защищены.</p>
+
+<p>Этот документ и его переводы могут быть скопированы и переработаны в другие документы. Производные работы, комментирующие или иным способом поясняющие данный документ, либо оказывающие помощь в его реализации, могут быть подготовлены, скопированы, опубликованы и распространены, целиком или частями, без каких-либо ограничений, при условии, что указанное выше уведомление об авторском праве и этот параграф будут включены во все такие копии и производные работы. Однако, в этот документ как таковой не может быть внесено каких-либо изменений, таких как удаление уведомления об авторских правах или ссылок на Internet Society или другие организации Интернет, за исключением случаев, когда это требуется для разработки стандартов Интернет (при этом должны быть пройдены процедуры получения авторских прав, определённые в стандартах Интернет), либо когда это требуется при переводе на языки, отличные от английского.</p>
+
+<p>Предоставляемые выше ограниченные права являются бессрочными и не подлежат отзыву Internet Society, его наследниками или правопреемниками.</p>
+
+<p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
+
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+</body></html>

@@ -1,0 +1,1908 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Ресурсы проекта Pro-LDAP.ru. RFC по службам каталогов и LDAP." />
+<meta name="keywords" content="Pro-LDAP.ru,LDAP,OpenLDAP,slapd,по-русски,на русском,перевод,документация,RFC" />
+<link rel="stylesheet" href="/pro-ldap.css" type="text/css">
+<title>RFC 4511</title>
+<script src="/pro-ldap.js"></script>
+</head>
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+
+<pre>Network Working Group
+<strong>Request for Comments: 4511</strong>
+Категория: Standards Track
+Под редакцией J. Sermersheim, Novell, Inc.
+Июнь 2006 года
+Отменяет: <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>, <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a>
+</pre>
+
+<h1>Lightweight Directory Access Protocol (LDAP): Определение протокола</h1>
+
+<h3>Статус документа</h3>
+
+<p>Этот документ определяет проект стандарта протокола Internet для сообщества Internet, а также приглашает к обсуждению и подаче предложений по его усовершенствованию. Пожалуйста, сверяйтесь с текущей редакцией "Официальных стандартов протоколов Internet" (STD 1), чтобы узнать состояние стандартизации и статус этого протокола. Ограничений на распространение данного документа не накладывается.</p>
+
+<h3>Уведомление об авторских правах</h3>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<h3>Тезисы</h3>
+
+<p>В этом документе описываются элементы Облегчённого протокола доступа к службам каталогов (Lightweight Directory Access Protocol, LDAP) вместе с их семантиками и способами кодирования. LDAP обеспечивает доступ к распределенным службам каталогов, функционирующим в соответствии с моделями данных и сервисов X.500. Эти элементы протокола основываются на элементах Протокола доступа к службам каталогов (Directory Access Protocol, DAP) X.500.</p>
+
+<h3>Содержание</h3>
+<dl>
+<dt>1. <a href="#section-1">Введение</a></dt>
+<dd>1.1. <a href="#section-1.1">Взаимосвязь с другими спецификациями LDAP</a></dd>
+
+<dt>2. <a href="#section-2">Соглашения</a></dt>
+
+<dt>3. <a href="#section-3">Модель протокола</a></dt>
+<dd>3.1. <a href="#section-3.1">Взаимосвязь между операциями и уровнем сообщений LDAP</a></dd>
+
+<dt>4. <a href="#section-4">Элементы протокола</a></dt>
+<dd>4.1. <a href="#section-4.1">Общие элементы</a></dd>
+<blockquote>
+    <dd>4.1.1. <a href="#section-4.1.1">Конверт сообщения</a></dd>
+    <dd>4.1.2. <a href="#section-4.1.2">Строковые типы</a></dd>
+    <dd>4.1.3. <a href="#section-4.1.3">Уникальное имя (Distinguished Name) и относительное уникальное имя (Relative Distinguished Name)</a></dd>
+    <dd>4.1.4. <a href="#section-4.1.4">Описание атрибута</a></dd>
+    <dd>4.1.5. <a href="#section-4.1.5">Значение атрибута</a></dd>
+    <dd>4.1.6. <a href="#section-4.1.6">Утверждение значения атрибута (Attribute Value Assertion)</a></dd>
+    <dd>4.1.7. <a href="#section-4.1.7">Атрибут (Attribute) и частичный атрибут (PartialAttribute)</a></dd>
+    <dd>4.1.8. <a href="#section-4.1.8">Идентификатор правила соответствия</a></dd>
+    <dd>4.1.9. <a href="#section-4.1.9">Результирующее сообщение</a></dd>
+    <dd>4.1.10. <a href="#section-4.1.10">Отсылка (Referral)</a></dd>
+    <dd>4.1.11. <a href="#section-4.1.11">Элементы управления (Controls)</a></dd>
+</blockquote>
+<dd>4.2. <a href="#section-4.2">Операция подсоединения Bind</a></dd>
+<blockquote>
+    <dd>4.2.1. <a href="#section-4.2.1">Обработка запроса Bind</a></dd>
+    <dd>4.2.2. <a href="#section-4.2.2">Ответ Bind</a></dd>
+</blockquote>
+<dd>4.3. <a href="#section-4.3">Операция отсоединения Unbind</a></dd>
+<dd>4.4. <a href="#section-4.4">Произвольное уведомление (Unsolicited Notification)</a></dd>
+<blockquote>
+    <dd>4.4.1. <a href="#section-4.4.1">Уведомление об отключении (Notice of Disconnection)</a></dd>
+</blockquote>
+<dd>4.5. <a href="#section-4.5">Операция поиска Search</a></dd>
+<blockquote>
+    <dd>4.5.1. <a href="#section-4.5.1">Запрос Search</a></dd>
+    <dd>4.5.2. <a href="#section-4.5.2">Результат операции Search</a></dd>
+    <dd>4.5.3. <a href="#section-4.5.3">Ссылки-продолжения (Continuation References) в результатах операции Search</a></dd>
+</blockquote>
+<dd>4.6. <a href="#section-4.6">Операция модификации Modify</a></dd>
+<dd>4.7. <a href="#section-4.7">Операциия добавления Add</a></dd>
+<dd>4.8. <a href="#section-4.8">Операция удаления Delete</a></dd>
+<dd>4.9. <a href="#section-4.9">Операция модификации уникального имени Modify DN</a></dd>
+<dd>4.10. <a href="#section-4.10">Операция сравнения Compare</a></dd>
+<dd>4.11. <a href="#section-4.11">Операция отказа Abandon</a></dd>
+<dd>4.12. <a href="#section-4.12">Расширенная операция Extended</a></dd>
+<dd>4.13. <a href="#section-4.13">Промежуточное ответное сообщение IntermediateResponse</a></dd>
+<blockquote>
+    <dd>4.13.1. <a href="#section-4.13.1">Использование с LDAP ExtendedRequest и ExtendedResponse</a></dd>
+    <dd>4.13.2. <a href="#section-4.12.2">Использование с элементами управления запросов LDAP</a></dd>
+</blockquote>
+<dd>4.14. <a href="#section-4.14">Операция StartTLS</a></dd>
+<blockquote>
+    <dd>4.14.1. <a href="#section-4.14.1">Запрос StartTLS</a></dd>
+    <dd>4.14.2. <a href="#section-4.14.2">Результат операции StartTLS</a></dd>
+    <dd>4.14.3. <a href="#section-4.14.3">Снятие уровня TLS</a></dd>
+</blockquote>
+<dt>5. <a href="#section-5">Кодирование протокола, соединения и передача данных</a></dt>
+<dd>5.1. <a href="#section-5.1">Кодирование протокола</a></dd>
+<dd>5.2. <a href="#section-5.2">Transmission Control Protocol (TCP)</a></dd>
+<dd>5.3. <a href="#section-5.3">Прекращение сессии LDAP</a></dd>
+
+<dt>6. <a href="#section-6">О безопасности</a></dt>
+<dt>7. <a href="#section-7">Благодарности</a></dt>
+<dt>8. <a href="#section-8">Нормативные документы</a></dt>
+<dt>9. <a href="#section-9">Информативные документы</a></dt>
+<dt>10. <a href="#section-10">Регистрация в IANA</a></dt>
+
+<dt>Приложение A. <a href="#appendix-A">Результирующие коды LDAP</a></dt>
+<dd>A.1. <a href="#appendix-A.1">Неошибочные результирующие коды</a></dd>
+<dd>A.2. <a href="#appendix-A.2">Результирующие коды</a></dd>
+
+<dt>Приложение B. <a href="#appendix-B">Полное определение ASN.1</a></dt>
+
+<dt>Приложение C. <a href="#appendix-C">Изменения</a></dt>
+<dd>C.1. <a href="#appendix-C.1">Изменения, внесённые в RFC 2251</a></dd>
+<dd>C.2. <a href="#appendix-C.2">Изменения, внесённые в RFC 2830</a></dd>
+<dd>C.3. <a href="#appendix-C.3">Изменения, внесённые в RFC 3771</a></dd>
+</dl>
+
+<h2><a name="section-1">1</a>. Введение</h2>
+
+<p>Каталог&thinsp;&mdash;&thinsp;это "ряд открытых систем, взаимодействующих друг с другом для предоставления сервисов каталога" [<a target="_blank" href="#ref-X.500" title="The Directory: Overview of Concepts, Models and Service">X.500</a>]. Пользователь каталога, человек или другая сущность, получает доступ к каталогу посредством клиента (или пользовательского агента каталога (Directory User Agent, DUA)). Этот клиент от имени пользователя каталога взаимодействует с одним или несколькими серверами (или системными агентами каталога (Directory System Agent, DSA)). Клиенты взаимодействуют с серверами с помощью протокола доступа к службам каталогов.</p>
+
+<p>В этом документе детализируются элементы протокола Lightweight Directory Access Protocol (LDAP) вместе с их семантиками. Вслед за описанием элементов протокола приводится способ их кодирования и передачи.</p>
+
+<h3><a name="section-1.1">1.1</a>. Взаимосвязь с другими спецификациями LDAP</h3>
+
+<p>Данный документ является неотъемлемой частью технической спецификации LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map">RFC4510</a>], полностью отменяющей ранее определённую техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>.</p>
+
+<p>Этот документ, совместно с [<a href="http://tools.ietf.org/html/rfc4510" title="Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map">RFC4510</a>], [<a href="http://tools.ietf.org/html/rfc4513" title="Lightweight Directory Access Protocol (LDAP): Authentication Methods and Security Mechanisms">RFC4513</a>] и [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>] полностью отменяет <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. Раздел <a href="http://tools.ietf.org/html/rfc2251#section-3.3">3.3</a> отменён [<a href="http://tools.ietf.org/html/rfc4510" title="Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map">RFC4510</a>]. Разделы <a href="http://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> (частично) и <a href="http://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> отменены [<a href="http://tools.ietf.org/html/rfc4513" title="Lightweight Directory Access Protocol (LDAP): Authentication Methods and Security Mechanisms">RFC4513</a>]. Разделы <a href="http://tools.ietf.org/html/rfc2251#section-3.2">3.2</a>, <a href="http://tools.ietf.org/html/rfc2251#section-3.4">3.4</a>, <a href="http://tools.ietf.org/html/rfc2251#section-4.1.3">4.1.3</a> (последний параграф), <a href="http://tools.ietf.org/html/rfc2251#section-4.1.4">4.1.4</a>, <a href="http://tools.ietf.org/html/rfc2251#section-4.1.5">4.1.5</a>, <a href="http://tools.ietf.org/html/rfc2251#section-4.1.5.1">4.1.5.1</a>, <a href="http://tools.ietf.org/html/rfc2251#section-4.1.3">4.1.9</a> (последний параграф), <a href="http://tools.ietf.org/html/rfc2251#section-5.1">5.1</a>, <a href="http://tools.ietf.org/html/rfc2251#section-6.1">6.1</a> и <a href="http://tools.ietf.org/html/rfc2251#section-6.2">6.2</a> (последний параграф) отменены [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>]. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> отменена этим документом. Существенные изменения в этой оставшейся части обобщены в <a href="#appendix-C.1">приложении C.1</a>.</p>
+
+<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2830#section-2">2</a> и <a href="http://tools.ietf.org/html/rfc2830#section-4">4</a> <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a> отменена [<a href="http://tools.ietf.org/html/rfc4513" title="Lightweight Directory Access Protocol (LDAP): Authentication Methods and Security Mechanisms">RFC4513</a>]. Существенные изменения в остальных разделах обобщены в <a href="#appendix-C.2">приложении C.2</a>.</p>
+
+<p>Этот документ полностью отменяет <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a>.</p>
+
+<h2><a name="section-2">2</a>. Соглашения</h2>
+
+<p>Ключевые слова "MUST" (необходимо), "MUST NOT" (недопустимо), "REQUIRED" (требуется), "SHALL" (нужно), "SHALL NOT" (не нужно), "SHOULD" (следует), "SHOULD NOT" (не следует), "RECOMMENDED" (рекомендуется) и "MAY" (возможно) в данном документе должны интерпретироваться так, как описано в [<a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC2119</a>].</p>
+
+<p>Обозначения символов в этом документе используют нотацию кодирования и именования из стандарта Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>]. Например, буква "a" может быть представлена либо как &lt;U+0061&gt;, либо как &lt;LATIN SMALL LETTER A&gt;.</p>
+
+<p>Примечание: термины, используемые в Unicode, можно найти в соответствующем [<a href="#ref-Glossary" title="Глоссарий Unicode">глоссарии</a>]. Информацию о модели кодирования символов Unicode можно найти в [<a href="#ref-CharModel" title="Unicode Technical Report #17, Character Encoding Model">техническом отчёте Unicode</a>].</p>
+
+<p>Термин ("транспортное соединение") ("transport connection") обозначает базовые транспортные сервисы, используемые для проведения обмена сообщениями протокола, а также соединения, установленные этими сервисами.</p>
+
+<p>Термин "уровень TLS" ("TLS layer") обозначает сервисы Transport Layer Security (TLS), используемые для обеспечения безопасности при передаче информации, а также соединения, установленные этими сервисами.</p>
+
+<p>Термин "уровень SASL" ("SASL layer") обозначает сервисы Simply Authentication and Security Layer (SASL), используемые для обеспечения безопасности при передаче информации, а также соединения, установленные этими сервисами.</p>
+
+<p>Термин "уровень сообщений LDAP" ("LDAP message layer") обозначает сервисы LDAP Message Protocol Data Unit (PDU), используемые для предоставления услуг служб каталогов, а также соединения, установленные этими сервисами.</p>
+
+<p>Термин "сессия LDAP" ("LDAP session") обозначает комбинированные сервисы (транспортное соединение, уровень TLS, уровень SASL, уровень сообщений LDAP) и их соединения.</p>
+
+<p>Иллюстрацию этих четырёх терминов смотрите в таблице в <a href="#section-5">разделе 5</a>.</p>
+
+<h2><a name="section-3">3</a>. Модель протокола</h2>
+
+<p>Общей моделью для данного протокола является та, при которой клиенты выполняют операции протокола на серверах. В этой модели клиент передаёт запрос протокола, описывающий ту операцию, которая должна быть выполнена, на сервер. После этого уже сервер является ответственным за выполнение необходимой операции (операций) в каталоге. Обычно по завершению операции сервер возвращает клиенту, выполнявшему запрос, ответ, содержащий соответствующие данные.</p>
+
+<p>Как правило, операции протокола не зависят одна от другой. Каждая операция обрабатывается как атомарное действие, оставляющее каталог в целостном состоянии.</p>
+
+<p>Хотя серверы должны возвращать ответы всякий раз, когда они определены в протоколе, не выдвигается требований синхронного поведения ни со стороны клиентов, ни со стороны серверов. В общем случае для нескольких операций обмен запросами и ответами между клиентом и сервером может происходить в любом порядке. При необходимости синхронное поведение может быть проконтролировано клиентскими приложениями.</p>
+
+<p>Основные операции протокола, определённые в этом документе, могут быть отображены в подмножество абстрактной службы каталогов (Directory Abstract Service) X.500 (1993) [<a href="#ref-X.511" title="The Directory: Abstract Service Definition">X.511</a>]. Тем не менее, не существует взаимно-однозначного соответствия между операциями LDAP и операциями Directory Access Protocol (DAP) X.500. Реализации сервера, выступающей в роли шлюза к каталогам X.500, может потребоваться выполнить несколько запросов DAP для обработки одного запроса LDAP.</p>
+
+<h3><a name="section-3.1">3.1</a>. Взаимосвязь между операциями и уровнем сообщений LDAP</h3>
+
+<p>Обмен операциями протокола происходит на уровне сообщений LDAP. При закрытии транспортного соединения любые незавершённые операции на уровне сообщений LDAP отбрасываются (если это возможно), либо завершаются без передачи ответа (когда отказаться от их выполнения невозможно). Также, при закрытии транспортного соединения, клиент не должен (MUST NOT) подразумевать, что любые незавершившиеся операции обновления были выполнены успешно или неуспешно.</p>
+
+<h2><a name="section-4">4</a>. Элементы протокола</h2>
+
+<p>Протокол описан с использованием Abstract Syntax Notation One ([<a href="#ref-ASN.1" title="Information Technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation">ASN.1</a>]) и передаётся с использованием подмножества ASN.1 Basic Encoding Rules ([<a href="#ref-BER" title="Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)">BER</a>]). В <a href="#section-5">разделе 5</a> определяется, каким образом кодируются и передаются элементы протокола.</p>
+
+<p>В целях поддержки будущих расширений данного протокола, расширяемость подразумевается там, где это разрешено в ASN.1 (то есть, расширяемыми являются типы sequence, set, choice и enumerated). Кроме того, типы ASN.1, которые являются явно расширяемыми, о чём говорится в [<a href="http://tools.ietf.org/html/rfc4520" title="Internet Assigned Numbers Authority (IANA) Considerations for the Lightweight Directory Access Protocol (LDAP)">RFC4520</a>], были снабжены многоточием (...). Из-за такой подразумеваемой расширяемости клиенты и серверы должны (MUST) (если не указано иное) игнорировать компоненты SEQUENCE, теги которых они не могут распознать.</p>
+
+<p>Для изменений протокола, кроме тех, которые являются расширениями описанных здесь механизмов, требуется другой номер версии. Клиент указывает используемый им номер версии в составе запроса BindRequest, описанного в <a href="#section-4.2">разделе 4.2</a>. Если клиент не посылает Bind, сервер должен (MUST) подразумевать, что клиент использует версию 3 или выше.</p>
+
+<p>Клиент может попытаться определить поддерживаемую сервером версию протокола путём прочтения атрибута 'supportedLDAPVersion' записи root DSE (DSA-Specific Entry) [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>].</p>
+
+<h3><a name="section-4.1">4.1</a>. Общие элементы</h3>
+
+<p>В этом разделе описывается формат блока данных протокола "Конверт сообщения LDAP" (LDAPMessage envelope Protocol Data Unit (PDU)), а также определения типов данных, которые используются в операциях протокола.</p>
+
+<h4><a name="section-4.1.1">4.1.1</a>. Конверт сообщения</h4>
+
+<p>В целях обмена сообщениями протокола, все операции протокола инкапсулируются в общий конверт LDAPMessage, который определяется так:</p>
+
+<pre class="list">
+        LDAPMessage ::= SEQUENCE {
+             messageID       MessageID,
+             protocolOp      CHOICE {
+                  bindRequest           BindRequest,
+                  bindResponse          BindResponse,
+                  unbindRequest         UnbindRequest,
+                  searchRequest         SearchRequest,
+                  searchResEntry        SearchResultEntry,
+                  searchResDone         SearchResultDone,
+                  searchResRef          SearchResultReference,
+                  modifyRequest         ModifyRequest,
+                  modifyResponse        ModifyResponse,
+                  addRequest            AddRequest,
+                  addResponse           AddResponse,
+                  delRequest            DelRequest,
+                  delResponse           DelResponse,
+                  modDNRequest          ModifyDNRequest,
+                  modDNResponse         ModifyDNResponse,
+                  compareRequest        CompareRequest,
+                  compareResponse       CompareResponse,
+                  abandonRequest        AbandonRequest,
+                  extendedReq           ExtendedRequest,
+                  extendedResp          ExtendedResponse,
+                  ...,
+                  intermediateResponse  IntermediateResponse },
+             controls       [0] Controls OPTIONAL }
+
+        MessageID ::= INTEGER (0 .. maxInt)
+
+        maxInt INTEGER ::= 2147483647 -- (2^^31 - 1) --
+</pre>
+
+<p>Тип ASN.1 Controls (элементы управления) определён в <a href="#section-4.1.11">разделе 4.1.11</a>.</p>
+
+<p>Назначение LDAPMessage&thinsp;&mdash;&thinsp;предоставить конверт, содержащий общие поля, требуемые во всех обменах сообщениями протокола. В настоящий момент общими полями являются только messageID и controls.</p>
+
+<p>Если сервер получает от клиента LDAPMessage, в котором конструкция LDAPMessage SEQUENCE не может быть распознана, либо messageID не может быть разобран, либо значение в поле protocolOp не распознаётся как запрос, либо обнаружено, что закодированная структура или длина полей данных некорректны, то серверу следует (SHOULD) вернуть Notice of Disconnection (Уведомление об отключении), описанное в <a href="#section-4.4.1">разделе 4.4.1</a>, с результирующим кодом resultCode, установленным в protocolError, после чего он должен (MUST) немедленно завершить сессию LDAP как описано в <a href="#section-5.3">разделе 5.3</a>.</p>
+
+<p>В остальных случаях, когда клиент или сервер не могут разобрать LDAP PDU, им следует (SHOULD) немедленно завершить сессию LDAP (<a href="#section-5.3">раздел 5.3</a>), если дальнейшее взаимодействие (в том числе предоставление уведомления) было бы пагубным. В противном случае реализации сервера должны (MUST) возвращать соответствующий ответ на запрос, с кодом resultCode, установленным в protocolError.</p>
+
+<h5><a name="section-4.1.1.1">4.1.1.1</a>. MessageID</h5>
+
+<p>Все конверты LDAPMessage, инкапсулирующие ответы, содержат значение messageID соответствующего запросного LDAPMessage.</p>
+
+<p>MessageID запроса должно (MUST) иметь ненулевое значение, отличное от messageID любого другого запроса в течение одной и той же сессии LDAP. Нулевое значение зарезервировано для сообщений незапрошенных уведомлений (unsolicited notification message).</p>
+
+<p>Обычно клиенты при каждом запросе увеличивают счётчик на единицу.</p>
+
+<p>Клиенту недопустимо (MUST NOT) посылать запрос с тем же messageID, что и в предыдущих запросах, в рамках одной и той же сессии LDAP, за исключением тех случаев, когда есть возможность определить, что эти предыдущие запросы больше не обслуживаются сервером (например, после получения финального ответа, либо при выполнении очередного Bind). В противном случае поведение не определено. Также имейте ввиду, что операция Abandon и успешно сброшенные операции не посылают ответов.</p>
+
+<h4><a name="section-4.1.2">4.1.2</a>. Строковые типы</h4>
+
+<p>LDAPString&thinsp;&mdash;&thinsp;это введённое для удобства обозначение, указывающее на то, что, хотя строки типа LDAPString кодируются как тип ASN.1 OCTET STRING, используется набор символов [<a href="#ref-ISO10646">ISO10646</a>] (расширенный набор [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>]), закодированный по алгоритму UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. Обратите внимание, что символы Unicode от U+0000 до U+007F совпадают с символами ASCII от 0 до 127 соответственно, и имеют одну и ту же кодировку UTF-8 в один октет. Другие символы Unicode имеют кодировку UTF-8 в несколько октетов.</p>
+
+<pre class="list">
+        LDAPString ::= OCTET STRING -- закодирована в UTF-8,
+                                    -- символы [<a href="#ref-ISO10646">ISO10646</a>]
+</pre>
+
+<p>LDAPOID&thinsp;&mdash;&thinsp;это введённое для удобства обозначение, указывающее на то, что разрешённым значением такой строки является точечно-цифровое представление идентификатора объекта OBJECT IDENTIFIER (закодированное в UTF-8). Хотя LDAPOID кодируется как OCTET STRING, значения такой строки ограничены определением &lt;numericoid&gt;, данным в <a href="http://tools.ietf.org/html/rfc4512#section-1.4">разделе 1.4 [RFC4512]</a>.</p>
+
+<pre class="list">
+        LDAPOID ::= OCTET STRING -- ограничена до &lt;numericoid&gt;
+                                 -- [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>]
+</pre>
+
+<p>Например,</p>
+
+<pre class="list">
+        1.3.6.1.4.1.1466.1.2.3
+</pre>
+
+<h4><a name="section-4.1.3">4.1.3</a>. Уникальное имя (Distinguished Name) и относительное уникальное имя (Relative Distinguished Name)</h4>
+
+<p>LDAPDN определено как представление уникального имени Distinguished Name (DN) после кодирования согласно спецификации, данной в [<a href="http://tools.ietf.org/html/rfc4514" title="Lightweight Directory Access Protocol (LDAP): String Representation of Distinguished Names">RFC4514</a>].</p>
+
+<pre class="list">
+        LDAPDN ::= LDAPString
+                   -- ограничена до &lt;distinguishedName&gt; [<a href="http://tools.ietf.org/html/rfc4514" title="Lightweight Directory Access Protocol (LDAP): String Representation of Distinguished Names">RFC4514</a>]
+</pre>
+
+<p>RelativeLDAPDN определено как представление относительного уникального имени Relative Distinguished Name (RDN)  после кодирования согласно спецификации, данной в [<a href="http://tools.ietf.org/html/rfc4514" title="Lightweight Directory Access Protocol (LDAP): String Representation of Distinguished Names">RFC4514</a>].</p>
+
+<pre class="list">
+        RelativeLDAPDN ::= LDAPString
+                           -- ограничена до &lt;name-component&gt; [<a href="http://tools.ietf.org/html/rfc4514" title="Lightweight Directory Access Protocol (LDAP): String Representation of Distinguished Names">RFC4514</a>]
+</pre>
+
+<h4><a name="section-4.1.4">4.1.4</a>. Описание атрибута</h4>
+
+<p>Спецификация и правила кодирования для описания атрибутов определены в <a href="http://tools.ietf.org/html/rfc4512#section-2.5">разделе 2.5 [RFC4512]</a>. Если коротко, описание атрибута&thinsp;&mdash;&thinsp;это тип атрибута и ноль или более опций.</p>
+
+<pre class="list">
+        AttributeDescription ::= LDAPString
+                                -- ограничена до &lt;attributedescription&gt;
+                                -- [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>]
+</pre>
+
+<h4><a name="section-4.1.5">4.1.5</a>. Значение атрибута</h4>
+
+<p>Поле типа AttributeValue&thinsp;&mdash;&thinsp;это строка OCTET STRING, содержащая закодированное значение атрибута. Значение атрибута кодируется согласно LDAP-специфичному определению кодирования соответствующего этому атрибуту синтаксиса. LDAP-специфичные определения кодирования для различных синтаксисов и типов атрибутов можно найти в других документах, в частности в [<a href="http://tools.ietf.org/html/rfc4517" title="Lightweight Directory Access Protocol (LDAP): Syntaxes and Matching Rules">RFC4517</a>].</p>
+
+<pre class="list">
+        AttributeValue ::= OCTET STRING
+</pre>
+
+<p>Имейте ввиду, что ограничений на размер данного кодирования не определено; таким образом, значения протокола могут включать значения атрибутов в несколько мегабайт (например, фотографии).</p>
+
+<p>Значения атрибута могут быть определены так, чтобы у них был произвольный или непечатный синтаксис. В реализациях недопустимо (MUST NOT) отображать или пытаться декодировать значение атрибута, если его синтаксис неизвестен. Реализация может попытаться найти поднабор схемы данных исходной записи и получить из него описание этого типа атрибута 'attributeTypes' [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>].</p>
+
+<p>В ответ на запрос клиенты должны (MUST) посылать только те значения атрибутов, которые являются верными в соответствии с синтаксисами, определёнными для этих атрибутов.</p>
+
+<h4><a name="section-4.1.6">4.1.6</a>. Утверждение значения атрибута (Attribute Value Assertion)</h4>
+
+<p>Определение типа AttributeValueAssertion (AVA) аналогично приведённому с стандартах каталога X.500. Он содержит описание атрибута и правило соответствия (<a href="http://tools.ietf.org/html/rfc4512#section-4.1.3">[RFC4512], раздел 4.1.3</a>) утверждаемого значения, подходящего для данного типа атрибута. Элементы данного типа обычно используются для утверждения того, что значение в assertionValue соответствует значению атрибута.</p>
+
+<pre class="list">
+        AttributeValueAssertion ::= SEQUENCE {
+             attributeDesc   AttributeDescription,
+             assertionValue  AssertionValue }
+
+        AssertionValue ::= OCTET STRING
+</pre>
+
+<p>Синтаксис AssertionValue зависит от контекста выполняемой операции LDAP. Например, синтаксис правила соответствия EQUALITY для атрибута используется при выполнении операции Compare. Часто это тот же самый синтаксис, что используется для значений этого типа атрибута, но в некоторых случаях синтаксис утверждения отличается от синтаксиса значения. Например, смотрите objectIdentiferFirstComponentMatch в [<a href="http://tools.ietf.org/html/rfc4517" title="Lightweight Directory Access Protocol (LDAP): Syntaxes and Matching Rules">RFC4517</a>].</p>
+
+<h4><a name="section-4.1.7">4.1.7</a>. Атрибут (Attribute) и частичный атрибут (PartialAttribute)</h4>
+
+<p>Атрибуты и частичные атрибуты состоят из описания атрибута и значений атрибута. PartialAttribute позволяет не иметь значений (ноль значений), а Attribute требует наличия хотя бы одного значения.</p>
+
+<pre class="list">
+        PartialAttribute ::= SEQUENCE {
+             type       AttributeDescription,
+             vals       SET OF value AttributeValue }
+
+        Attribute ::= PartialAttribute(WITH COMPONENTS {
+             ...,
+             vals (SIZE(1..MAX))})
+</pre>
+
+<p>Как описано в <a href="http://tools.ietf.org/html/rfc4512#section-2.2">разделе 2.2 [RFC4512]</a>, никакие два значения атрибута не могут быть эквивалентны. Набор значений атрибутов не отсортирован. Реализации не должны (MUST NOT) полагаться на то, что порядок значений атрибутов от запроса к запросу будет повторяться.</p>
+
+<h4><a name="section-4.1.8">4.1.8</a>. Идентификатор правила соответствия</h4>
+
+<p>Правила соответствия определяются в <a href="http://tools.ietf.org/html/rfc4512#section-4.1.3">разделе 4.1.3 [RFC4512]</a>. Правило соответствия идентифицируется в протоколе состоящим из печатных символов представлением либо его числового идентификатора объекта &lt;numericoid&gt;, либо одного из его коротких имён-дескрипторов [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>], например, 'caseIgnoreMatch' или '2.5.13.2'.</p>
+
+<pre class="list">
+        MatchingRuleId ::= LDAPString
+</pre>
+
+<h4><a name="section-4.1.9">4.1.9</a>. Результирующее сообщение</h4>
+
+<p>LDAPResult&thinsp;&mdash;&thinsp;это конструкция, используемая в данном протоколе для возврата индикации успешного или неудачного завершения операции от сервера клиенту. На различные запросы сервер будет возвращать ответы, содержащие элементы из конструкции LDAPResult, для индикации финального статуса запроса операции протокола.</p>
+
+<pre class="list">
+        LDAPResult ::= SEQUENCE {
+             resultCode         ENUMERATED {
+                  success                      (0),
+                  operationsError              (1),
+                  protocolError                (2),
+                  timeLimitExceeded            (3),
+                  sizeLimitExceeded            (4),
+                  compareFalse                 (5),
+                  compareTrue                  (6),
+                  authMethodNotSupported       (7),
+                  strongerAuthRequired         (8),
+                       -- 9 зарезервирован --
+                  referral                     (10),
+                  adminLimitExceeded           (11),
+                  unavailableCriticalExtension (12),
+                  confidentialityRequired      (13),
+                  saslBindInProgress           (14),
+                  noSuchAttribute              (16),
+                  undefinedAttributeType       (17),
+                  inappropriateMatching        (18),
+                  constraintViolation          (19),
+                  attributeOrValueExists       (20),
+                  invalidAttributeSyntax       (21),
+                       -- 22-31 не используются --
+                  noSuchObject                 (32),
+                  aliasProblem                 (33),
+                  invalidDNSyntax              (34),
+                       -- 35 зарезервирован для неопределённого isLeaf --
+                  aliasDereferencingProblem    (36),
+                       -- 37-47 не используются --
+                  inappropriateAuthentication  (48),
+                  invalidCredentials           (49),
+                  insufficientAccessRights     (50),
+                  busy                         (51),
+                  unavailable                  (52),
+                  unwillingToPerform           (53),
+                  loopDetect                   (54),
+                       -- 55-63 не используются --
+                  namingViolation              (64),
+                  objectClassViolation         (65),
+                  notAllowedOnNonLeaf          (66),
+                  notAllowedOnRDN              (67),
+                  entryAlreadyExists           (68),
+                  objectClassModsProhibited    (69),
+                       -- 70 зарезервирован для CLDAP --
+                  affectsMultipleDSAs          (71),
+                       -- 72-79 не используются --
+                  other                        (80),
+                  ... },
+             matchedDN          LDAPDN,
+             diagnosticMessage  LDAPString,
+             referral           [3] Referral OPTIONAL }
+</pre>
+
+<p>Нумерация кодов resultCode является расширяемой, как определено в <a href="http://tools.ietf.org/html/rfc4520#section-3.8">разделе 3.8 [RFC4520]</a>. Значение перечисленных результирующих кодов дано в <a href="#appendix-A">приложении A</a>. Если сервер обнаруживает при выполнении операции несколько ошибок, возвращается только один результирующий код. Сервер должен вернуть результирующий код, который наилучшим образом отражает характер возникшей ошибки. Серверы могут возвращать подмененные результирующие коды для предотвращения несанкционированного сбора сведений злоумышленниками.</p>
+
+<p>Поле данной конструкции diagnosticMessage может, по усмотрению сервера, быть использовано для возврата строки, содержащей читабельное текстовое диагностическое сообщение (в нём следует избегать символов управления терминалом и форматирования страницы). Поскольку данное диагностическое сообщение  не стандартизировано, реализации не должны (MUST NOT) полагаться на возвращаемые в этом поле значения. Обычно диагностические сообщения дополняют коды resultCode дополнительной информацией. Если сервер решает не возвращать текстовой диагностики, поле diagnosticMessage должно (MUST) быть пустым.</p>
+
+<p>Для некоторых результирующих кодов (как правило, noSuchObject, aliasProblem, invalidDNSyntax и aliasDereferencingProblem, но не ограничиваясь только ими), в поле matchedDN помещается (по результатам контроля доступа) имя последней записи (объекта или псевдонима), которое используется для нахождения целевого (или базового) объекта. Это будет усечённая форма предоставленного имени, либо, если при попытке нахождения записи был разыменован псевдоним, то результирующего имени. В противном случае поле matchedDN остаётся пустым.</p>
+
+<h4><a name="section-4.1.10">4.1.10</a>. Отсылка (Referral)</h4>
+
+<p>Результирующий код referral указывает на то, что запрашиваемый сервер не может или не желает исполнять операцию, и что один или несколько других серверов могут быть в состоянии это сделать. Причинами этого могут быть:</p>
+<ul>
+<li>Целевая запись запроса не хранится локально, но у сервера есть сведения о её возможном существовании в другом месте.</li>
+<li>На данном сервере установлено ограничение на такие операции, возможно производится попытка изменить копию записи, предназначенную только для чтения.</li>
+</ul>
+<p>Поле referral присутствует в конструкции LDAPResult, если поле resultCode установлено в referral, при всех остальных результирующих кодах оно отсутствует. Оно содержит одну или несколько отсылок на один или несколько серверов или сервисов, которые могут быть доступны посредством LDAP или других протоколов. Отсылки могут быть возвращены в ответ на запрос какой-либо операции (за исключением Unbind и Abandon, которые не возвращают ответов). В поле referral должен (MUST) присутствовать по меньшей мере один URI.</p>
+
+<p>Во время операции поиска Search, после нахождения базового объекта baseObject и оценки записей, отсылка referral не возвращается. Вместо этого, если для завершения операции требуется обратиться к другим серверам, возвращаются ссылки-продолжения (continuation references), описанные в <a href="#section-4.5.3">разделе 4.5.3</a>.</p>
+<pre class="list">
+        Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI
+
+        URI ::= LDAPString     -- ограничена набором символов,
+                               -- разрешённых в URI
+</pre>
+<p>Если клиент желает продолжить выполнение операции, он обращается к одному из поддерживаемых сервисов, перечисленных в отсылке. Если присутствует несколько URI, клиент предполагает, что для продолжения операции можно использовать любой из предоставленных URI.</p>
+
+<p>Клиенты, следующие по отсылкам, должны (MUST) принимать меры по предотвращению зацикливания между серверами. Они не должны (MUST NOT) повторно обращаться к одному и тому же серверу с одними и теми же запросами с указанием в них одинаковых параметров. Некоторые клиенты используют счётчик, увеличивающийся на единицу каждый раз, когда во время операции происходит обработка отсылки. Клиенты такого типа должны (MUST) быть способны обрабатывать по крайней мере десять вложенных отсылок во время выполнения операции.</p>
+
+<p>URI для сервера, реализующего LDAP и доступного по TCP/IP (v4 или v6) [<a href="http://tools.ietf.org/html/rfc793" title="Transmission Control Protocol">RFC793</a>][<a href="http://tools.ietf.org/html/rfc791" title="Internet Protocol">RFC791</a>], записывается в виде LDAP URL в соответствии с [<a href="http://tools.ietf.org/html/rfc4516" title="Lightweight Directory Access Protocol (LDAP): Uniform Resource Locator">RFC4516</a>].</p>
+
+<p>Значения Referral, которые являются LDAP URL, подчиняются следующим правилам:</p>
+<ul>
+<li>Если происходит разыменование псевдонима, в LDAP URL должна (MUST) присутствовать часть &lt;dn&gt; с именем нового целевого объекта.</li>
+<li>Во избежание неоднозначности рекомендуется (RECOMMENDED) наличие части &lt;dn&gt;.</li>
+<li>Если часть &lt;dn&gt; присутствует, клиент использует это имя в следующем запросе, выполняемом для продолжения операции, а если она не присутствует, клиент использует то же имя, что и в оригинальном запросе.</li>
+<li>Некоторые серверы (например, участвующие в распределённом индексировании) могут предоставлять различные фильтры в URL отсылок для операций поиска Search.</li>
+<li>Если в LDAP URL присутствует часть &lt;filter&gt;, клиент использует этот фильтр в следующем запросе, выполняемом для продолжения данной операции Search, а если она не присутствует, клиент использует тот же самый фильтр, который использовался для этой операции Search.</li>
+<li>Для операций поиска Search рекомендуется (RECOMMENDED) наличие части &lt;scope&gt; во избежание неоднозначности.</li>
+<li>Если часть &lt;scope&gt; отсутствует, при продолжении операции клиент использует диапазон, указанный в оригинальной операции Search.</li>
+<li>Другие аспекты нового запроса могут как совпадать, так и отличаться от параметров того запроса, который породил отсылку.</li>
+</ul>
+<p>Могут быть возвращены и другие типы URI. Синтаксис и семантика таких URI оставлены как предмет будущих спецификаций. Клиенты могут игнорировать неподдерживаемые ими URI.</p>
+
+<p>Закодированные в UTF-8 символы, добавляемые в строковое представление DN, поискового фильтра или других полей в значении поля referral, могут быть неразрешёнными для использования в URI (например, пробелы) и должны (MUST) быть экранированы с помощью % по методу, описанному в [<a href="http://tools.ietf.org/html/rfc3986" title="Uniform Resource Identifier (URI): Generic Syntax">RFC3986</a>].</p>
+
+<h4><a name="section-4.1.11">4.1.11</a>. Элементы управления (Controls)</h4>
+
+<p>Элементы управления предоставляют механизм, с помощью которого семантика и аргументы существующих операций LDAP могут быть расширены. К одному сообщению LDAP могут быть присоединены один или несколько элементов управления. Действие элемента управления распространяется только на семантику того сообщения, к которому он присоединён.</p>
+
+<p>Элементы управления, посылаемые клиентом, называются "элементами управления запроса" ("request controls"), а посылаемые сервером&thinsp;&mdash;&thinsp;"элементами управления ответа" ("response controls").</p>
+<pre class="list">
+        Controls ::= SEQUENCE OF control Control
+
+        Control ::= SEQUENCE {
+             controlType             LDAPOID,
+             criticality             BOOLEAN DEFAULT FALSE,
+             controlValue            OCTET STRING OPTIONAL }
+</pre>
+<p>Поле controlType представляет собой точечно-цифровое представление идентификатора объекта OBJECT IDENTIFIER, уникально идентифицирующего данный элемент управления. Таким образом обеспечивается однозначность именования элементов управления. Часто элемент (элементы) управления ответа, предоставляемые в ответ на элемент управления запроса, разделяют с этим элементом управления запроса значения controlType.</p>
+
+<p>Поле criticality имеет смысл только в элементах управления, присоединяемых к сообщениям запроса (за исключением UnbindRequest). Для элементов управления, присоединяемых к сообщениям ответа и UnbindRequest, поле criticality должно (SHOULD) быть установлено в FALSE, и должно (MUST) быть проигнорировано принимающей стороной протокола. Значение TRUE указывает на то, что выполнение операции без применения семантики элемента управления является неприемлемым. Конкретнее, обработка поля criticality выполняется следующим образом:</p>
+<ul>
+<li>Если сервер не распознаёт тип элемента управления, определяет, что тот не соответствует выполняемой операции, или по какой-то другой причине не желает исполнять операцию с элементом управления, и если поле criticality установлено в TRUE, сервер не должен (MUST NOT) выполнять эту операцию и, для операций, у которых есть ответное сообщение, он должен (MUST) вернуть сообщение с результирующим кодом resultCode, установленным в unavailableCriticalExtension.</li>
+<li>Если сервер не распознаёт тип элемента управления, определяет, что тот не соответствует выполняемой операции, или по какой-то другой причине не желает исполнять операцию с элементом управления, и если поле criticality установлено в FALSE, сервер должен (MUST) проигнорировать этот элемент управления.</li>
+<li>Независимо от критичности, если элемент управления применяется к операции, он применяется последовательно и без исключений ко всей операции целиком.</li>
+</ul>
+
+<p>Поле controlValue может содержать информацию, связанную с типом controlType. Формат этого поля определяется спецификацией элемента управления. Реализации протокола должны (MUST) быть готовы обрабатывать строку октетов controlValue произвольного содержимого, в том числе нулевой длины. Это поле отсутствует только в случае, когда с элементом управления определённого типа не связано никакой информации в виде значения. Когда значение controlValue определено в терминах ASN.1 и закодировано BER в соответствии с <a href="#section-5.1">разделом 5.1</a>, оно также следует правилам расширяемости, приведённым в <a href="#section-4">разделе 4</a>.</p>
+
+<p>Серверы перечисляют поддерживаемые ими типы controlType элементов управления запроса в атрибуте "supportedControl" записи root DSE (<a href="http://tools.ietf.org/html/rfc4512#section-5.1">раздел 5.1 [RFC4512]</a>).</p>
+
+<p>Не следует (SHOULD NOT) объединять элементы управления, кроме случаев, когда семантика такого объединения была определена. Семантики объединения элементов управления, если таковые определены, как правило можно найти в спецификации элемента управления, опубликованной позднее остальных. Если встречается объединение элементов управления, семантика которого неверна, не определена (или неизвестна), сообщение считается плохо сформированным; таким образом, операция завершается неудачей с результирующим кодом protocolError. Элементы управления с полем criticality, установленным в FALSE, могут быть проигнорированы с целью получения допустимого сочетания. Кроме того, если в спецификации не указаны семантики, зависящие от порядка следования элементов управления, порядок комбинации элементов управления в последовательности SEQUENCE игнорируется. Там, где порядок следования элементов управления должен быть проигнорирован, но сервер не может его проигнорировать, сообщение считается плохо сформированным и операция завершается неудачей с результирующим кодом protocolError. Опять же, элементы управления с полем criticality, установленным в FALSE, могут быть проигнорированы с целью получения допустимого сочетания.</p>
+
+<p>В этом документе не приводится спецификация никаких элементов управления. Элементы управления могут быть определены в других документах. Документы, описывающие расширения в виде элементов управления, должны предоставлять следующую информацию для каждого элемента управления:</p>
+<ul>
+<li>ассоциированный с элементом управления идентификатор объекта OBJECT IDENTIFIER,</li>
+<li>указание относительно того, какое значение отправитель должен установить в поле criticality (примечание: определённые выше семантики поля criticality не должны переопределяться в спецификации элемента управления),</li>
+<li>должно ли присутствовать поле controlValue, и если да, формат его содержимого,</li>
+<li>семантика элемента управления, и,</li>
+<li>опционально, семантики, относящиеся к объединению этого элемента управления с другими элементами управления.</li>
+</ul>
+<h3><a name="section-4.2">4.2</a>. Операция подсоединения Bind</h3>
+
+<p>Функция операции Bind&thinsp;&mdash;&thinsp;разрешить обмен аутентификационной информацией между клиентом и сервером. Операция Bind должна рассматриваться как операция "аутентификации". Операционные, аутентификационные и связанные с безопасностью семантики данной операции даны в [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+
+<p>Запрос Bind определяется следующим образом:</p>
+<pre class="list">
+        BindRequest ::= [APPLICATION 0] SEQUENCE {
+             version                 INTEGER (1 .. 127),
+             name                    LDAPDN,
+             authentication          AuthenticationChoice }
+
+        AuthenticationChoice ::= CHOICE {
+             simple                  [0] OCTET STRING,
+                                     -- 1 и 2 зарезервированы
+             sasl                    [3] SaslCredentials,
+             ... }
+
+        SaslCredentials ::= SEQUENCE {
+             mechanism               LDAPString,
+             credentials             OCTET STRING OPTIONAL }
+</pre>
+<p>Поля BindRequest:</p>
+<ul>
+<li>version: номер версии, указывающий версию протокола, которая будет использоваться на уровне сообщений LDAP. В этом документе описывается версия 3 протокола. Согласования версий не производится. Клиент устанавливает версию в этом поле по своему желанию. Если сервер не поддерживает указанную версию, он должен (MUST) ответить сообщением BindResponse, в котором результирующий код resultCode установлен в protocolError.</li>
+<li>name: если поле не пустое, оно содержит имя объекта каталога, от которого клиент хочет произвести подсоединение. Это поле может принимать нулевое значение (строка нулевой длины) в целях анонимного подсоединения (<a href="http://tools.ietf.org/html/rfc4513#section-5.1">[RFC4513], раздел 5.1</a>) или при использовании SASL-аутентификации [<a href="http://rfc2.ru/4422.rfc" title="Простой уровень аутентификации и защиты (SASL)">RFC4422</a>] (<a href="http://tools.ietf.org/html/rfc4513#section-5.2">[RFC4513], раздел 5.2</a>). При попытке найти поименованный объект, серверу не следует (SHALL NOT) выполнять разыменование псевдонимов.</li>
+<li>authentication: информация, используемая для аутентификации. Эта часть сообщения является расширяемой, как определено в <a href="http://tools.ietf.org/html/rfc4520#section-3.7">разделе 3.7 [RFC4520]</a>. Серверы, не поддерживающие предоставленный клиентом вариант аутентификационной информации, возвращают сообщение BindResponse с результирующим кодом resultCode, установленным в authMethodNotSupported.</li>
+</ul>
+<p>Текстовые пароли (состоящие из последовательности символов с известным набором символов и кодировкой), передаваемые на сервер с использованием варианта simple конструкции AuthenticationChoice, должны (SHALL) передаваться как [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированный UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. Перед передачей клиенту следует (SHOULD) подготовить текстовые пароли как строки запроса "query" путём применения к ним профиля SASLprep [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>] алгоритма stringprep [<a href="http://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings ('stringprep')">RFC3454</a>]. Пароли, состоящие из других данных (такие, как случайный набор октетов), не должны (MUST NOT) изменяться. Определение того, является ли пароль текстовым, возлагается на клиента.</p>
+
+<h4><a name="section-4.2.1">4.2.1</a>. Обработка запроса Bind</h4>
+
+<p>Перед обработкой запроса BindRequest все незавершённые операции должны (MUST) быть либо завершены, либо отброшены. Сервер может либо дождаться выполнения незавершённых операций, либо отбросить их. Затем сервер переходит к аутентификации клиента путём выполнения процесса подсоединения Bind в один или несколько шагов. На каждом шаге требуется, чтобы сервер возвращал ответ BindResponse для отображения статуса аутентификации.</p>
+
+<p>После посылки запроса BindRequest клиенты не должны (MUST NOT) посылать дальнейших сообщений (PDU) LDAP до получения ответа BindResponse. Аналогичным образом, серверам не следует (SHOULD NOT) обрабатывать или отвечать на получаемые запросы во время обработки запроса BindRequest.</p>
+
+<p>Если клиент не выполнял подсоединения перед отправкой запроса и получил в ответ на этот запрос сообщение с результирующим кодом operationsError, то после этого он может послать запрос BindRequest. Если этот запрос также завершился неудачей или клиент решил не выполнять подсоединения в рамках существующей сессии LDAP, он может завершить эту сессию LDAP, установить её заново и снова начать с посылки запроса BindRequest. Это может помочь при взаимодействии с серверами, на которых функционирует реализация других версий LDAP.</p>
+
+<p>Клиенты могут посылать несколько запросов Bind для изменения аутентификации и/или ассоциаций безопасности, или для выполнения многоэтапного процесса Bind. Аутентификационные данные от предыдущих подсоединений при последующем подсоединении игнорируются.</p>
+
+<p>Для некоторых механизмов аутентификации SASL клиенту может быть необходимо выполнить запрос BindRequest несколько раз (<a href="http://tools.ietf.org/html/rfc4513#section-5.2">раздел 5.2 [RFC4513]</a>). Клиенты не должны (MUST NOT) вызывать операции между двумя запросами Bind, выполняемыми как часть многоэтапного процесса Bind.</p>
+
+<p>Клиент может прервать переговоры подсоединения SASL путём посылки запроса BindRequest с отличным от предыдущего значением в поле mechanism конструкции SaslCredentials, либо отличным от sasl значением поля AuthenticationChoice.</p>
+
+<p>Если клиент посылает запрос BindRequest, в поле sasl mechanism которого пустая строка, сервер должен (MUST) вернуть ответ BindResponse с результирующим кодом resultCode, установленным в authMethodNotSupported. Это позволит клиенту прервать переговоры, если он хочет выполнить повторную попытку подсоединения с тем же самым механизмом SASL.</p>
+
+<h4><a name="section-4.2.2">4.2.2</a>. Ответ Bind</h4>
+
+<p>Ответ Bind определяется следующим образом:</p>
+
+<pre class="list">
+        BindResponse ::= [APPLICATION 1] SEQUENCE {
+             COMPONENTS OF LDAPResult,
+             serverSaslCreds    [7] OCTET STRING OPTIONAL }
+</pre>
+
+<p>BindResponse представляет собой просто отчёт сервера о статусе клиентского запроса аутентификации.</p>
+
+<p>Об удачном завершении операции Bind свидетельствует BindResponse с результирующим кодом resultCode, установленным в success. При ином исходе в BindResponse устанавливается соответствующий результирующий код. Результирующий код protocolError в BindResponse может использоваться для указания на то, что предоставленный клиентом номер версии не поддерживается.</p>
+
+<p>Если клиент получает сообщение BindResponse, в котором resultCode установлено в protocolError, он должен считать, что сервер не поддерживает эту версию LDAP. Клиент может быть способен продолжить сессию с другой версией данного протокола (при этом может потребоваться или не потребоваться закрывать и вновь устанавливать транспортное соединения), однако описание того, как можно продолжить сессию с другой версией данного протокола, выходит за рамки этого документа. Клиентам, которые не в состоянии или не желают продолжать сессию, следует (SHOULD) завершить эту сессию LDAP.</p>
+
+<p>Поле serverSaslCreds используется как часть определённого в SASL механизма подсоединения, чтобы позволить клиенту аутентифицировать сервер, с которым он взаимодействует, либо выполнить аутентификацию типа "вызов-ответ" ("challenge-response"). Если клиент выполнял подсоединение с механизмом simple, либо механизм SASL не требует, чтобы сервер возвращал информацию клиенту, то включать это поле в BindResponse не нужно (SHALL NOT).</p>
+
+<h3><a name="section-4.3">4.3</a>. Операция отсоединения Unbind</h3>
+
+<p>Назначение операции Unbind&thinsp;&mdash;&thinsp;завершение сессии LDAP. Операция Unbind не является противоположностью операции Bind, как можно предположить из названия. Наименования этих операций являются историческими. Операция Unbind должна рассматриваться как операция выхода "quit".</p>
+
+<p>Операция Unbind определяется следующим образом:</p>
+
+<pre class="list">
+       UnbindRequest ::= [APPLICATION 2] NULL
+</pre>
+
+<p>Клиент при передаче UnbindRequest и сервер при получении UnbindRequest должны корректно завершить сессию LDAP, как описано в <a href="#section-5.3">разделе 5.3</a>. Обработка незавершённых операций производится как описано в <a href="#section-3.1">разделе 3.1</a>.</p>
+
+<h3><a name="section-4.4">4.4</a>. Произвольное уведомление (Unsolicited Notification)</h3>
+
+<p>Произвольное уведомление&thinsp;&mdash;&thinsp;это сообщение LDAPMessage, посылаемое от сервера клиенту, которое не является ответом на какое-либо сообщение LDAPMessage, полученное этим сервером. Оно используется для сигнализации об экстраординарных условиях, возникших на сервере или в сессии LDAP между клиентом и сервером. Такое уведомление носит рекомендательный характер, и серверу не следует ожидать, что клиент вернёт на него какой-либо ответ.</p>
+
+<p>Произвольное уведомление структурируется как сообщение LDAPMessage, в котором идентификатор messageID установлен в ноль и поле protocolOp установлено в extendedResp, в котором используется тип ExtendedResponse (смотрите <a href="#section-4.12">раздел 4.12</a>). Поле responseName конструкции ExtendedResponse всегда содержит уникальный для данного уведомления идентификатор объекта LDAPOID.</p>
+
+<p>Одно из произвольных уведомлений,&thinsp;&mdash;&thinsp;уведомление об отключении (Notice of Disconnection),&thinsp;&mdash;&thinsp;определяется в данном документе. Спецификация произвольного уведомления состоит из:</p>
+<ul>
+<li>ассоциированного с данным уведомлением идентификатора объекта OBJECT IDENTIFIER (должен быть указан в responseName),</li>
+<li>формат содержимого поля responseValue (если таковое имеется),</li>
+<li>условия, которые могут привести к отправке уведомления, и</li>
+<li>семантики сообщения.</li>
+</ul>
+<h4><a name="section-4.4.1">4.4.1</a>. Уведомление об отключении (Notice of Disconnection)</h4>
+
+<p>Это уведомление может быть использовано сервером, чтобы сообщить клиенту, что сервер собирается завершить сессию LDAP по своей инициативе. Назначение этого уведомления&thinsp;&mdash;&thinsp;помочь клиенту отличить возникшее на сервере состояние исключения от временной ошибки в сети. Имейте ввиду, что данное уведомление не является ответом на запрос Unbind клиента. Обработка незавершённых операций производится как описано в <a href="#section-3.1">разделе 3.1</a>.</p>
+
+<p>Идентификатор Объекта в поле responseName&thinsp;&mdash;&thinsp;1.3.6.1.4.1.1466.20036, поле responseValue отсутствует, а результирующий код resultCode используется для указания причины рассоединения. Если результирующий код resultCode, возвращаемый с этим сообщением, установлен в strongerAuthRequired, это указывает на то, что сервер определил, что в установленном защищённом соединении между клиентом и сервером возникла непредвиденная ошибка, или оно было скомпрометировано.</p>
+
+<p>После отправки уведомления об отключении сервер корректно завершает сессию LDAP как описано в <a href="#section-5.3">разделе 5.3</a>.</p>
+
+<h3><a name="section-4.5">4.5</a>. Операция поиска Search</h3>
+
+<p>Операция Search используется для того, чтобы запросить сервер вернуть (после проверки контроля доступа и других ограничений) набор записей, соответствующих комплексному критерию поиска. Она может быть использована для получения атрибутов единственной записи, записей, непосредственно подчинённых какой-либо конкретной записи, либо всего поддерева записей.</p>
+
+<h4><a name="section-4.5.1">4.5.1</a>. Запрос Search</h4>
+
+<p>Запрос Search определяется следующим образом:</p>
+<pre class="list">
+        SearchRequest ::= [APPLICATION 3] SEQUENCE {
+             baseObject      LDAPDN,
+             scope           ENUMERATED {
+                  baseObject              (0),
+                  singleLevel             (1),
+                  wholeSubtree            (2),
+                  ... },
+             derefAliases    ENUMERATED {
+                  neverDerefAliases       (0),
+                  derefInSearching        (1),
+                  derefFindingBaseObj     (2),
+                  derefAlways             (3) },
+             sizeLimit       INTEGER (0 .. maxInt),
+             timeLimit       INTEGER (0 .. maxInt),
+             typesOnly       BOOLEAN,
+             filter          Filter,
+             attributes      AttributeSelection }
+
+        AttributeSelection ::= SEQUENCE OF selector LDAPString
+                        -- строка LDAPString, ограниченная конструкцией
+                        -- &lt;attributeSelector&gt; из <a href="#section-4.5.1.8">раздела 4.5.1.8</a>
+
+        Filter ::= CHOICE {
+             and             [0] SET SIZE (1..MAX) OF filter Filter,
+             or              [1] SET SIZE (1..MAX) OF filter Filter,
+             not             [2] Filter,
+             equalityMatch   [3] AttributeValueAssertion,
+             substrings      [4] SubstringFilter,
+             greaterOrEqual  [5] AttributeValueAssertion,
+             lessOrEqual     [6] AttributeValueAssertion,
+             present         [7] AttributeDescription,
+             approxMatch     [8] AttributeValueAssertion,
+             extensibleMatch [9] MatchingRuleAssertion,
+             ... }
+
+        SubstringFilter ::= SEQUENCE {
+             type           AttributeDescription,
+             substrings     SEQUENCE SIZE (1..MAX) OF substring CHOICE {
+                  initial [0] AssertionValue,  -- может вкючаться только один раз
+                  any     [1] AssertionValue,
+                  final   [2] AssertionValue } -- может вкючаться только один раз
+             }
+
+        MatchingRuleAssertion ::= SEQUENCE {
+             matchingRule    [1] MatchingRuleId OPTIONAL,
+             type            [2] AttributeDescription OPTIONAL,
+             matchValue      [3] AssertionValue,
+             dnAttributes    [4] BOOLEAN DEFAULT FALSE }
+</pre>
+<p>Имейте ввиду, что клиент может эмулировать операцию "list" X.500 путём запроса операции Search с диапазоном singleLevel и фильтром, проверяющим наличие атрибута objectClass, а операцию "read" X.500&thinsp;&mdash;&thinsp;операцией Search с диапазоном baseObject и тем же самым фильтром. От сервера, работающего как шлюз к X.500, не требуется использовать операции Read или List; с другой стороны, он может сделать это, тогда он должен обеспечить те же семантики, что и в операции Search X.500.</p>
+
+<h5><a name="section-4.5.1.1">4.5.1.1</a>. SearchRequest.baseObject</h5>
+
+<p>Имя записи базового объекта (или, возможно, корневой записи), относительно которой должна быть выполнена операция поиска Search.</p>
+
+<h5><a name="section-4.5.1.2">4.5.1.2</a>. SearchRequest.scope</h5>
+
+<p>Указывает диапазон выполняемой операции Search. Семантика определённых для данного поля значений (как описано в [<a href="#ref-X.511" title="The Directory: Abstract Service Definition">X.511</a>]):</p>
+<blockquote>
+<p>baseObject: диапазон ограничен записью, указанной в baseObject.</p>
+<p>singleLevel: диапазон ограничен записями, непосредственно подчинёнными записи, указанной в baseObject.</p>
+<p>wholeSubtree: диапазон ограничен записью, указанной в baseObject, и всеми подчинёнными ей записями.</p>
+</blockquote>
+<h5><a name="section-4.5.1.3">4.5.1.3</a>. SearchRequest.derefAliases</h5>
+
+<p>Индикатор того, должны или нет записи-псевдонимы (определённые в [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>]) разыменовываться на этапах операции поиска Search.</p>
+
+<p>Процедура разыменования псевдонимов включает в себя рекурсивное разыменование псевдонимов, которые ссылаются на другие псевдонимы.</p>
+
+<p>Серверы должны (MUST) определять зацикливание в процессе разыменования псевдонимов в целях предотвращения атак типа "отказ от обслуживания" подобного рода.</p>
+
+<p>Семантика определённых для данного поля значений:</p>
+<blockquote>
+<p>neverDerefAliases: не разыменовывать псевдонимы при поиске или при определении местонахождения базового объекта поиска.</p>
+<p>derefInSearching: при поиске среди подчинённых записей базового объекта, разыменовывать любые псевдонимы в рамках поискового диапазона. Разыменованные объекты становятся вершинами дальнейших диапазонов поиска, на которые также распространяется эта операция поиска Search. Если диапазон поиска&thinsp;&mdash;&thinsp;wholeSubtree, операция поиска Search продолжается по поддереву (поддеревьям) любого разыменованного объекта. Если диапазон поиска&thinsp;&mdash;&thinsp;singleLevel, операция поиска применяется к любым разыменованным объектам и не применяется к подчинённым им записям. Серверам следует (SHOULD) исключить дублирующиеся записи, появляющиеся в процессе разыменования псевдонимов при поиске.</p>
+<p>derefFindingBaseObj: разыменовывать псевдонимы при определении местонахождения базового объекта поиска, но не при поиске подчинённых записей этого объекта.</p>
+<p>derefAlways: разыменовывать псевдонимы и при поиске, и при определении местонахождения базового объекта поиска.</p>
+</blockquote>
+<h5><a name="section-4.5.1.4">4.5.1.4</a>. SearchRequest.sizeLimit</h5>
+
+<p>Ограничение по размеру, устанавливающее максимальное количество записей, которое будет возвращено в качестве результата операции Search. Значение ноль в этом поле означает, что никакие запрашиваемые клиентом ограничения по размеру не распространяются на данную операцию Search. Сервер также может принудительно установить максимальное количество записей, которое он будет возвращать.</p>
+
+<h5><a name="section-4.5.1.5">4.5.1.5</a>. SearchRequest.timeLimit</h5>
+
+<p>Ограничение по времени, устанавливающее максимальное время (в секундах), которое отводится на выполнение операции Search. Значение ноль в этом поле означает, что никакие запрашиваемые клиентом ограничения по времени не распространяются на данную операцию Search. Сервер также может принудительно установить максимальное время выполнения операции Search.</p>
+
+<h5><a name="section-4.5.1.6">4.5.1.6</a>. SearchRequest.typesOnly</h5>
+
+<p>Индикатор того, должны ли результаты операции Search содержать и описания атрибутов, и значения, либо только описания атрибутов. Установка этого поля в TRUE приведёт к возврату только описаний атрибутов (без значений). Установка этого поля в FALSE приведёт к возврату и описаний атрибутов, и значений.</p>
+
+<h5><a name="section-4.5.1.7">4.5.1.7</a>. SearchRequest.filter</h5>
+
+<p>Фильтр, определяющий условия, которые должны быть соблюдены для того, чтобы операция Search привела к нахождению требуемых записей.</p>
+
+<p>Для формирования комбинаций фильтров могут быть использованы пункты "and", "or" и "not". Как минимум один элемент фильтра должен (MUST) присутствовать при использовании пунктов "and" или "or". Элементы фильтра предназначены для нахождения совпадений значений индивидуальных атрибутов записей в диапазоне поиска. (Примечание для тех, кто занимается реализацией: фильтр "not" является примером поименованного пункта в модуле с неявным именованием. В BER это интерпретируется как явное именование.)</p>
+
+<p>Сервер должен (MUST) оценить фильтры в соответствии с трехзначной логикой согласно пункта 7.8.1 стандарта [<a href="#ref-X.511" title="The Directory: Abstract Service Definition">X.511</a>] (1993). Если коротко, фильтр оценивается как "TRUE", "FALSE" или "Undefined". Если фильтр оценивается как TRUE для конкретной записи, то атрибуты такой записи возвращаются как часть результата операции Search (после проверки на соответствие любым применимым к записи ограничениям контроля доступа). Если фильтр оценивается как FALSE или Undefined, то для этой операции Search запись игнорируется.</p>
+
+<p>Фильтр с пунктом "and" оценивается как TRUE, если все фильтры в наборе SET OF оцениваются как TRUE, и как FALSE, если хотя бы один фильтр оценивается как FALSE; в противном случае такой фильтр оценивается как Undefined. Фильтр с пунктом "or" оценивается как FALSE, если все фильтры в наборе SET OF оцениваются как FALSE, и как TRUE, если хотя бы один фильтр оценивается как TRUE; в противном случае такой фильтр оценивается как Undefined. Фильтр с пунктом "not" оценивается как TRUE, если подвергаемый отрицанию фильтр оценивается как FALSE; как FALSE, если подвергаемый отрицанию фильтр оценивается как TRUE, и как Undefined, если подвергаемый отрицанию фильтр оценивается как Undefined.</p>
+
+<p>Фильтр оценивается как Undefined, когда сервер не в состоянии определить, соответствует ли значение утверждения записи. Возможные примеры:</p>
+<ul>
+<li>Описание атрибута в фильтрах equalityMatch, substrings, greaterOrEqual, lessOrEqual, approxMatch или extensibleMatch не распознаётся сервером.</li>
+<li>Запрашиваемое правило соответствия не определено в типе атрибута.</li>
+<li>Идентификатор MatchingRuleId в фильтре extensibleMatch не распознаётся сервером или не является действительным для данного типа атрибута.</li>
+<li>Тип запрашиваемого фильтра не реализован.</li>
+<li>Значение утверждения не верно.</li>
+</ul>
+<p>Например, если сервер не распознаёт тип атрибута shoeSize, то каждый из фильтров (shoeSize=*), (shoeSize=12), (shoeSize&gt;=12) и (shoeSize&lt;=12) будет оцениваться как Undefined.</p>
+
+<p>Серверы не должны (MUST NOT) возвращать ошибок, если они не могут распознать описания атрибутов или идентификаторы правил соответствия, определяют неверное значение утверждения или не поддерживают синтаксис утверждения. Дополнительные подробности обработки фильтров приведены в пункте 7.8 стандарта [<a href="#ref-X.511" title="The Directory: Abstract Service Definition">X.511</a>].</p>
+
+<h6><a name="section-4.5.1.7.1">4.5.1.7.1</a>. SearchRequest.filter.equalityMatch</h6>
+
+<p>Правило соответствия для фильтра equalityMatch определяется правилом соответствия EQUALITY для типа или подтипа атрибута. Фильтр оценивается как TRUE, когда правило EQUALITY, при применении его к типу или подтипу атрибута и заявленному значению, возвращает TRUE.</p>
+
+<h6><a name="section-4.5.1.7.2">4.5.1.7.2</a>. SearchRequest.filter.substrings</h6>
+
+<p>Должно (SHALL) быть не более одного пункта "initial" и не более одного пункта "final" в последовательности "substrings" конструкции SubstringFilter. Если присутствует пункт "initial", он должен (SHALL) быть первым элементом последовательности "substrings". Если присутствует пункт "final", он должен (SHALL) быть последним элементом последовательности "substrings".</p>
+
+<p>Правило соответствия для AssertionValue в пункте фильтра substrings определяется правилом соответствия SUBSTR для типа или подтипа атрибута. Фильтр оценивается как TRUE, когда правило SUBSTR, при применении его к типу или подтипу атрибута и заявленному значению, возвращает TRUE.</p>
+
+<p>Обратите внимание, что AssertionValue в пункте фильтра substrings соответствует синтаксису утверждения правила соответствия EQUALITY для типа атрибута, а не синтаксису утверждения правила соответствия SUBSTR для типа атрибута. Концептуально, перед применением правила вся конструкция SubstringFilter преобразуется в значение утверждения согласно правилу соответствия substrings.</p>
+
+<h6><a name="section-4.5.1.7.3">4.5.1.7.3</a>. SearchRequest.filter.greaterOrEqual</h6>
+
+<p>Правило соответствия для фильтра greaterOrEqual определяется правилом соответствия ORDERING для типа или подтипа атрибута. Фильтр оценивается как TRUE, когда правило ORDERING, при применении его к типу или подтипу атрибута и заявленному значению, возвращает FALSE.</p>
+
+<h6><a name="section-4.5.1.7.4">4.5.1.7.4</a>. SearchRequest.filter.lessOrEqual</h6>
+
+<p>Правило соответствия для фильтра lessOrEqual определяется правилами соответствия ORDERING и EQUALITY для типа или подтипа атрибута. Фильтр оценивается как TRUE, когда либо правило ORDERING, либо правило EQUALITY, при применении их к типу или подтипу атрибута и заявленному значению, возвращают TRUE.</p>
+
+<h6><a name="section-4.5.1.7.5">4.5.1.7.5</a>. SearchRequest.filter.present</h6>
+
+<p>Фильтр present оценивается как TRUE, когда в записи присутствует тип или подтип атрибута, соответствующий указанному описанию типа атрибута AttributeDescription; и как FALSE, когда в записи не присутствует тип или подтип атрибута, соответствующий указанному описанию типа атрибута, в противном случае такой фильтр оценивается как Undefined.</p>
+
+<h6><a name="section-4.5.1.7.6">4.5.1.7.6</a>. SearchRequest.filter.approxMatch</h6>
+
+<p>Фильтр approxMatch оценивается как TRUE, когда присутствует значение типа или подтипа атрибута, для которого некоторый локально определённый алгоритм нахождения приблизительного соответствия (например, по вариантам написания, по фонетическому соответствию, и т.п.) возвращает TRUE. Если значение соответствует фильтру equality, оно также удовлетворяет соответствию approximate. Если для атрибута не поддерживается нахождение соответствия approximate, этот пункт фильтра должен интерпретироваться как equalityMatch.</p>
+
+<h6><a name="section-4.5.1.7.7">4.5.1.7.7</a>. SearchRequest.filter.extensibleMatch</h6>
+
+<p>Поля пункта фильтра extensibleMatch оцениваются следующим образом:</p>
+<ul>
+<li>При отсутствии поля matchingRule должно (MUST) присутствовать поле type, и для этого типа атрибута type выполняется сравнение по соответствию equality.</li>
+<li>При отсутствии поля type и наличии matchingRule, значение в поле matchValue сравнивается со значениями всех атрибутов записи, поддерживающих это правило соответствия matchingRule.</li>
+<li>При наличии и поля type, и поля matchingRule, значение в поле matchValue сравнивается со значениями указанного типа атрибута и его подтипов.</li>
+<li>Если поле dnAttributes установлено в TRUE, то сравнение дополнительно производится по всем парам атрибут-значение AttributeValueAssertions в уникальном имени (distinguished name) записи. В этом случае фильтр оценивается как TRUE, если в уникальном имени есть хотя бы один тип или подтип атрибута, для которого данный пункт фильтра оценивается как TRUE. Поле dnAttributes введено для того, чтобы избежать необходимости определения нескольких версий фильтров с общим правилом соответствия (например, нахождения соответствия слову), когда одна версия применяется к записям, а другая&thinsp;&mdash;&thinsp;к записям и атрибутам DN.</li>
+</ul>
+
+<p>Используемое для оценки правило соответствия matchingRule определяет синтаксис для значения утверждения. После того, как были определены matchingRule и атрибут (атрибуты), пункт фильтра оценивается как TRUE, если найдено соответствие хотя бы с одним типом или подтипом атрибута в записи; как FALSE, если не найдено соответствие ни с одним типом или подтипом атрибута в записи; и как Undefined, если правило соответствия matchingRule не распознано, не может быть использовано с указанным типом type, либо значение assertionValue не верно.</p>
+
+<h5><a name="section-4.5.1.8">4.5.1.8</a>. SearchRequest.attributes</h5>
+
+<p>Список атрибутов, которые должны быть возвращены для каждой записи, соответствующей поисковому фильтру. Атрибуты, которые являются подтипами перечисленных атрибутов, также неявно включаются в этот список. На строковые значения LDAPString этого поля накладываются ограничения по следующей расширенной форме Бэкуса-Наура (ABNF) [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:</p>
+
+<pre class="list">
+      attributeSelector = attributedescription / selectorspecial
+
+      selectorspecial = noattrs / alluserattrs
+
+      noattrs = %x31.2E.31 ; "1.1"
+
+      alluserattrs = %x2A ; asterisk ("*")
+</pre>
+
+<p>Конструкция &lt;attributedescription&gt; определена в <a href="http://tools.ietf.org/html/rfc4512#section-2.5">разделе 2.5 of [RFC4512]</a>.</p>
+
+<p>В списке атрибутов могут фигурировать три особых случая:</p>
+<ol>
+<li>Запросы с пустым списком (без атрибутов) возвращают все пользовательские атрибуты.</li>
+<li>Запросы со списком, содержащим "*" (с нулём или более описаний атрибутов), возвращают все пользовательские атрибуты в дополнение к другим перечисленным (операционным) атрибутам.</li>
+<li>Список, содержащий только OID "1.1", указывает на то, что никаких атрибутов возвращено не будет. Если кроме "1.1" предоставляются другие значения attributeSelector,  значение attributeSelector "1.1" игнорируется. Данный OID был выбран потому, что он не соответствует (и не может соответствовать) никакому используемому атрибуту.</li>
+</ol>
+
+<p>Те, кто занимается реализацией клиентов, должны иметь ввиду, что даже если были запрошены все атрибуты, в результат операции Search могут быть не включены некоторые атрибуты и/или значения атрибутов записи из-за контроля доступа или иных ограничений. Кроме того, серверы не будут возвращать операционных атрибутов, таких как objectClasses или attributeTypes, кроме тех из них, которые были явно указаны по имени. Операционные атрибуты описаны в [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>].</p>
+
+<p>Атрибуты в записи возвращаются не более одного раза. Если описание атрибута указывается в списке более одного раза, повторно встретившиеся имена игнорируются. Если описание атрибута в списке не распознаётся, оно игнорируется сервером.</p>
+
+<h4><a name="section-4.5.2">4.5.2</a>. Результат операции Search</h4>
+
+<p>Результаты операции Search возвращаются в виде нуля или более сообщений SearchResultEntry и/или сообщений SearchResultReference, за которыми следует единственное сообщение SearchResultDone.</p>
+<pre class="list">
+        SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
+             objectName      LDAPDN,
+             attributes      PartialAttributeList }
+
+        PartialAttributeList ::= SEQUENCE OF
+                             partialAttribute PartialAttribute
+
+        SearchResultReference ::= [APPLICATION 19] SEQUENCE
+                                  SIZE (1..MAX) OF uri URI
+
+        SearchResultDone ::= [APPLICATION 5] LDAPResult
+</pre>
+<p>Каждое сообщение SearchResultEntry представляет собой запись, найденную во время поиска. Каждое сообщение SearchResultReference представляет собой область, которая ещё не была изучена во время поиска. Сообщения SearchResultEntry и SearchResultReference могут приходить в любом порядке. Вслед за всеми ответами SearchResultReference и SearchResultEntry сервер возвращает ответ SearchResultDone, содержащий индикацию успешного завершения, либо детали любых произошедших ошибок.</p>
+
+<p>Каждая запись, возвращаемая в сообщении SearchResultEntry, будет содержать все соответствующие атрибуты, указанные в поле attributes запроса Search, по результатам применения к ним контроля доступа и другой административной политики. Имейте ввиду, что последовательность PartialAttributeList может содержать ноль элементов. Такое может произойти, когда ни один из атрибутов записи не был запрошен или не может быть возвращён. Также имейте ввиду, что набор значений partialAttribute может содержать ноль элементов. Такое может произойти при запросе с выставленным полем typesOnly, если контроль доступа не допускает возврата значений или по другим причинам.</p>
+
+<p>Некоторые атрибуты могут быть сгенерированы сервером и появляться в списке атрибутов SearchResultEntry, несмотря на то, что они не являются хранимыми атрибутами записи. Клиентам не следует (SHOULD NOT) подразумевать, что все атрибуты могут быть модифицированы, даже если это разрешено контролем доступа.</p>
+
+<p>Если в схеме данных сервера определены сокращённые имена типов атрибутов [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>], то серверу следует (SHOULD) использовать одно из таких имён в описаниях атрибутов для такого типа атрибута (это предпочтительнее использования формата идентификатора объекта &lt;numericoid&gt; [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>] типа атрибута). Серверу не следует (SHOULD NOT) использовать сокращённое имя, если ему известно, что это имя неоднозначно или может каким-либо иным способом привести к проблемам совместимости.</p>
+
+<h4><a name="section-4.5.3">4.5.3</a>. Ссылки-продолжения (Continuation References) в результатах операции Search</h4>
+
+<p>Если сервер смог определить расположение записи, на которую указывает поле baseObject запроса, но не может или не желает осуществлять поиск одной или нескольких нелокальных записей, он может вернуть одно или несколько сообщений SearchResultReference, каждое из которых содержит ссылку на другой набор серверов для продолжения операции. Сервер не должен (MUST NOT) возвращать какие-либо сообщения SearchResultReference, если он не определил расположение объекта baseObject, и, следовательно, не нашёл ни одной записи. В этом случае он должен вернуть сообщение SearchResultDone, содержащее либо отсылку, либо результирующий код noSuchObject (в зависимости от того, обладает ли сервер знаниями относительно записи, указанной в baseObject).</p>
+
+<p>Если сервер хранит копию или частичную копию нижестоящего (подчинённого) контекста именования (<a href="http://tools.ietf.org/html/rfc4512#section-5">раздел 5 of [RFC4512]</a>), он может использовать поисковый фильтр для определения того, возвращать или нет ответ SearchResultReference. В противном случае ответы SearchResultReference возвращаются всегда, если область, на которую указывает ссылка, находится в диапазоне поиска.</p>
+
+<p>Тип данных SearchResultReference тот же, что и у отсылок Referral.</p>
+
+<p>Если клиент желает продолжить поиск, он запрашивает новую операцию Search для каждого из возвращённых сообщений SearchResultReference. Если в сообщении присутствуют несколько URI, клиент подразумевает, что любой из поддерживаемых URI может быть использован для продолжения операции.<p>
+
+<p>Клиенты, которые следуют по поисковым ссылкам-продолжениям, должны (MUST) принимать меры по предотвращению зацикливания между серверами. Они не должны (MUST NOT) повторно обращаться к одному и тому же серверу с одними и теми же запросами с указанием в них одинаковых параметров. Некоторые клиенты используют счётчик, увеличивающийся на единицу каждый раз, когда во время операции происходит обработка поисковой ссылки-продолжения. Клиенты такого типа должны (MUST) быть способны обрабатывать по крайней мере десять вложенных отсылок во время выполнения операции.<p>
+
+<p>Имейте ввиду, что операция Abandon, описанная в <a href="#section-4.11">разделе 4.11</a>, применяется только к конкретной операции, отправляемой между клиентом и сервером на уровне сообщений LDAP. Клиент должен отдельно отменять последующие операции Search, от которых он хочет отказаться.</p>
+
+<p>URI для сервера, реализующего LDAP и доступного по TCP/IP (v4 или v6) [<a href="http://tools.ietf.org/html/rfc793" title="Transmission Control Protocol">RFC793</a>][<a href="http://tools.ietf.org/html/rfc791" title="Internet Protocol">RFC791</a>], записывается в виде LDAP URL в соответствии с [<a href="http://tools.ietf.org/html/rfc4516" title="Lightweight Directory Access Protocol (LDAP): Uniform Resource Locator">RFC4516</a>].</p>
+
+<p>Значения SearchResultReference, которые являются LDAP URL, подчиняются следующим правилам:</p>
+<ul>
+<li>Должна (MUST) присутствовать часть &lt;dn&gt; LDAP URL с именем нового целевого объекта. Клиент использует это имя при следовании по ссылке.</li>
+<li>Некоторые серверы (например, участвующие в распределённом индексировании) могут предоставлять различные фильтры в LDAP URL.</li>
+<li>Если в LDAP URL присутствует часть &lt;filter&gt;, клиент использует этот фильтр в следующем запросе, выполняемом для продолжения данной операции Search, а если она не присутствует, клиент использует тот же самый фильтр, который использовался для этой операции Search.</li>
+<li>Если диапазон оригинального поиска был singleLevel, часть &lt;scope&gt; LDAP URL должна быть "base".</li>
+<li>Во избежание неоднозначности рекомендуется (RECOMMENDED) наличие части &lt;scope&gt;. При отсутствии части &lt;scope&gt; подразумевается диапазон оригинального запроса Search.</li>
+<li>Другие аспекты нового запроса Search могут как совпадать, так и отличаться от параметров того запроса Search, который породил сообщение SearchResultReference.</li>
+<li>Требуется, чтобы имя поддерева в сообщении SearchResultReference, обход которого не был произведён, не было нижестоящим (подчинённым) по отношению к базовому объекту.</li>
+</ul>
+<p>Могут быть возвращены и другие типы URI. Синтаксис и семантика таких URI оставлены как предмет будущих спецификаций. Клиенты могут игнорировать неподдерживаемые ими URI.</p>
+
+<p>Закодированные в UTF-8 символы, добавляемые в строковое представление DN, поискового фильтра или других полей в значении ссылки, могут быть неразрешёнными для использования в URI (например, пробелы) и должны (MUST) быть экранированы с помощью % по методу, описанному в [<a href="http://tools.ietf.org/html/rfc3986" title="Uniform Resource Identifier (URI): Generic Syntax">RFC3986</a>].</p>
+
+<h5><a name="section-4.5.3.1">4.5.3.1</a>. Примеры</h5>
+
+<p>Для примера, предположим, что на сервере, к которому происходит обращение (hosta), хранятся записи &lt;DC=Example,DC=NET&gt; и &lt;CN=Manager,DC=Example,DC=NET&gt;. Этот сервер знает, что на двух других LDAP-серверах (hostb) и (hostc) (один из них главный (master), а второй&thinsp;&mdash;&thinsp;теневая копия) хранится &lt;OU=People,DC=Example,DC=NET&gt;, а на LDAP-совместимом сервере (hostd) хранится поддерево  &lt;OU=Roles,DC=Example,DC=NET&gt;. Если на сервере, к которому происходит обращение, был запрошен поиск Search по &lt;DC=Example,DC=NET&gt; с диапазоном wholeSubtree, он может вернуть следующее:</p>
+<pre class="list">
+     SearchResultEntry for DC=Example,DC=NET
+     SearchResultEntry for CN=Manager,DC=Example,DC=NET
+     SearchResultReference {
+       ldap://hostb/OU=People,DC=Example,DC=NET??sub
+       ldap://hostc/OU=People,DC=Example,DC=NET??sub }
+     SearchResultReference {
+       ldap://hostd/OU=Roles,DC=Example,DC=NET??sub }
+     SearchResultDone (success)
+</pre>
+<p>Тем, кто занимается реализацией клиентов, следует иметь ввиду, что при следовании по ссылкам из сообщения SearchResultReference могут быть сгенерированы дополнительные сообщения SearchResultReference. В продолжение нашего примера, если клиент обращается к серверу (hostb) и выполняет запрос Search по поддереву &lt;OU=People,DC=Example,DC=NET&gt;, этот сервер может ответить следующим образом:</p>
+<pre class="list">
+     SearchResultEntry for OU=People,DC=Example,DC=NET
+     SearchResultReference {
+       ldap://hoste/OU=Managers,OU=People,DC=Example,DC=NET??sub }
+     SearchResultReference {
+       ldap://hostf/OU=Consultants,OU=People,DC=Example,DC=NET??sub }
+     SearchResultDone (success)
+</pre>
+<p>Другой вариант, если на сервере, к которому происходит обращение, был запрошен поиск Search по &lt;DC=Example,DC=NET&gt; с диапазоном singleLevel, он может вернуть следующее:</p>
+<pre class="list">
+     SearchResultEntry for CN=Manager,DC=Example,DC=NET
+     SearchResultReference {
+       ldap://hostb/OU=People,DC=Example,DC=NET??base
+       ldap://hostc/OU=People,DC=Example,DC=NET??base }
+     SearchResultReference {
+       ldap://hostd/OU=Roles,DC=Example,DC=NET??base }
+     SearchResultDone (success)
+</pre>
+<p>Если на сервере, к которому происходит обращение, не содержится базовый объект поиска Search, но у него есть информация о его возможном местонахождении, то он может вернуть клиенту отсылку referral. В этом случае, если клиент запрашивает у сервера hosta поиск Search по поддереву &lt;DC=Example,DC=ORG&gt;, сервер возвращает сообщение SearchResultDone, содержащее отсылку:<p>
+<pre class="list">
+     SearchResultDone (referral) {
+       ldap://hostg/DC=Example,DC=ORG??sub }
+</pre>
+<h3><a name="section-4.6">4.6</a>. Операция модификации Modify</h3>
+
+<p>Операция модификации Modify позволяет клиенту запросить, чтобы сервер выполнил модификацию записи от его имени. Запрос Modify определяется следующим образом:</p>
+<pre class="list">
+        ModifyRequest ::= [APPLICATION 6] SEQUENCE {
+             object          LDAPDN,
+             changes         SEQUENCE OF change SEQUENCE {
+                  operation       ENUMERATED {
+                       add     (0),
+                       delete  (1),
+                       replace (2),
+                       ... },
+                  modification    PartialAttribute } }
+</pre>
+<p>Поля запроса Modify:</p>
+<ul>
+<li>object: Значение этого поля содержит имя записи, которая будет модифицирована. Серверу не нужно (SHALL NOT) выполнять какие-либо разыменования псевдонимов для определения объекта, который требуется модифицировать.</li>
+<li>changes: Список модификаций, которые будут произведены над записью. Все модификации из списка должны (MUST) быть выполнены в порядке их перечисления как одна атомарная операция. Хотя отдельные модификации могут нарушать определенные аспекты схемы данных каталога (такие, как определение объектного класса и правило содержимого информационного дерева каталога (Directory Information Tree, DIT)), результирующая запись после выполнения всех модификаций из списка должна (MUST) удовлетворять требованиям модели каталога и управляющей схемы [<a href="http://tools.ietf.org/html/rfc4512" title="K.">RFC4512</a>].</li>
+<li>operation: Используется для указания типа выполняемой модификации. Каждый тип операции воздействует на тот атрибут, который указан в следующем за полем operation поле modification. Значения этого поля имеют следующие семантики (соответственно):
+<blockquote>
+<p>add: добавить перечисленные значения к атрибуту, указанному в поле modification, при необходимости создать этот атрибут.</p>
+<p>delete: удалить перечисленные значения из атрибута, указанного в поле modification. Если не было перечислено никаких значений или если были перечислены все текущие значения данного атрибута, атрибут удаляется полностью.</p>
+<p>replace: заменить все существующие значения атрибута, указанного в поле modification на новые (перечисленные), создать атрибут, если его ещё не существовало. В случае, если новые значения не были перечислены, замена сводится к удалению атрибута целиком, если он существует, и к игнорированию операции, если он не существует.</p>
+</blockquote></li>
+<li>modification: Частичный атрибут PartialAttribute (у которого может быть пустой набор значений). Это поле используется для указания того типа атрибута или типа атрибута вместе со значениями, которые будут модифицироваться.</li>
+</ul>
+<p>После получения запроса Modify сервер пытается выполнить необходимые модификации в DIT и возвращает результат в ответе Modify Response, который определяется следующим образом:</p>
+<pre class="list">
+        ModifyResponse ::= [APPLICATION 7] LDAPResult
+</pre>
+<p>Сервер возвращает клиенту единственный ответ Modify, сообщающий либо об успешной модификации DIT, либо причину неудачного завершения модификации. В связи с требованием атомарности в применении списка изменений в запросе Modify Request, клиент вправе ожидать, что в случае получения ответа Modify, указывающего на ошибку любого рода, никаких модификаций DIT произведено не было, а в случае получения ответа Modify, указывающего на успешное завершение операции, все запрошенные модификации были произведены. Клиент не может определить, была или нет выполнена модификация, если ответ Modify не был получен (например, в случае прерывания сессии LDAP или отказа от этой операции Modify).</p>
+
+<p>Серверы должны (MUST) обеспечить, чтобы записи удовлетворяли правилам пользовательской и системной схемы данных, а также другим ограничениям модели данных. Операция Modify не может быть использована для удаления из записи каких-либо её уникальных (отличительных) значений, то есть тех значений, которые формируют относительное уникальное имя записи. Попытка сделать это приведёт к тому, что сервер вернёт результирующий код notAllowedOnRDN. Для переименования записи используется операция модификации уникального имени (Modify DN), описанная в <a href="#section-4.9">разделе 4.9</a>.</p>
+
+<p>Типы атрибутов, для которых не определено соответствие equality, подчиняются правилам из <a href="http://tools.ietf.org/html/rfc4512#section-2.5.1">раздела 2.5.1 [RFC4512]</a>.</p>
+
+<p>Обратите внимание, что в связи со сделанными в LDAP упрощениями, нет прямого отображения изменений посредством запроса LDAP ModifyRequest в изменения посредством операции DAP ModifyEntry, и различные реализации шлюзов LDAP-DAP могут использовать различные средства представления этих изменений. В случае успешного завершения изменений, окончательный эффект от выполнения этих операций над записью должен (MUST) быть идентичен.</p>
+
+<h3><a name="section-4.7">4.7</a>. Операция добавления Add</h3>
+
+<p>Операция Add позволяет клиенту запросить добавление записи в каталог. Запрос Add определяется следующим образом:</p>
+<pre class="list">
+        AddRequest ::= [APPLICATION 8] SEQUENCE {
+             entry           LDAPDN,
+             attributes      AttributeList }
+
+        AttributeList ::= SEQUENCE OF attribute Attribute
+</pre>
+<p>Поля запроса Add:</p>
+<ul>
+<li>entry: Имя добавляемой записи. Серверу не нужно (SHALL NOT) выполнять какие-либо разыменования псевдонимов для определения местоположения записи, которая будет добавлена.</li>
+<li>attributes: Список атрибутов, которые, наряду с атрибутами из RDN, составляют содержимое добавляемой записи. Клиенты могут (MAY) включать, либо могут не (MAY NOT) включать в этот список атрибут (атрибуты) RDN. Клиенты не должны (MUST NOT) предоставлять те атрибуты, которые нельзя модифицировать пользователю (NO-USER-MODIFICATION), такие как атрибуты createTimestamp или creatorsName, поскольку сервер выставляет их автоматически.</li>
+</ul>
+<p>Серверы должны (MUST) обеспечить, чтобы записи удовлетворяли правилам пользовательской и системной схемы данных, а также другим ограничениям модели данных. Типы атрибутов, для которых не определено соответствие equality, подчиняются правилам из <a href="http://tools.ietf.org/html/rfc4512#section-2.5.1">раздела 2.5.1 [RFC4512]</a> (это относится к атрибуту именования и, кроме того, к любым добавляемым многозначным атрибутам).</p>
+
+<p>Для успешного выполнения запроса AddRequest запись, имя которой указано в поле entry этого запроса, не должна (MUST NOT) существовать. Непосредственно вышестоящая (родительская) запись добавляемой записи объекта или псевдонима должна (MUST) существовать. Например, если клиент пытается добавить &lt;CN=JS,DC=Example,DC=NET&gt;, запись &lt;DC=Example,DC=NET&gt; не существует, а запись &lt;DC=NET&gt; существует, то сервер вернёт результирующий код noSuchObject, а поле matchedDN конструкции LDAPResult будет содержать &lt;DC=NET&gt;.</p>
+
+<p>При получении запроса Add сервер попытается добавить указанную запись. Результат попытки добавления будет возвращён клиенту в ответе Add Response, который определяется следующим образом:</p>
+<pre class="list">
+        AddResponse ::= [APPLICATION 9] LDAPResult
+</pre>
+<p>Ответ с кодом success указывает на то, что новая запись была добавлена в каталог.</p>
+
+<h3><a name="section-4.8">4.8</a>. Операция удаления Delete</h3>
+
+<p>Операция Delete позволяет клиенту запросить удаление записи из каталога. Запрос Delete определяется следующим образом:</p>
+<pre class="list">
+        DelRequest ::= [APPLICATION 10] LDAPDN
+</pre>
+<p>Запрос Delete состоит из имени записи, которую требуется удалить. Серверу не нужно (SHALL NOT) выполнять разыменования псевдонимов при определении имени целевой записи для удаления.</p>
+
+<p>С помощью этой операции могут быть удалены только листовые записи (у которых нет нижестоящих (подчинённых) записей).</p>
+
+<p>При получении запроса Delete сервер попытается выполнить удаление указанной записи и результат будет возвращён клиенту в ответе Delete Response, который определяется следующим образом:</p>
+<pre class="list">
+        DelResponse ::= [APPLICATION 11] LDAPResult
+</pre>
+<h3><a name="section-4.9">4.9</a>. Операция модификации уникального имени Modify DN</h3>
+
+<p>Операция Modify DN позволяет клиенту изменить относительное уникальное имя (Relative Distinguished Name, RDN) записи в каталоге и/или переместить поддерево записей в новое местоположение в каталоге. Запрос Modify DN определяется следующим образом:</p>
+<pre class="list">
+        ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
+             entry           LDAPDN,
+             newrdn          RelativeLDAPDN,
+             deleteoldrdn    BOOLEAN,
+             newSuperior     [0] LDAPDN OPTIONAL }
+</pre>
+<p>Поля запроса Modify DN:</p>
+<ul>
+<li>entry: Имя записи, которую требуется изменить. У этой записи могут быть, а могут и не быть нижестоящие (подчинённые) записи.</li>
+<li>newrdn: Новое RDN записи. Если запись перемещается к новой вышестоящей записи без изменения RDN, в этом поле предоставляется старое значение RDN. Значения атрибутов нового RDN, не совпавшие ни с одним из имеющихся в записи значением этих атрибутов, добавляются в эту запись, и, если добавление завершилось неудачно, возвращается соответствующая ошибка.</li>
+<li>deleteoldrdn: Логическое поле, управляющее тем, будут ли старые значения атрибутов RDN сохранены как атрибуты записи, или будут удалены из записи.</li>
+<li>newSuperior: При наличии этого поля в нём находится имя существующей записи-объекта, которая становится непосредственной вышестоящей (родительской) записью перемещаемой записи.</li>
+</ul>
+<p>Серверу не нужно (SHALL NOT) выполнять какие-либо разыменования псевдонимов для определения местоположения объектов, имена которых указаны в полях entry или newSuperior.</p>
+
+<p>При получении запроса ModifyDNRequest сервер попытается выполнить изменение имени и вернуть результат в ответе Modify DN Response, который определяется следующим образом:</p>
+<pre class="list">
+        ModifyDNResponse ::= [APPLICATION 13] LDAPResult
+</pre>
+<p>Например, если имя записи, указанное в поле entry, было &lt;cn=John Smith,c=US&gt;, в поле newrdn было &lt;cn=John Cougar Smith&gt;, а поле newSuperior отсутствовало, то данная операция выполнила бы попытку переименовать запись в &lt;cn=John Cougar Smith,c=US&gt;. Если запись с таким именем уже существовала, операция бы закончилась неудачей с результирующим кодом entryAlreadyExists.</p>
+
+<p>Серверы должны (MUST) обеспечить, чтобы записи удовлетворяли правилам пользовательской и системной схемы данных, а также другим ограничениям модели данных. Типы атрибутов, для которых не определено соответствие equality, подчиняются правилам из <a href="http://tools.ietf.org/html/rfc4512#section-2.5.1">раздела 2.5.1 [RFC4512]</a> (это относится к полям newrdn и deleteoldrdn).</p>
+
+<p>Объект, имя которого указано в newSuperior должен (MUST) существовать. Например, если клиент пытается добавить &lt;CN=JS,DC=Example,DC=NET&gt;, а запись  &lt;DC=Example,DC=NET&gt; не существует, но существует запись &lt;DC=NET&gt;, то сервер вернёт результирующий код noSuchObject, а поле matchedDN конструкции LDAPResult будет содержать &lt;DC=NET&gt;.</p>
+
+<p>Если поле deleteoldrdn установлено в TRUE, значения атрибутов, формировавшие старое RDN (но не входящие в новое RDN), удаляются из записи. Если поле deleteoldrdn установлено в FALSE, значения атрибутов, формировавшие старое RDN, будут сохранены как неотличительные значения атрибутов записи.</p>
+
+<p>Имейте ввиду, что стандарт X.500 накладывает ограничение: операция ModifyDN может влиять только на перемещение записей в пределах одного сервера. Если сервер LDAP отображается на DAP, то будет применяться это ограничение, и при возникновении ошибки вследствие его нарушения будет возвращаться результирующий код affectsMultipleDSAs. В общем случае, клиенты не должны (MUST NOT) рассчитывать на то, что они смогут выполнить произвольное перемещение записей и поддеревьев между серверами или контекстами именования.</p>
+
+<h3><a name="section-4.10">4.10</a>. Операция сравнения Compare</h3>
+
+<p>Операция Compare позволяет клиенту сравнить значение утверждения со значениями конкретного атрибута конкретной записи в каталоге. Запрос Compare определяется следующим образом:</p>
+<pre class="list">
+        CompareRequest ::= [APPLICATION 14] SEQUENCE {
+             entry           LDAPDN,
+             ava             AttributeValueAssertion }
+</pre>
+<p>Поля запроса Compare:</p>
+<ul>
+<li>entry: Имя записи, с атрибутом которой будет производиться сравнение. Серверу не нужно (SHALL NOT) выполнять какие-либо разыменования псевдонимов для определения местоположения этой записи.</li>
+
+<li>ava: Содержит утверждение значения атрибута, по которому будет производиться сравнение.</li>
+</ul>
+<p>При получении запроса Compare сервер попытается выполнить заданное сравнение и вернуть результат в ответе Compare Response, который определяется следующим образом:</p>
+<pre class="list">
+        CompareResponse ::= [APPLICATION 15] LDAPResult
+</pre>
+<p>Результирующий код resultCode может быть устновлен в compareTrue, compareFalse или в значение, соответствующее возникшей ошибке. Код compareTrue указывает на то, что значение утверждения в поле ava совпадает со значением типа или подтипа атрибута согласно правилу соответствия EQUALITY этого атрибута. Код compareFalse указывает на то, что значение утверждения в поле ava и значение типа или подтипа атрибута не совпадают. Другие результирующие коды указывают либо на то, что результат сравнения был Undefined (<a href="#section-4.5.1.7">раздел 4.5.1.7</a>), либо на возникновение какой-либо ошибки.</p>
+
+<p>Имейте ввиду, что некоторые системы каталогов могут устанавливать контроль доступа, разрешающий сравнения со значениями некоторых атрибутов (таких как userPassword), при этом другие действия с этими атрибутами могут быть запрещены.</p>
+
+<h3><a name="section-4.11">4.11</a>. Операция отказа Abandon</h3>
+
+<p>Назначение операции Abandon&thinsp;&mdash;&thinsp;позволить клиенту запросить сервер отказаться от выполнения незавершённой операции. Запрос Abandon определяется следующим образом:</p>
+<pre class="list">
+        AbandonRequest ::= [APPLICATION 16] MessageID
+</pre>
+<p>MessageID&thinsp;&mdash;&thinsp;это идентификатор сообщения той операции, которая была запрошена ранее на данном уровне сообщений LDAP. У самого запроса Abandon есть свой собственный идентификатор сообщения MessageID. Он отличается от идентификатора MessageID ранее запрошенной операции, от выполнения которой требуется отказаться.</p>
+
+<p>В операции Abandon не предусмотрено ответа. При получении запроса AbandonRequest сервер может (MAY) отказаться от выполнения операции, идентифицируемой по MessageID. Поскольку клиент не может отличить операцию, отказ от которой выполнен успешно, от незавершенной операции, применение операции Abandon ограничено теми случаями, когда клиенту не требуется индикация результатов операции.</p>
+
+<p>Невозможно отказаться от операций Abandon, Bind, Unbind и StartTLS.</p>
+
+<p>В случае получения сервером запроса Abandon для отказа от операции Search, когда он уже производит передачу ответов на запрос Search, этот сервер должен (MUST) немедленно прекратить передачу ответов-записей того запроса, который был отменён, и он не должен (MUST NOT) отправлять ответ SearchResultDone. Естественно, сервер должен (MUST) обеспечить передачу только должным образом закодированных PDU сообщений LDAPMessage.</p>
+
+<p>Решение о возможности отказа от других операций (в частности, операций обновления каталога) оставляется на усмотрение сервера.</p>
+
+<p>Клиентам не следует несколько раз посылать запросы Abandon для одной и той же операции, и они также должны (MUST) быть готовы получить результаты от операций, от которых они отказывались (поскольку те могли уже передаваться, когда была запрошена операция Abandon, либо невозможно было выполнить отказ).</p>
+
+<p>Серверы должны (MUST) отбрасывать запросы Abandon для тех MessageID, которые они не могут распознать, для операций, от которых нельзя отказаться, и для операций, отказ от которых уже произошёл.</p>
+
+<h3><a name="section-4.12">4.12</a>. Расширенная операция Extended</h3>
+
+<p>Операция Extended позволяет определить дополнительные операции помимо тех, которые уже определены в протоколе; например, добавить операции для установки Transport Layer Security (смотрите <a href="#section-4.14">раздел 4.14</a>).</p>
+
+<p>Операция Extended позволяет клиентам выполнять запросы и получать ответы с предопределёнными синтаксисами и семантиками. Эти синтаксисы и семантики могут быть определены в RFC, либо определяться в частном порядке для конкретных реализаций.</p>
+
+<p>Каждая операция Extended состоит из запроса Extended и ответа Extended.</p>
+<pre class="list">
+        ExtendedRequest ::= [APPLICATION 23] SEQUENCE {
+             requestName      [0] LDAPOID,
+             requestValue     [1] OCTET STRING OPTIONAL }
+</pre>
+<p>В поле requestName содержится точечно-цифровое представление соответствующего запросу уникального идентификатора объекта OBJECT IDENTIFIER. В поле requestValue&thinsp;&mdash;&thinsp;информация, форма которой определяется этим запросом, инкапсулированная в строку октетов OCTET STRING.</p>
+
+<p>На этот запрос сервер ответит сообщением LDAPMessage, содержащим ответ ExtendedResponse.</p>
+<pre class="list">
+        ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+             COMPONENTS OF LDAPResult,
+             responseName     [10] LDAPOID OPTIONAL,
+             responseValue    [11] OCTET STRING OPTIONAL }
+</pre>
+<p>Поле responseName, при его наличии, содержит идентификатор LDAPOID, уникальный для данной расширенной операции или её ответа. Это поле является опциональным (даже когда в спецификации расширения определён LDAPOID для использования в этом поле). Это поле будет отсутствовать, когда сервер не может или не желает определить, какой именно LDAPOID вернуть, например, если невозможно разобрать requestName, либо его значение не распознано.</p>
+
+<p>Если не распознан идентификатор в requestName, сервер возвращает protocolError. (Сервер может вернуть protocolError и в других случаях.)</p>
+
+<p>Поля requestValue и responseValue содержат связанную с операцией информацию. Формат этих полей определяется спецификацией операции-расширения Extended. Реализации должны (MUST) быть готовы обработать произвольное содержимое этих полей, в том числе и нулевой длины. Значения, которые определяются в терминах ASN.1 и закодированы BER в соответствии с <a href="#section-5.1">разделом 5.1</a>, также следуют правилам расширяемости, приведённым в <a href="#section-4">разделе 4</a>.</p>
+
+<p>Серверы перечисляют идентификаторы requestName тех запросов Extended Request, которые они могут распознать, в атрибуте 'supportedExtension' записи root DSE (<a href="http://tools.ietf.org/html/rfc4512#section-5.1">раздел 5.1 [RFC4512]</a>).</p>
+
+<p>Операции-расширения Extended могут быть определены в других документах. Спецификация операции-расширения Extended включает в себя:</p>
+<ul>
+<li>идентификатор объекта OBJECT IDENTIFIER, который назначается в поле requestName,</li>
+<li>идентификатор объекта OBJECT IDENTIFIER (если он есть), который назначается в поле responseName (имейте ввиду, что для requestName и responseName может быть использован один и тот же OBJECT IDENTIFIER),</li>
+<li>формат содержимого полей requestValue и responseValue (если оно предусмотрено), и</li>
+<li>семантику операции.</li>
+</ul>
+<h3><a name="section-4.13">4.13</a>. Промежуточное ответное сообщение IntermediateResponse</h3>
+
+<p>Операция Search предоставляет механизм, позволяющий возвращать несколько ответных сообщений для одного запроса Search, а другие операции, по своей природе, не предоставляют возможности возвращения нескольких ответных сообщений.</p>
+
+<p>Сообщение IntermediateResponse предоставляет общий механизм для определения операций типа "один запрос/несколько ответов" в LDAP. Данное сообщение предназначено для использования в сочетании с расширенной операцией Extended для определения новых операций типа "один запрос/несколько ответов", либо в сочетании с элементом управления, когда расширение существующих операций LDAP осуществляется таким образом, что от них требуется возвращать промежуточную ответную информацию.</p>
+
+<p>Предполагается, что в определениях и описаниях операций-расширений Extended и элементов управления, в которых будут использоваться промежуточные сообщения IntermediateResponse, будут определены условия, при которых сервером могут посылаться сообщения IntermediateResponse, а также разъяснение того, что означает посылка сообщения IntermediateResponse при наступлении конкретного условия.</p>
+<pre class="list">
+        IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                responseName     [0] LDAPOID OPTIONAL,
+                responseValue    [1] OCTET STRING OPTIONAL }
+</pre>
+<p>Не нужно (SHALL NOT) возвращать клиенту сообщений IntermediateResponse, если клиент не посылает запрос, в котором специально требуется их возвращение. В этом документе определяются две формы таких затребований: в расширенной операции Extended и в элементе управления запроса. При определении сообщений IntermediateResponse в каких-либо документах, оговаривается манера, в которой будет затребоваться возвращение этих сообщений (то есть, в спецификации операции-расширения Extended или элемента управления запроса, которые их используют). Такие спецификации включают в себя:</p>
+<ul>
+<li>идентификатор объекта OBJECT IDENTIFIER (если он есть), который назначается в поле responseName,</li>
+<li>формат содержимого поля responseValue (если оно предусмотрено), и</li>
+<li>семантику, ассоциируемую с сообщением IntermediateResponse.</li>
+</ul>
+<p>Расширениям, позволяющим возвращать несколько типов сообщений IntermediateResponse, нужно (SHALL) идентифицировать эти типы с помощью уникальных значений в поле responseName (причём в одном из этих сообщений, по спецификации, значение в поле responseName может отсутствовать).</p>
+
+<p>В разделах <a href="#section-4.13.1">4.13.1</a> и <a href="#section-4.13.2">4.13.2</a> описаны дополнительные требования к включению полей responseName и responseValue в сообщения IntermediateResponse.</p>
+
+<h4><a name="section-4.13.1">4.13.1</a>. Использование с LDAP ExtendedRequest и ExtendedResponse</h4>
+
+<p>Операция типа "один запрос/несколько ответов" может быть определена так, чтобы в ней использовалось одно сообщение ExtendedRequest, в котором затребуется ноль или более однотипных или разнотипных сообщений IntermediateResponse, за которыми следует сообщение ExtendedResponse.</p>
+
+<h4><a name="section-4.13.2">4.13.2</a>. Использование с элементами управления запросов LDAP</h4>
+
+<p>Семантика элемента управления может включать возврат нуля или более сообщений IntermediateResponse до возвращения окончательного результирующего кода операции. В ответ на запрос с элементом управления могут посылаться как однотипные, так и разнотипные сообщения IntermediateResponse.</p>
+
+<p>Во все сообщения IntermediateResponse, ассоциированные с элементами управления запросов, нужно (SHALL) включать поле responseName. Выполнение этого требования гарантирует, что клиент сможет корректно идентифицировать источник сообщений IntermediateResponse, когда:</p>
+<ul>
+<li>в запрос какой-либо операции LDAP включено два или более элементов управления, использующих сообщения IntermediateResponse, либо</li>
+<li>один или несколько элементов управления, использующих сообщения IntermediateResponse, включены в запрос с расширенной операцией Extended LDAP, использующей сообщения IntermediateResponse.</li>
+</ul>
+<h3><a name="section-4.14">4.14</a>. Операция StartTLS</h3>
+
+<p>Предназначение операции Start Transport Layer Security (StartTLS)&thinsp;&mdash;&thinsp;инициировать установление уровня TLS. Операция StartTLS определена с использованием механизма расширенной операции Extended, описанной в <a href="#section-4.12">разделе 4.12</a>.</p>
+
+<h4><a name="section-4.14.1">4.14.1</a>. Запрос StartTLS</h3>
+
+<p>Клиент запрашивает установление TLS путём отправки серверу сообщения с запросом StartTLS. Запрос StartTLS определяется в терминах запроса операции-расширения ExtendedRequest. Идентификатор requestName&thinsp;&mdash;&thinsp;"1.3.6.1.4.1.1466.20037", а поле requestValue всегда отсутствует.</p>
+
+<p>Клиент не должен (MUST NOT) посылать вслед за этим запросом каких-либо LDAP PDU на данном уровне сообщений LDAP до получения ответа операции-расширения StartTLS, и, в случае ответа с успешным статусом, до завершения переговоров TLS.</p>
+
+<p>При обнаружении проблем с последовательностью выполнения операций (в частности тех, которые описаны в <a href="http://tools.ietf.org/html/rfc4513#section-3.1.1" title="LDAP: Authentication Methods and Security Mechanisms">разделе 3.1.1 [RFC4513]</a>) результирующий код resultCode ответа должен быть установлен в operationsError.</p>
+
+<p>Если сервер не поддерживает TLS (в силу конструктивных особенностей или текущих настроек), он возвращает ответ с результирующим кодом resultCode, установленным в protocolError, как описано в <a href="#section-4.12">разделе 4.12</a>.</p>
+
+<h4><a name="section-4.14.2">4.14.2</a>. Результат операции StartTLS</h4>
+
+<p>При получении запроса StartTLS, сервер, поддерживающий данную операцию, должен (MUST) вернуть запрашивающему клиенту ответное сообщение StartTLS. Идентификатор responseName, если таковой предоставляется (смотрите <a href="#section-4.12">раздел 4.12</a>),&thinsp;&mdash;&thinsp;"1.3.6.1.4.1.1466.20037". Поле responseValue всегда отсутствует.</p>
+
+<p>Если сервер желает и способен вести переговоры TLS, он возвращает ответ StartTLS, результирующий код resultCode которого установлен success. При получении клиентом ответа StartTLS с успешным статусом стороны могут начать переговоры TLS как описано в <a href="http://tools.ietf.org/html/rfc4513#section-3">разделе 3 [RFC4513]</a>.</p>
+
+<p>В противном случае, если сервер не желает или не способен выполнить данную операцию, он должен вернуть соответствующий результирующий код, указывающий на характер проблемы. Например, если подсистема TLS в настоящее время не доступна, сервер может указать на это путём возврата сообщения с результирующим кодом resultCode, установленным в unavailable. В тех случаях, когда возвращён ответ с неуспешным результирующим кодом, сессия LDAP продолжается без уровня TLS.</p>
+
+<h4><a name="section-4.14.3">4.14.3</a>. Снятие уровня TLS</h4>
+
+<p>Как клиент, так и сервер может (MAY) снять уровень TLS (прекратить его использование) и продолжить работу с "чистым" уровнем сообщений LDAP путём отправки и получения оповещения о закрытии TLS (TLS closure alert).</p>
+
+<p>Сторона-инициатор посылает оповещение о закрытии TLS и должна (MUST) ожидать, пока не получит оповещение о закрытии TLS от другой стороны, прежде чем посылать дальнейшие LDAP PDU.</p>
+
+<p>Когда одна из сторон получает начальное оповещение о закрытии TLS, она может избрать вариант продолжения работы с "чистым" уровнем сообщений LDAP. В этом случае она должна (MUST) немедленно передать оповещение о закрытии TLS. Вслед за этим она может (MAY) посылать и принимать LDAP PDU.</p>
+
+<p>Стороны могут (MAY) завершить данную сессию LDAP после отправки и получения оповещения о закрытии TLS.</p>
+
+<h2><a name="section-5">5</a>. Кодирование протокола, соединения и передача данных</h2>
+
+<p>Этот протокол предназначен для работы поверх ориентированных на соединение, надежных транспортов, где поток данных делится на октеты (блоки по 8 бит), и значимым является каждый октет и каждый бит.</p>
+
+<p>Один из таких сервисов, LDAP поверх TCP, определён в <a href="#section-5.2">разделе 5.2</a>.</p>
+<p>Данный сервис, как правило, применим к приложениям, которые являются поставщиками или потребителями основанных на X.500 служб каталогов в Интернет. Данная спецификация  в основном создавалась с расчётом на отображение в TCP.</p>
+<p>Спецификации, определяющие другие отображения, могут столкнуться с различными препятствиями.</p>
+
+<p>Реализации LDAP поверх TCP должны (MUST) осуществлять это отображение так, как описано в <a href="#section-5.2">разделе 5.2</a>.</p>
+
+<p>Данная схема показывает взаимосвязь между разными уровнями, участвующими в обмене между сторонами протокола:</p>
+<pre class=""list>
+               +--------------------------+
+               |  уровень сообщений LDAP  |
+               +--------------------------+ &gt; LDAP PDU
+               +--------------------------+ &lt; данные
+               |       уровень SASL       |
+               +--------------------------+ &gt; данные, защищённые SASL
+               +--------------------------+ &lt; данные
+               |       уровень TLS        |
+    Приложение +--------------------------+ &gt; данные, защищённые TLS
+   ------------+--------------------------+ &lt; данные
+     Транспорт | транспортное  соединение |
+               +--------------------------+
+</pre>
+<h3><a name="section-5.1">5.1</a>. Кодирование протокола</h3>
+
+<p>Для обмена элементами протокола LDAP их нужно (SHALL) кодировать с использованием основных правил кодирования Basic Encoding Rules [<a href="#ref-BER" title="Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)">BER</a>] [<a href="#ref-ASN.1" title="Information Technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation">ASN.1</a>] со следующими ограничениями:</p>
+<ul>
+<li>Используется только определённая форма длины кодировки.</li>
+<li>Значения OCTET STRING кодируются только в примитивной форме.</li>
+<li>Если значение типа BOOLEAN установлено в true, октет закодированного значения устанавливается в шестнадцатеричное "FF".</li>
+<li>Если значение типа установлено в его значение по умолчанию, оно отсутствует. В определении этого протокола только у некоторых типов BOOLEAN и INTEGER есть значение по умолчанию.</li>
+</ul>
+<p>Эти ограничения предназначены для снижения накладных расходов на кодирование и декодирование определенных элементов в BER.</p>
+
+<p>Эти ограничения не применяются к типам ASN.1, инкапсулированным в значения строк OCTET STRING, таким как значения атрибутов, если не указано иное.</p>
+
+<h3><a name="section-5.2">5.2</a>. Transmission Control Protocol (TCP)</h3>
+
+<p>Закодированные PDU LDAPMessage напрямую отображаются на поток TCP [<a href="http://tools.ietf.org/html/rfc793" title="Transmission Control Protocol">RFC793</a>] с использованием основанного на BER кодирования, описанного в <a href="#section-5.1">разделе 5.1</a>. Рекомендуется, чтобы реализации сервера, работающие поверх TCP, ожидали соединения по протоколу на порту LDAP 389, назначенному Internet Assigned Numbers Authority (IANA) [<a href="#ref-PortReg" title="Port Numbers">PortReg</a>]. Вместо этого серверы могут ожидать соединения на порту с другим номером. Клиенты должны (MUST) поддерживать возможность связываться с серверами на любом действительном порту TCP.</p>
+
+<h3><a name="section-5.3">5.3</a>. Прекращение сессии LDAP</h3>
+
+<p>Обычно прекращение сессии LDAP инициируется клиентом, посылающим запрос UnbindRequest (<a href="#section-4.3">раздел 4.3</a>), либо сервером, посылающим уведомление об отключении (<a href="#section-4.4.1">раздел 4.4.1</a>). В этих случаях каждая сторона протокола корректно завершает сессию LDAP путём прекращения обменов на уровне сообщений LDAP, разрыва (если он установлен) уровня SASL, разрыва (если он установлен) уровня TLS и закрытия транспортного соединения.</p>
+
+<p>Стороны протокола могут определить, что продолжение какого-либо взаимодействия может привести к пагубным последствиям, в таком случае они могут сразу завершить сессию путём прекращения обменов и закрытия транспортного соединения.</p>
+
+<p>В любом случае, если сессия LDAP прекращена, незавершённые операции обрабатываются как указано в <a href="#section-3.1">разделе 3.1</a>.</p>
+
+<h2><a name="section-6">6</a>. О безопасности</h2>
+
+<p>Данная версия протокола предоставляет возможности простой аутентификации с использованием паролей в открытом виде, а также аутентификации с использованием любого механизма SASL [<a href="http://rfc2.ru/4422.rfc" title="Простой уровень аутентификации и защиты (SASL)">RFC4422</a>]. Установление уровней SASL и/или TLS может обеспечить целостность и другие сервисы безопасности информации.</p>
+
+<p>Также разрешается возврат сервером клиенту своих учётных данных для аутентификации, если он захочет это сделать.</p>
+
+<p>Использование паролей в открытом виде настоятельно не рекомендуется там, где используемый транспортный сервис не может гарантировать конфиденциальности и это может привести к раскрытию пароля посторонними лицами.</p>
+
+<p>Считается правильным, когда серверы предотвращают изменения каталога клиентами, осуществляющими доступ анонимно [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+
+<p>Соображения безопасности для методов аутентификации, механизмов SASL и TLS описаны в [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+
+<p>Обратите внимание, что обмен аутентификационной информацией SASL не обеспечивает конфиденциальности информации и защиты целостности для полей version или name запроса BindRequest, полей resultCode, diagnosticMessage или referral ответа BindResponse, а также для какой-либо информации, содержащейся в элементах управления, вложенных в запросы и ответы Bind. Таким образом, не следует (SHOULD NOT) помещать в эти поля важную информацию, если она не защищена другим способом (таким, как установка защиты на транспортном уровне).</p>
+
+<p>Тем, кто занимается реализацией, следует иметь ввиду, что различные факторы безопасности (в том числе аутентификационная и авторизационная информация и сервисы безопасности данных) могут меняться в ходе сессии LDAP или даже во время выполнения конкретной операции. Например, может закончиться срок действия учётных данных, могут измениться авторизационные сущности или правила контроля доступа, либо уровень (уровни) обеспечения безопасности, поверх которых работает сессия LDAP, могут быть заменены или их работа завершена. Реализации должны обеспечить достаточную надёжность при обработке изменений факторов безопасности.</p>
+
+<p>В некоторых случаях может быть целесообразно продолжить работу даже в свете изменений фактора безопасности. Например, может быть целесообразно продолжить операцию Abandon независимо от произошедших изменений, или продолжить выполнение какой-либо операции, когда изменение привело к повышению (или установлению) фактора безопасности. В других случаях может быть целесообразно завершить неудачей либо изменить обработку производимой операции. Например, при снятии защиты конфиденциальности может быть целесообразно либо завершить запрос на получение конфиденциальных данных неудачей, либо, как минимум, исключить такие данные из возвращаемого результата.</p>
+
+<p>Реализации, кэширующие полученные посредством LDAP атрибуты и записи, должны (MUST) обеспечить поддержку контроля доступа при предоставлении такой информации нескольким клиентам, поскольку у серверов могут иметься политики контроля доступа, предотвращающие возвращение записей и атрибутов в результатах операции Search, за исключением конкретных клиентов, прошедших аутентификацию. К примеру, информацию из кэша можно выдавать только тем клиентам, в результате запроса которых она и была закэширована.</p>
+
+<p>Серверы могут возвращать отсылки либо ссылки-продолжения в результате операции Search, перенаправляющие клиентов на другие серверы. Недобросовестные приложения имеют возможность внедрить подобные отсылки в поток данных, пытаясь тем самым перенаправить клиента на недобросовестный сервер. Клиентам рекомендуется учитывать это и, по возможности, отклонять отсылки, если защита конфиденциальности не обеспечена. Клиентам рекомендуется отклонять отсылки, возвращаемые операцией StartTLS.</p>
+
+<p>Содержимое полей matchedDN и diagnosticMessage, а также некоторые значения результирующих кодов resultCode (например, attributeOrValueExists и entryAlreadyExists) могут раскрывать наличие или отсутствие конкретных данных в каталоге, защищаемых средствами контроля доступа и других административных ограничений. Реализациям сервера следует ограничивать доступ к защищаемой информации в равной степени как в нормальных условиях, так и при возникновении ошибок.</p>
+
+<p>Стороны протокола должны (MUST) быть готовы обрабатывать неверные кодировки протокола и кодировки произвольной длины. Неверные кодировки протокола включают в себя: исключения кодировки BER, исключения формата строки и кодировки UTF-8, исключения переполнения, исключения целочисленных значений, а также исключения флага on/off бинарного режима. Набор тестов LDAPv3 PROTOS [<a href="#ref-PROTOS-LDAP" title="PROTOS Test-Suite: c06-ldapv3">PROTOS-LDAP</a>] предоставляет прекрасные примеры таких исключений и варианты тестов для обнаружения недостатков в реализациях.</p>
+
+<p>В случае обнаружения сторонами протокола какой-либо атаки, которая может привести к плохим последствиям при продолжении взаимодействия на любом уровне в рамках сессии LDAP, им следует немедленно прекратить эту сессию LDAP как описано в <a href="#section-5.3">разделе 5.3</a>.</p>
+
+<h2><a name="section-7">7</a>. Благодарности</h2>
+
+<p>Этот документ основан на <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, авторы Mark Wahl, Tim Howes и Steve Kille. <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF ASID.</p>
+
+<p>Он также основан на <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>, авторы Jeff Hodges, RL "Bob" Morgan и Mark Wahl. <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAPEXT.</p>
+
+<p>Он также основан на <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a>, авторы Roger Harrison и Kurt Zeilenga. <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a>&thinsp;&mdash;&thinsp;индивидуальный вклад в IETF.</p>
+
+<p>Этот документ&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAPBIS. Существенный вклад в составление документа и его техническую ревизию внесли Kurt Zeilenga, Steven Legg и Hallvard Furuseth.</p>
+
+<h2><a name="section-8">8</a>. Нормативные документы</h2>
+
+<p>[<a name="ref-ASN.1" id="ref-ASN.1">ASN.1</a>] ITU-T Recommendation X.680 (07/2002) | ISO/IEC 8824-1:2002 "Information Technology - Abstract Syntax Notation One (ASN.1): Specification of basic notation".</p>
+
+<p>[<a name="ref-BER" id="ref-BER">BER</a>] ITU-T Rec. X.690 (07/2002) | ISO/IEC 8825-1:2002, "Information technology - ASN.1 encoding rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", 2002.</p>
+
+<p>[<a name="ref-ISO10646" id="ref-ISO10646">ISO10646</a>] Universal Multiple-Octet Coded Character Set (UCS) - Architecture and Basic Multilingual Plane, ISO/IEC         10646-1 : 1993.</p>
+
+<p>[<a name="ref-RFC791" id="ref-RFC791">RFC791</a>] Postel, J., "Internet Protocol", STD 5, <a href="http://tools.ietf.org/html/rfc791">RFC 791</a>, сентябрь 1981.</p>
+
+<p>[<a name="ref-RFC793" id="ref-RFC793">RFC793</a>] Postel, J., "Transmission Control Protocol", STD 7, <a href="http://tools.ietf.org/html/rfc793">RFC 793</a>, сентябрь 1981.</p>
+
+<p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997.</p>
+
+<p>[<a name="ref-RFC3454" id="ref-RFC3454">RFC3454</a>] Hoffman P. и M. Blanchet, "Preparation of Internationalized Strings ('stringprep')", <a href="http://tools.ietf.org/html/rfc3454">RFC 3454</a>, декабрь 2002.</p>
+
+<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="http://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003.</p>
+
+<p>[<a name="ref-RFC3986" id="ref-RFC3986">RFC3986</a>] Berners-Lee, T., Fielding, R. и L. Masinter, "Uniform Resource Identifier (URI): Generic Syntax", STD 66, <a href="http://tools.ietf.org/html/rfc3986">RFC 3986</a>, январь 2005.</p>
+
+<p>[<a name="ref-RFC4013" id="ref-RFC4013">RFC4013</a>] Zeilenga, K., "SASLprep: Stringprep Profile for User Names and Passwords", <a href="http://tools.ietf.org/html/rfc4013">RFC 4013</a>, февраль 2005.</p>
+
+<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax Specifications: ABNF", <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005.</p>
+
+<p>[<a name="ref-RFC4346" id="ref-RFC4346">RFC4346</a>] Dierks, T. и E. Rescorla, "The TLS Protocol Version 1.1", <a href="http://tools.ietf.org/html/rfc4346">RFC 4346</a>, март 2006.</p>
+
+<p>[<a name="ref-RFC4422" id="ref-RFC4422">RFC4422</a>] Под редакцией Melnikov, A., и K. Zeilenga, "Простой уровень аутентификации и защиты (Simple Authentication and Security Layer, SASL)", <a href="http://rfc2.ru/4422.rfc">RFC 4422</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Technical Specification Road Map", <a href="http://tools.ietf.org/html/rfc4510">RFC 4510</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Zeilenga, K., Lightweight Directory Access Protocol (LDAP): Directory Information Models", <a href="http://tools.ietf.org/html/rfc4512">RFC 4512</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4513" id="ref-RFC4513">RFC4513</a>] Под редакцией Harrison, R., "Lightweight Directory Access  Protocol (LDAP): Authentication Methods and Security Mechanisms", <a href="http://tools.ietf.org/html/rfc4513">RFC 4513</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4514" id="ref-RFC4514">RFC4514</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): String Representation of Distinguished Names", <a href="http://tools.ietf.org/html/rfc4514">RFC 4514</a>, июнь 2006.
+
+<p>[<a name="ref-RFC4516" id="ref-RFC4516">RFC4516</a>] Под редакцией Smith, M. и T. Howes, "Lightweight Directory Access Protocol (LDAP): Uniform Resource Locator", <a href="http://tools.ietf.org/html/rfc4516">RFC</a> <a href="http://tools.ietf.org/html/rfc4516">4516</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4517" id="ref-RFC4517">RFC4517</a>] Под редакцией Legg, S., "Lightweight Directory Access Protocol (LDAP): Syntaxes and Matching Rules", <a href="http://tools.ietf.org/html/rfc4517">RFC 4517</a>, июнь 2006.</p>
+
+<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Internet Assigned Numbers Authority (IANA) Considerations for the Lightweight Directory Access Protocol (LDAP)", <a href="./bcp64">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006.</p>
+
+<p>[<a name="ref-Unicode" id="ref-Unicode">Unicode</a>] The Unicode Consortium, "The Unicode Standard, Version 3.2.0", определён в "The Unicode Standard, Version 3.0" (Reading, MA, Addison-Wesley, 2000. ISBN 0-201-61633-5), с поправками, внесенными в "Unicode Standard Annex #27: Unicode 3.1" (<a href="http://www.unicode.org/reports/tr27/">http://www.unicode.org/reports/tr27/</a>) и в "Unicode Standard Annex #28: Unicode 3.2" (<a href="http://www.unicode.org/reports/tr28/">http://www.unicode.org/reports/tr28/</a>).</p>
+
+<p>[<a name="ref-X.500" id="ref-X.500">X.500</a>] ITU-T Rec. X.500, "The Directory: Overview of Concepts, Models and Service", 1993.</p>
+
+<p>[<a name="ref-X.511" id="ref-X.511">X.511</a>] ITU-T Rec. X.511, "The Directory: Abstract Service Definition", 1993.</p>
+
+<h2><a name="section-9">9</a>. Информативные документы</h2>
+
+<p>[<a name="ref-CharModel" id="ref-CharModel">CharModel</a>] Whistler, K. and M. Davis, "Unicode Technical Report #17, Character Encoding Model", UTR17, &lt;<a href="http://www.unicode.org/unicode/reports/tr17/">http://www.unicode.org/unicode/reports/tr17/</a>&gt;, август 2000.</p>
+
+<p>[<a name="ref-Glossary" id="ref-Glossary">Glossary</a>] The Unicode Consortium, "Unicode Glossary", &lt;<a href="http://www.unicode.org/glossary/">http://www.unicode.org/glossary/</a>&gt;.</p>
+
+<p>[<a name="ref-PortReg" id="ref-PortReg">PortReg</a>] IANA, "Port Numbers", &lt;<a href="http://www.iana.org/assignments/port-numbers">http://www.iana.org/assignments/port-numbers</a>&gt;.</p>
+
+<p>[<a name="ref-PROTOS-LDAP" id="ref-PROTOS-LDAP">PROTOS-LDAP</a>] University of Oulu, "PROTOS Test-Suite: c06-ldapv3" &lt;<a href="http://www.ee.oulu.fi/research/ouspg/protos/testing/c06/ldapv3/">http://www.ee.oulu.fi/research/ouspg/protos/testing/c06/ldapv3/</a>&gt;.</p>
+
+<h2><a name="section-10">10</a>. Регистрация в IANA</h2>
+
+<p>Администрация адресного пространства Интернет (Internet Assigned Numbers Authority, IANA) обновила регистрацию результирующих кодов LDAP, указав тем самым, что в данном документе предоставлена окончательная техническая спецификация для результирующих кодов 0-36, 48-54, 64-70, 80-90. Также отмечается, что значение одного результирующего кода (strongAuthRequired) было переименовано (в strongerAuthRequired).</p>
+
+<p>Также IANA обновила регистрацию механизма протокола LDAP, указав тем самым, что в данном документе и в [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>] предоставлена окончательная техническая спецификация для расширенной операции StartTLS (1.3.6.1.4.1.1466.20037).</p>
+
+<p>IANA назначила идентификатор объекта LDAP 18 [<a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>] для идентификации определённого в этом документа модуля ASN.1.</p>
+<pre class="list">
+        Subject: Request for LDAP Object Identifier Registration
+        Person &amp; email address to contact for further information:
+             Jim Sermersheim &lt;jimse@novell.com&gt;
+        Specification: <a href="http://tools.ietf.org/html/rfc4511">RFC 4511</a>
+        Author/Change Controller: IESG
+        Comments:
+             Identifies the LDAP ASN.1 module
+</pre>
+
+<h2><a name="appendix-A">Приложение A</a>. Результирующие коды LDAP</h2>
+
+<p>Это нормативное приложение раскрывает дополнительные соображения о результирующих кодах LDAP и содержит краткое общее описание каждого из перечисленных в <a href="#section-4.1.9">разделе 4.1.9</a> результирующих кодов LDAP.</p>
+
+<p>Для использования с расширениями [<a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>] могут (MAY) быть определены дополнительные результирующие коды. Реализациям клиента нужно (SHALL) интерпретировать любой нераспознанный ими результирующий код как неизвестное ошибочное состояние.</p>
+
+<p>Предоставленные здесь описания не в полной мере отражают суть ошибки в случаях замены результирующего кода, которая используется для предотвращения раскрытия неавторизованного доступа (например, замена на noSuchObject для insufficientAccessRights, или на invalidCredentials для insufficientAccessRights).</p>
+
+<h3><a name="appendix-A.1">A.1</a>. Неошибочные результирующие коды</h3>
+
+<p>Эти результирующие коды (так называемые "неошибочные" результирующие коды) не указывают на возникновение ошибки:</p>
+<blockquote>
+        success (0),<br>
+        compareFalse (5),<br>
+        compareTrue (6),<br>
+        referral (10) и<br>
+        saslBindInProgress (14).
+</blockquote>
+<p>Результирующие коды success, compareTrue и compareFalse указывают на успешное выполнение (и, соответственно, называются "успешными" результирующими кодами).</p>
+
+<p>Результирующие коды referral и saslBindInProgress указывают клиенту, что для выполнения операции ему необходимо предпринять дополнительные действия.</p>
+
+<h3><a name="appendix-A.2">A.2</a>. Результирующие коды</h3>
+
+<p>Описание существующих результирующих кодов LDAP:</p>
+<p>success (0)<blockquote>Указывает на успешное выполнение операции. Примечание: этот код не используется с операцией Compare. Смотрите compareFalse (5) и compareTrue (6).</blockquote></p>
+
+<p>operationsError (1)<blockquote>Указывает на то, что операция нарушает последовательность выполнения по отношению к другим операциям (того же или другого типа).</blockquote>
+<blockquote>Например, данный код возвращается, когда клиент пытается выполнить StartTLS [<a href="http://tools.ietf.org/html/rfc4346" title="The TLS Protocol Version 1.1">RFC4346</a>], в то время как другие незавершенные операции ещё выполняются или уровень TLS уже был установлен.</blockquote></p>
+
+<p>protocolError (2)<blockquote>Указывает на то, что сервер получил неправильно сформированные данные.</blockquote>
+<blockquote>Применительно к операции Bind этот код также используется для указания на то, что сервер не поддерживает запрашиваемую версию протокола.</blockquote>
+<blockquote>Применительно к операции Extended этот код также используется для указания на то, что сервер не поддерживает (в силу конструктивных особенностей или текущих настроек) ассоциированную с полем requestName операцию-расширение.</blockquote>
+<blockquote>Применительно к запросам операций с указанием нескольких элементов управления, этот код может использоваться для индикации того, что сервер не может игнорировать порядок, в котором указаны эти элементы управления, либо того, что комбинация указанных элементов управления неверна или не определена.</blockquote></p>
+
+<p>timeLimitExceeded (3)<blockquote>Указывает на то, что определённое клиентом ограничение по времени было превышено до завершения операции.</blockquote></p>
+
+<p>sizeLimitExceeded (4)<blockquote>Указывает на то, что определённое клиентом ограничение по размеру было превышено до завершения операции.</blockquote></p>
+
+<p>compareFalse (5)<blockquote>Указывает на то, что операция Compare успешно выполнена и утверждение оценено как FALSE или Undefined.</blockquote></p>
+
+<p>compareTrue (6)<blockquote>Указывает на то, что операция Compare успешно выполнена и утверждение оценено как TRUE.</blockquote></p>
+
+<p>authMethodNotSupported (7)<blockquote>Указывает на то, что метод или механизм аутентификации не поддерживается.</blockquote></p>
+
+<p>strongerAuthRequired (8)<blockquote>Указывает, что для выполнения операции сервер требует более строгой аутентификации.</blockquote>
+<blockquote>При использовании с уведомлением об отключении данный код указывает на то, что сервер определил неожиданный обрыв или компрометацию установленного защищённого соединения между клиентом и сервером.</blockquote></p>
+
+<p>referral (10)<blockquote>Указывает на то, что для выполнения операции необходимо проследовать по отсылке (смотрите <a href="#section-4.1.10">раздел 4.1.10</a>).</blockquote></p>
+
+<p>adminLimitExceeded (11)<blockquote>Указывает на то, что были превышены административные ограничения.</blockquote></p>
+
+<p>unavailableCriticalExtension (12)<blockquote>Указывает, что критичный элемент управления не распознан (смотрите <a href="#section-4.1.11">раздел 4.1.11</a>).</blockquote></p>
+
+<p>confidentialityRequired (13)<blockquote>Указывает на то, что требуется защита конфиденциальности данных.</blockquote></p>
+
+<p>saslBindInProgress (14)<blockquote>Указывает, что для продолжения процесса аутентификации сервер требует от клиента нового запроса на подсоединение с тем же самым механизмом SASL (смотрите <a href="#section-4.2">раздел 4.2</a>).</blockquote></p>
+
+<p>noSuchAttribute (16)<blockquote>Указывает на то, что запись с заданным именем не содержит указанного атрибута или значения атрибута.</blockquote></p>
+
+<p>undefinedAttributeType (17)<blockquote>Указывает на то, что описание атрибута в поле запроса не распознано.</blockquote></p>
+
+<p>inappropriateMatching (18)<blockquote>Указывает на то, что была предпринята попытка использовать (например, в утверждении) правило соответствия, не определённое для того типа атрибута, который участвует в операции.</blockquote></p>
+
+<p>constraintViolation (19)<blockquote>Указывает на то, что клиент предоставил значение атрибута, не удовлетворяющее ограничениям, налагаемым на него моделью данных.</blockquote>
+<blockquote>Например, данный код возвращается, когда для атрибута с ограничением SINGLE-VALUE было предоставлено несколько значений.</blockquote></p>
+
+<p>attributeOrValueExists (20)<blockquote>Указывает на то, что клиент предоставил для добавления в запись атрибут или значение, но эти атрибут или значение уже существуют.</blockquote></p>
+
+<p>invalidAttributeSyntax (21)<blockquote>Указывает на то, что предполагаемое значение атрибута не соответствует синтаксису атрибута.</blockquote></p>
+
+<p>noSuchObject (32)<blockquote>Указывает на то, что такого объекта в DIT не существует.</blockquote></p>
+
+<p>aliasProblem (33)<blockquote>Указывает на то, что возникла проблема с псевдонимом. Например, данный код может использоваться для индикации того, что полученное в результате разыменования псевдонима имя не указывает на объект.</blockquote></p>
+
+<p>invalidDNSyntax (34)<blockquote>Указывает на то, что значения поля типа LDAPDN или RelativeLDAPDN запроса (например, search base, target entry, ModifyDN newrdn, и т.п.) не удовлетворяют требуемому синтаксису или содержат значения атрибутов, не удовлетворяющие синтаксису этих типов атрибутов.</blockquote></p>
+
+<p>aliasDereferencingProblem (36)<blockquote>Указывает на то, что при разыменовании псевдонима возникла проблема. Как правило, псевдоним встретился в ситуации, когда это не позволяется, либо доступ к нему запрещён.</blockquote></p>
+
+<p>inappropriateAuthentication (48)<blockquote>Указывает, что сервер требует от клиента, который попытался подсоединиться анонимно или без предоставления данных аутентификации, предоставить эти данные в той или иной форме.</blockquote></p>
+
+<p>invalidCredentials (49)<blockquote>Указывает на то, что предоставленные данные аутентификации (например, имя пользователя и пароль) неверны.</blockquote></p>
+
+<p>insufficientAccessRights (50)<blockquote>Указывает на то, что у клиента нет достаточных прав доступа для выполнения данной операции.</blockquote></p>
+
+<p>busy (51)<blockquote>Указывает на то, что сервер слишком занят для обслуживания данной операции.</blockquote></p>
+
+<p>unavailable (52)<blockquote>Указывает на то, что сервер находится в стадии выключения или необходимая для выполнения операции подсистема недоступна.</blockquote></p>
+
+<p>unwillingToPerform (53)<blockquote>Указывает на то, что сервер не желает исполнять данную операцию.</blockquote></p>
+
+<p>loopDetect (54)<blockquote>Указывает на то, что сервер обнаружил зацикливание (например, в процессе разыменования псевдонимов или при выполнении сцепления).</blockquote></p>
+
+<p>namingViolation (64)<blockquote>Указывает на то, что имя записи нарушает ограничения именования.</blockquote></p>
+
+<p>objectClassViolation (65)<blockquote>Указывает на то, что запись нарушает ограничения объектного класса.</blockquote></p>
+
+<p>notAllowedOnNonLeaf (66)<blockquote>Указывает на то, что операция выполняет ненадлежащее действие над нелистовой записью.</blockquote></p>
+
+<p>notAllowedOnRDN (67)<blockquote>Указывает на то, что операция производит неуместную попытку удалить значение, формирующее относительное уникальное имя записи.</blockquote></p>
+
+<p>entryAlreadyExists (68)<blockquote>Указывает на то, что запрос (на добавление, перемещение или переименование) не может быть исполнен, поскольку целевая запись уже существует.</blockquote></p>
+
+<p>objectClassModsProhibited (69)<blockquote>Указывает на то, что попытка модификации объектного класса (классов) в атрибуте "objectClass" записи не разрешается.</blockquote></p>
+<blockquote>Например, данный код возвращается при попытке клиента модифицировать структурный объектный класс записи.</blockquote></p>
+
+<p>affectsMultipleDSAs (71)<blockquote>Указывает на то, что операция не может быть выполнена, поскольку она затрагивает несколько серверов (DSA).</blockquote></p>
+
+<p>other (80)<blockquote>Указывает, что на сервере произошла внутренняя ошибка.</blockquote></p>
+</pre>
+<h2><a name="appendix-B">Приложение B</a>. Полное определение ASN.1</h2>
+
+<p>Это приложение является нормативным.</p>
+
+<pre class="list">
+        Lightweight-Directory-Access-Protocol-V3 {1 3 6 1 1 18}
+        -- Copyright (C) The Internet Society (2006). Эта версия
+        -- данного модуля ASN.1 является частью RFC 4511; 
+        -- полное заявление авторских прав смотрите в самом RFC.
+        DEFINITIONS
+        IMPLICIT TAGS
+        EXTENSIBILITY IMPLIED ::=
+
+        BEGIN
+
+        LDAPMessage ::= SEQUENCE {
+             messageID       MessageID,
+             protocolOp      CHOICE {
+                  bindRequest           BindRequest,
+                  bindResponse          BindResponse,
+                  unbindRequest         UnbindRequest,
+                  searchRequest         SearchRequest,
+                  searchResEntry        SearchResultEntry,
+                  searchResDone         SearchResultDone,
+                  searchResRef          SearchResultReference,
+                  modifyRequest         ModifyRequest,
+                  modifyResponse        ModifyResponse,
+                  addRequest            AddRequest,
+                  addResponse           AddResponse,
+                  delRequest            DelRequest,
+                  delResponse           DelResponse,
+                  modDNRequest          ModifyDNRequest,
+                  modDNResponse         ModifyDNResponse,
+                  compareRequest        CompareRequest,
+                  compareResponse       CompareResponse,
+                  abandonRequest        AbandonRequest,
+                  extendedReq           ExtendedRequest,
+                  extendedResp          ExtendedResponse,
+                  ...,
+                  intermediateResponse  IntermediateResponse },
+             controls       [0] Controls OPTIONAL }
+
+        MessageID ::= INTEGER (0 .. maxInt)
+
+        maxInt INTEGER ::= 2147483647 -- (2^^31 - 1) --
+
+        LDAPString ::= OCTET STRING -- закодирована в UTF-8,
+                                    -- символы [<a href="#ref-ISO10646">ISO10646</a>]
+
+        LDAPOID ::= OCTET STRING -- ограничена до &lt;numericoid&gt;
+                                 -- [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>]
+
+        LDAPDN ::= LDAPString -- ограничена до &lt;distinguishedName&gt;
+                              -- [<a href="http://tools.ietf.org/html/rfc4514" title="LDAP: String Representation of Distinguished Names">RFC4514</a>]
+
+        RelativeLDAPDN ::= LDAPString -- ограничена до &lt;name-component&gt;
+                                      -- [<a href="http://tools.ietf.org/html/rfc4514" title="LDAP: String Representation of Distinguished Names">RFC4514</a>]
+
+        AttributeDescription ::= LDAPString
+                                -- ограничена до &lt;attributedescription&gt;
+                                -- [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>]
+
+        AttributeValue ::= OCTET STRING
+
+        AttributeValueAssertion ::= SEQUENCE {
+             attributeDesc   AttributeDescription,
+             assertionValue  AssertionValue }
+
+        AssertionValue ::= OCTET STRING
+
+        PartialAttribute ::= SEQUENCE {
+             type       AttributeDescription,
+             vals       SET OF value AttributeValue }
+
+        Attribute ::= PartialAttribute(WITH COMPONENTS {
+             ...,
+             vals (SIZE(1..MAX))})
+
+        MatchingRuleId ::= LDAPString
+
+        LDAPResult ::= SEQUENCE {
+             resultCode         ENUMERATED {
+                  success                      (0),
+                  operationsError              (1),
+                  protocolError                (2),
+                  timeLimitExceeded            (3),
+                  sizeLimitExceeded            (4),
+                  compareFalse                 (5),
+                  compareTrue                  (6),
+                  authMethodNotSupported       (7),
+                  strongerAuthRequired         (8),
+                       -- 9 зарезервирован --
+                  referral                     (10),
+                  adminLimitExceeded           (11),
+                  unavailableCriticalExtension (12),
+                  confidentialityRequired      (13),
+                  saslBindInProgress           (14),
+                  noSuchAttribute              (16),
+                  undefinedAttributeType       (17),
+                  inappropriateMatching        (18),
+                  constraintViolation          (19),
+                  attributeOrValueExists       (20),
+                  invalidAttributeSyntax       (21),
+                       -- 22-31 не используются --
+                  noSuchObject                 (32),
+                  aliasProblem                 (33),
+                  invalidDNSyntax              (34),
+                       -- 35 зарезервирован для неопределённого isLeaf --
+                  aliasDereferencingProblem    (36),
+                       -- 37-47 не используются --
+                  inappropriateAuthentication  (48),
+                  invalidCredentials           (49),
+                  insufficientAccessRights     (50),
+                  busy                         (51),
+                  unavailable                  (52),
+                  unwillingToPerform           (53),
+                  loopDetect                   (54),
+                       -- 55-63 не используются --
+                  namingViolation              (64),
+                  objectClassViolation         (65),
+                  notAllowedOnNonLeaf          (66),
+                  notAllowedOnRDN              (67),
+                  entryAlreadyExists           (68),
+                  objectClassModsProhibited    (69),
+                       -- 70 зарезервирован для CLDAP --
+                  affectsMultipleDSAs          (71),
+                       -- 72-79 не используются --
+                  other                        (80),
+                  ... },
+             matchedDN          LDAPDN,
+             diagnosticMessage  LDAPString,
+             referral           [3] Referral OPTIONAL }
+
+        Referral ::= SEQUENCE SIZE (1..MAX) OF uri URI
+
+        URI ::= LDAPString     -- ограничена набором символов,
+                               -- разрешённых в URI
+
+        Controls ::= SEQUENCE OF control Control
+
+        Control ::= SEQUENCE {
+             controlType             LDAPOID,
+             criticality             BOOLEAN DEFAULT FALSE,
+             controlValue            OCTET STRING OPTIONAL }
+
+        BindRequest ::= [APPLICATION 0] SEQUENCE {
+             version                 INTEGER (1 .. 127),
+             name                    LDAPDN,
+             authentication          AuthenticationChoice }
+
+        AuthenticationChoice ::= CHOICE {
+             simple                  [0] OCTET STRING,
+                                     -- 1 и 2 зарезервированы
+             sasl                    [3] SaslCredentials,
+             ... }
+
+        SaslCredentials ::= SEQUENCE {
+             mechanism               LDAPString,
+             credentials             OCTET STRING OPTIONAL }
+
+        BindResponse ::= [APPLICATION 1] SEQUENCE {
+             COMPONENTS OF LDAPResult,
+             serverSaslCreds    [7] OCTET STRING OPTIONAL }
+
+        UnbindRequest ::= [APPLICATION 2] NULL
+
+        SearchRequest ::= [APPLICATION 3] SEQUENCE {
+             baseObject      LDAPDN,
+             scope           ENUMERATED {
+                  baseObject              (0),
+                  singleLevel             (1),
+                  wholeSubtree            (2),
+                  ... },
+             derefAliases    ENUMERATED {
+                  neverDerefAliases       (0),
+                  derefInSearching        (1),
+                  derefFindingBaseObj     (2),
+                  derefAlways             (3) },
+             sizeLimit       INTEGER (0 .. maxInt),
+             timeLimit       INTEGER (0 .. maxInt),
+             typesOnly       BOOLEAN,
+             filter          Filter,
+             attributes      AttributeSelection }
+
+        AttributeSelection ::= SEQUENCE OF selector LDAPString
+                       -- строка LDAPString, ограниченная конструкцией
+                       -- &lt;attributeSelector&gt; из <a href="#section-4.5.1.8">раздела 4.5.1.8</a>
+
+        Filter ::= CHOICE {
+             and             [0] SET SIZE (1..MAX) OF filter Filter,
+             or              [1] SET SIZE (1..MAX) OF filter Filter,
+             not             [2] Filter,
+             equalityMatch   [3] AttributeValueAssertion,
+             substrings      [4] SubstringFilter,
+             greaterOrEqual  [5] AttributeValueAssertion,
+             lessOrEqual     [6] AttributeValueAssertion,
+             present         [7] AttributeDescription,
+             approxMatch     [8] AttributeValueAssertion,
+             extensibleMatch [9] MatchingRuleAssertion,
+             ... }
+
+        SubstringFilter ::= SEQUENCE {
+             type           AttributeDescription,
+             substrings     SEQUENCE SIZE (1..MAX) OF substring CHOICE {
+                  initial [0] AssertionValue,  -- может вкючаться только один раз
+                  any     [1] AssertionValue,
+                  final   [2] AssertionValue } -- может вкючаться только один раз
+             }
+
+        MatchingRuleAssertion ::= SEQUENCE {
+             matchingRule    [1] MatchingRuleId OPTIONAL,
+             type            [2] AttributeDescription OPTIONAL,
+             matchValue      [3] AssertionValue,
+             dnAttributes    [4] BOOLEAN DEFAULT FALSE }
+
+        SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
+             objectName      LDAPDN,
+             attributes      PartialAttributeList }
+
+        PartialAttributeList ::= SEQUENCE OF
+                             partialAttribute PartialAttribute
+
+        SearchResultReference ::= [APPLICATION 19] SEQUENCE
+                                  SIZE (1..MAX) OF uri URI
+
+        SearchResultDone ::= [APPLICATION 5] LDAPResult
+
+        ModifyRequest ::= [APPLICATION 6] SEQUENCE {
+             object          LDAPDN,
+             changes         SEQUENCE OF change SEQUENCE {
+                  operation       ENUMERATED {
+                       add     (0),
+                       delete  (1),
+                       replace (2),
+                       ... },
+                  modification    PartialAttribute } }
+
+        ModifyResponse ::= [APPLICATION 7] LDAPResult
+
+        AddRequest ::= [APPLICATION 8] SEQUENCE {
+             entry           LDAPDN,
+             attributes      AttributeList }
+
+        AttributeList ::= SEQUENCE OF attribute Attribute
+
+        AddResponse ::= [APPLICATION 9] LDAPResult
+
+        DelRequest ::= [APPLICATION 10] LDAPDN
+
+        DelResponse ::= [APPLICATION 11] LDAPResult
+
+        ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
+             entry           LDAPDN,
+             newrdn          RelativeLDAPDN,
+             deleteoldrdn    BOOLEAN,
+             newSuperior     [0] LDAPDN OPTIONAL }
+
+        ModifyDNResponse ::= [APPLICATION 13] LDAPResult
+
+        CompareRequest ::= [APPLICATION 14] SEQUENCE {
+             entry           LDAPDN,
+             ava             AttributeValueAssertion }
+
+        CompareResponse ::= [APPLICATION 15] LDAPResult
+
+        AbandonRequest ::= [APPLICATION 16] MessageID
+
+        ExtendedRequest ::= [APPLICATION 23] SEQUENCE {
+             requestName      [0] LDAPOID,
+             requestValue     [1] OCTET STRING OPTIONAL }
+
+        ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+             COMPONENTS OF LDAPResult,
+             responseName     [10] LDAPOID OPTIONAL,
+             responseValue    [11] OCTET STRING OPTIONAL }
+
+        IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+             responseName     [0] LDAPOID OPTIONAL,
+             responseValue    [1] OCTET STRING OPTIONAL }
+
+        END
+</pre>
+
+<h1><a name="appendix-C">Приложение C</a>. Изменения</h1>
+
+<p>Это приложение не является нормативным.</p>
+
+<p>В данном приложении собраны основные изменения, внесенные в <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a> и <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a>.</p>
+
+<h2><a name="appendix-C.1">C.1</a>. Изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a></h2>
+
+<p>В данном разделе приводятся основные изменения, внесённые в разделы 1, 2, 3.1, 4 и в оставшуюся часть <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. За перечнем изменений, внесённых в другие разделы этого RFC, читателям следует обратиться к [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>] и [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+
+<h3><a name="appendix-C.1.1">C.1.1</a>. <a href="http://tools.ietf.org/html/rfc2251#section-1">Раздел 1</a> (Статус документа)</h3>
+<ul>
+<li>Удалено примечание IESG. После публикации <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> были стандартизированы обязательные механизмы аутентификации LDAP, что послужило причиной удаления этого примечания. Механизмы аутентификации смотрите в [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</li>
+</ul>
+
+<h3><a name="appendix-C.1.2">C.1.2</a>. <a href="http://tools.ietf.org/html/rfc2251#section-3.1">Раздел 3.1</a> (Модель протокола) и другое</h3>
+<ul>
+<li>Удалены примечания по истории и различиям между LDAP v1, v2 и v3. Вместо этого добавлены весомые обоснования того, почему описанный в этом документе протокол рассматривается как самостоятельный.</li>
+</ul>
+
+<h3><a name="appendix-C.1.3">C.1.3</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4">Раздел 4</a> (Элементы протокола)</h3>
+<ul>
+<li>Уточнено, где в настоящем протоколе применяются возможности расширяемости ASN.1. Это изменение затронуло различные типы ASN.1 и было обозначено путем включения в некоторые элементы многоточия (...).</li>
+<li>Удалено требование, согласно которому серверы, реализующие 3-ю или более позднюю версию протокола, должны (MUST) предоставлять атрибут "supportedLDAPVersion". Такое требование не позволяло обеспечивать преимущества совместимости.</li>
+</ul>
+
+<h3><a name="appendix-C.1.4">C.1.4</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.1">Раздел 4.1.1</a> (Конверт сообщения)</h3>
+<ul>
+<li>Существовало обязательное требование для сервера возвращать уведомление об отключении и разрывать транспортное соединение при получении PDU, неправильно сформированных определенным образом. Это требование было обновлено таким образом, что серверу следует (SHOULD) возвращать уведомление об отключении и он должен (MUST) завершить сессию LDAP.</li>
+</ul>
+
+<h3><a name="appendix-C.1.5">C.1.5</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.1.1">Раздел 4.1.1.1</a> (Message ID)</h3>
+<ul>
+<li>Выдвинуто требование, чтобы идентификаторы messageID запросов должны (MUST) быть не нулевыми, поскольку ноль зарезервирован для уведомления об отключении.</li>
+<li>Указано, когда допустимо, а когда нет возвращать уже использованный ранее messageID. При описании этого в <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> непреднамеренно создавалось впечатление о синхронном поведении сервера.</li>
+</ul>
+
+<h3><a name="appendix-C.1.6">C.1.6</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.2">Раздел 4.1.2</a> (Строковые типы)</h3>
+<ul>
+<li>Заявлено, что LDAPOID ограничивается набором символов &lt;numericoid&gt; из [<a href="http://tools.ietf.org/html/rfc4512">RFC4512</a>].</li>
+</ul>
+
+<h3><a name="appendix-C.1.7">C.1.7</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.5.1">Раздел 4.1.5.1</a> (Опция binary) и другое</h3>
+<ul>
+<li>Из спецификации удалена опция binary. Имели место многочисленные проблемы совместимости, связанные с этим методом альтернативного кодирования типа атрибута. Ведутся работы по определению подходящей замены.</li>
+</ul>
+
+<h3><a name="appendix-C.1.8">C.1.8</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.8">Раздел 4.1.8</a> (Атрибут)</h3>
+<ul>
+<li>Определения частичного атрибута (PartialAttribute) и атрибута (Attribute) объединены в одном разделе, и определение атрибута Attribute базируется на определении частичного атрибута PartialAttribute.</li>
+</ul>
+
+<h3><a name="appendix-C.1.9">C.1.9</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.10">Раздел 4.1.10</a> (Результирующее сообщение)</h3>
+<ul>
+<li>Поле "errorMessage" переименовано в "diagnosticMessage" чтобы можно было посылать в нём описание неошибочных результатов.</li>
+<li>Некоторая часть информации перенесена в <a href="#appendix-A">приложение A</a>, и читателям дана ссылка на новое местоположение.</li>
+<li>Наличие поля matchedDN разрешено и для результирующих кодов, отличных от тех, что перечислены в <a href="http://tools.ietf.org/html/rfc2251#section-4.1.10">RFC 2251</a>.</li>
+<li>Код "strongAuthRequired" переименован в "strongerAuthRequired" для более точной передачи его смысла: данный код часто может быть возвращён, чтобы показать, что для выполнения заданной операции требуется более строгая аутентификация.</li>
+</ul>
+
+<h3><a name="appendix-C.1.10">C.1.10</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.11">Раздел 4.1.11</a> (Отсылка)</h3>
+<ul>
+<li>Отсылки определены в терминах URI а не URL.</li>
+<li>Удалено требование, что все URI отсылки должны (MUST) быть одинаково пригодны для одного и того же продолжения операции. Это заявление было неоднозначным и никаких инструкций о том, как его выполнить, не предоставлялось.</li>
+<li>Добавлено требование, что клиенты не должны (MUST NOT) зацикливаться между серверами.</li>
+<li>Уточнены инструкции по использованию LDAPURL в отсылках и, в рамках этого, добавлена рекомендация о наличии части scope в LDAPURL.</li>
+<li>Удалены требования, обязывавшие клиента использовать URL определённым образом для продолжения операции. Они препятствовали совместимости.</li>
+</ul>
+
+<h3><a name="appendix-C.1.11">C.1.11</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.1.12">Раздел 4.1.12</a> (Элементы управления)</h3>
+<ul>
+<li>Указано, как должны быть закодированы значения элементов управления, определённые в терминах ASN.1.</li>
+<li>Отмечено, что поле criticality применяется только к сообщениям запроса (за исключением UnbindRequest), и должно быть проигнорировано при его появлении в сообщениях ответа и UnbindRequest.</li>
+<li>Определено, что некритичные элементы управления могут быть проигнорированы по усмотрению сервера. В первоначальной редакции была путанная формулировка, позволяющая допустить, что распознанные элементы управления не могут быть проигнорированы, если они связаны с запросом, сформированным надлежащим образом.</li>
+<li>Добавлены формулировки относительно комбинации элементов управления и их упорядочивания в сообщении.</li>
+<li>Указано, что при неопределённой или неизвестной семантике комбинации элементов управления возвращается ошибка protocolError.</li>
+<li>В параграфе 8 выражение "сервер должен (MUST) быть готов" изменено на  "реализации должны (MUST) быть готовы" для отражения того, что реализации и клиента, и сервера должны уметь обрабатывать подобную ситуацию (разбирать элементы управления).</li>
+</ul>
+
+<h3><a name="appendix-C.1.12">C.1.12</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.2">Раздел 4.2</a> (Операция Bind)</h3>
+<ul>
+<li>Выдвинуто обязательное требование, что серверы возвращают ошибку protocolError, если версия протокола не поддерживается.</li>
+<li>Устранена неоднозначность поведения в ситуации, когда используется простая аутентификация, поле name пусто, а поле с паролем не пусто.</li>
+<li>Установлено требование к серверам не разыменовывать псевдонимы при операции Bind. Оно было добавлено для совместимости с другими операциями и для обеспечения целостности данных.</li>
+<li>Установлено требование, чтобы пароли в текстовом виде передавались как Unicode, закодированный в UTF-8, и добавлены рекомендации по подготовке строк. Это должно помочь обеспечить совместимость паролей, посылаемых различными клиентами.</li>
+</ul>
+
+<h3><a name="appendix-C.1.13">C.1.13</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.2.1">Раздел 4.2.1</a> (Последовательность запросов Bind)</h3>
+<ul>
+<li>Этот раздел был значительно реорганизован для повышения читабельности, также была добавлена формулировка, уточняющая состояние аутентификации завершившихся неудачей или отброшенных операций Bind.
+<li>Удалено: "Если был согласован механизм SASL для шифрования передачи или обеспечения целостности данных, и этот механизм не поддерживает изменение учётных данных с одной идентификационной сущности на другую, то клиент должен (MUST) установить новое соединение вместо имеющегося." Если существуют зависимости между несколькими согласованиями того или иного механизма SASL, техническая спецификация такого механизма SASL определяет, каким образом приложения должны с этим разбираться. Спецификации LDAP не следует требовать какой-то специальной обработки.</li>
+<li>В параграфе 3 понижено требование MUST для согласованности с [<a href="http://tools.ietf.org/html/rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">RFC2119</a>].</li>
+<li>Выдвинуто обязательное требование, что клиенты во время обработки операции Bind не посылают других (не Bind) запросов, и предложено, чтобы серверы не обрабатывали такие запросы при их получении. Это необходимо для обеспечения правильной последовательности выполнения Bind во взаимосвязи с другими операциями.</li>
+</ul>
+
+<h3><a name="appendix-C.1.14">C.1.14</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.2.3">Раздел 4.2.3</a> (Ответ Bind)</h3>
+<ul>
+<li>Большая часть текста, связанного с ошибками, перемещена в <a href="#appendix-A">приложение A</a>, а также добавлен текст, касающийся некоторых ошибок, возникающих при операции Bind.</li>
+<li>Серверу рекомендовано воздержаться от указания serverSaslCreds в неподходящей для этого ситуации.</li>
+</ul>
+
+<h3><a name="appendix-C.1.15">C.1.15</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.3">Раздел 4.3</a> (Операция Unbind)</h3>
+<ul>
+<li>Определено, что при операции Unbind обе стороны должны прекратить передачу и завершить сессию LDAP.</li>
+</ul>
+
+<h3><a name="appendix-C.1.16">C.1.16</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.4">Раздел 4.4</a> (Произвольное уведомление)</h3>
+<ul>
+<li>Добавлены инструкции по составлению будущих спецификаций произвольных уведомлений.</li>
+</ul>
+
+<h3><a name="appendix-C.1.17">C.1.17</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.5.1">Раздел 4.5.1</a> (Запрос Search)</h3>
+<ul>
+<li>Атрибуты SearchRequest теперь определены как тип AttributeSelection, а не как AttributeDescriptionList, и приведена спецификация в форме ABNF.</li>
+<li>Атрибуты SearchRequest могут содержать дублирующиеся описания атрибутов. Раньше это было запрещено. Теперь серверам предписано игнорировать последующие дублирующиеся имена. Такое послабление было сделано, чтобы разрешить запрос атрибутов в форме различных сокращённых имён, а также в форме OID.</li>
+<li>Поисковый фильтр наличия теперь оценивается как Undefined, когда указанные атрибуты неизвестны серверу. Ранее в таких ситуациях он оценивался как FALSE, что приводило не к тем результатам, которые ожидали большинство выполняющих поисковый запрос, особенно при использовании оператора "not".</li>
+<li>Тип SubstringFilter пункта substrings конструкции Filter теперь определён с нижней границей 1.</li>
+<li>В конструкции SubstringFilter типы "initial", "any" и "final" последовательности substrings теперь являются AssertionValue, а не LDAPString. Также добавлено требование, что тип "initial" (при его наличии) должен быть указан первым, а тип 'final' (при его наличии)&thinsp;&mdash;&thinsp;последним.</li>
+<li>Устранена неоднозначность семантики конструкции derefAliases. Имел место вопрос, должно ли применяться разыменование к базовому объекту поиска при поиске с диапазоном wholeSubtree, если в этой конструкции установлен пункт derefInSearching.</li>
+<li>Добавлены инструкции для фильтров equalityMatch, substrings, greaterOrEqual, lessOrEqual и approxMatch.</li>
+</ul>
+
+<h3><a name="appendix-C.1.18">C.1.18</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.5.2">Раздел 4.5.2</a> (Результат операции Search)</h3>
+<ul>
+<li>Рекомендовано, чтобы серверы не использовали сокращённые имена атрибутов, если им известно, что такие имена неоднозначны или могут привести к проблемам совместимости.</li>
+<li>Из-за отсутствия реализации удалены все упоминания об ExtendedResponseRemoved.</li>
+</ul>
+
+<h3><a name="appendix-C.1.19">C.1.19</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.5.3">Раздел 4.5.3</a> (Ссылки-продолжения в результатах операции Search)</h3>
+<ul>
+<li>Внесены изменения по аналогии с разделом <a href="http://tools.ietf.org/html/rfc2251#section-4.1.11">Раздел 4.1.11</a>.
+</ul>
+
+<h3><a name="appendix-C.1.20">C.1.20</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.5.3.1">Раздел 4.5.3.1</a> (Примеры)</h3>
+<ul>
+<li>Примеры исправлены в соответствии с изменениями, внесёнными в раздел <a href="http://tools.ietf.org/html/rfc2251#section-4.5.3">Раздел 4.5.3</a>.</li>
+</ul>
+
+<h3><a name="appendix-C.1.21">C.1.21</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.6">Раздел 4.6</a> (Операция Modify)</h3>
+<ul>
+<li>AttributeTypeAndValues заменено на Attribute, поскольку они эквивалентны.</li>
+<li>Указаны типы модификационных изменений, которые могут временно нарушать схему данных. У некоторых читателей складывалось впечатление, что разрешены любые временные нарушения схемы данных.</li>
+</ul>
+
+<h3><a name="appendix-C.1.22">C.1.22</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.7">Раздел 4.7</a> (Операция Add)</h3>
+<ul>
+<li>Операция Add приведена в соответствие со стандартом X.511 в том, что при создании записи атрибуты RDN используются вместе с явно перечисленными атрибутами. До этого требовалось, чтобы значения, образующие уникальное имя, присутствовали в списке добавляемых атрибутов.</li>
+<li>Удалено требование, что атрибут objectClass должен (MUST) быть указан, в связи с тем, что в некоторых типах DSE этот атрибут не требуется. Вместо этого была добавлена общая формулировка, что добавляемая запись должна придерживаться модели данных.</li>
+<li>Удалена рекомендация по размещению объектов. Об этом говорится в документе по модели данных.</li>
+</ul>
+
+<h3><a name="appendix-C.1.23">C.1.23</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.9">Раздел 4.9</a> (Операция Modify DN)</h3>
+<ul>
+<li>Установлено требование, чтобы серверы не разыменовывали псевдонимы для операции Modify DN. Оно было добавлено для совместимости с другими операциями и для обеспечения согласованности данных.</li>
+<li>Операции Modify DN позволено завершаться неудачей при попытке перемещения записи между контекстами именования.</li>
+<li>Определено, что произойдёт, когда указанные в поле newrdn атрибуты не присутствуют в записи.</li>
+</ul>
+
+<h3><a name="appendix-C.1.24">C.1.24</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.10">Раздел 4.10</a> (Операция Compare)</h3>
+<ul>
+<li>Определено, что результирующий код compareFalse означает, что сравнение произведено и его результат&thinsp;&mdash;&thinsp;false. Существовала путаница, вводящая людей в заблуждение, что при результате сравнения Undefined возвращается код compareFalse.</li>
+<li>Установлено требование, чтобы серверы не разыменовывали псевдонимы для операции Compare. Оно было добавлено для совместимости с другими операциями и для обеспечения согласованности данных.</li>
+</ul>
+
+<h3><a name="appendix-C.1.25">C.1.25</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.11">Раздел 4.11</a> (Операция Abandon)</h3>
+<ul>
+<li>Дано разъяснение, что поскольку операция Abandon не возвращает ответа, клентам не следует её использовать, если им важно знать результат.</li>
+<li>Указано, что нельзя отказаться от выполнения операций Abandon и Unbind.</li>
+</ul>
+
+<h3><a name="appendix-C.1.26">C.1.26</a>. <a href="http://tools.ietf.org/html/rfc2251#section-4.12">Раздел 4.12</a> (Операция Extended)</h3>
+<ul>
+<li>Определено, каким образом должны кодироваться значения операций-расширений Extended, определённые в терминах ASN.1.</li>
+<li>Добавлены инструкции о том, из чего должна состоять спецификация операции-расширения Extended.</li>
+<li>Добавлена рекомендация, что серверам следует афишировать поддерживаемые операции-расширения Extended.</li>
+</ul>
+
+<h3><a name="appendix-C.1.27">C.1.27</a>. <a href="http://tools.ietf.org/html/rfc2251#section-5.2">Раздел 5.2</a> (Протоколы передачи)</h3>
+<ul>
+<li>Инструкции, касающиеся отсылок, перенесены в разделы по отсылкам.</li>
+</ul>
+
+<h3><a name="appendix-C.1.28">C.1.28</a>. <a href="http://tools.ietf.org/html/rfc2251#section-7">Раздел 7</a> (О безопасности)</h3>
+<ul>
+<li>Перефразировано примечание относительно того, что SASL не защищает некоторые аспекты сообщений Bind LDAP.</li>
+<li>Добавлено замечание, что для серверов считается правильным предотвращение модификаций каталога клиентами, осуществляющими доступ анонимно [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</li>
+<li>Добавлено замечание относительно возможности изменения факторов безопасности (аутентификации, авторизации и конфиденциальности данных).</li>
+<li>Добавлено предостережение по поводу следования по отсылкам, которые, возможно, были внедрены в поток данных.</li>
+<li>Добавлено замечание, что серверам следует в равной степени защищать информацию в нормальных условия и при возникновении ошибки, особо отмечены поля matchedDN, diagnosticMessage и resultCodes.</li>
+<li>Добавлено замечание относительно плохо сформированных и длинных кодировок.</li>
+</ul>
+
+<h3><a name="appendix-C.1.29">C.1.29</a>. <a href="http://tools.ietf.org/html/rfc2251#appendix-A">Приложение A</a> (Полное определение ASN.1)</h3>
+<ul>
+<li>В определение ASN.1 добавлено "EXTENSIBILITY IMPLIED".
+<li>Удалена конструкция AttributeType, которая не использовалась.
+</ul>
+
+<h3><a name="appendix-C.2">C.2</a>. Изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a></h3>
+
+<p>В данном разделе приводятся основные изменения, внесённые в разделы <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>. За перечнем изменений, внесённых в другие разделы этого RFC, читателям следует обратиться к [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+
+<h3><a name="appendix-C.2.1">C.2.1</a>. <a href="http://tools.ietf.org/html/rfc2830#section-2.3">Раздел 2.3</a> (Ответ, отличный от "success")</h3>
+<ul>
+<li>Удалена формулировка о том, что StartTLS может возвращать отсылку.</li>
+<li>Удалено требование, что может быть возвращён только ограниченный набор результирующих кодов. Некоторые результирующие коды требуются в определенных сценариях, но может быть возвращён и любой другой подходящий код.</li>
+<li>Удалено требование, что должно (MUST) присутствовать поле ExtendedResponse.responseName. Существуют ситуации, когда такое невозможно, и, кроме того, это требование шло вразрез с формулировками <a href="#section-4.12">раздела 4.12</a>.</li>
+</ul>
+
+<h3><a name="appendix-C.2.1">C.2.1</a>. <a href="http://tools.ietf.org/html/rfc2830#section-4">Раздел 4</a> (Закрытие соединения TLS)</h3>
+<ul>
+<li>Для согласованности с определениями уровней протокола LDAP большая часть этого раздела была переработана.</li>
+<li>Удалены инструкции по немедленному закрытию соединения, поскольку об этом говорится в других разделах этого документа (в частности, в <a href="#section-5.3">разделе 5.3</a>).</li>
+</ul>
+
+<h3><a name="appendix-C.3">C.3</a>. Изменения, внесённые в <a href="http://tools.ietf.org/html/rfc3771">RFC 3771</a></h3>
+<ul>
+<li>Текст RFC переписан, чтобы его можно было встроить в концепцию этого документа. В целом, семантики были сохранены. Отброшены разделы, касающиеся предпосылок и поддержки, поскольку их наличие в данном документе было бы избыточным.</li>
+<li>Указано, что промежуточные ответы на какой-либо запрос могут быть различных типов, и один из таких типов ответов может быть определён так, чтобы не иметь значения в поле responseName.</li>
+</ul>
+
+<h2>Адрес редактора</h2>
+<p>Jim Sermersheim</p>
+<p>Novell, Inc., 1800 South Novell Place, Provo, Utah 84606, USA</p>
+<p>Телефон: +1 801 861-3088</p>
+<p>EMail: jimse@novell.com</p>
+
+<h2>Полное заявление авторских прав</h2>
+
+<p>Copyright (C) Internet Society (2006).</p>
+
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+
+<p>Это документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
+
+<h2>Интеллектуальная собственность</h2>
+
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a target="_blank" href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a target="_blank" href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+
+<p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
+
+<h2>Признание заслуг</h2>
+
+<p>Финансирование функций RFC Editor обеспечивается IETF Administrative Support Activity (IASA).</p>
+
+<div style="font-size:90%;font-style:italic;margin:30px">Перевод выполнен участниками проекта <a href="http://pro-ldap.ru">Pro-LDAP.ru</a>. Предложения по улучшению перевода и сообщения об ошибках принимаются на <a href="http://pro-ldap.ru/forum/index.php?topic=40.0">форуме проекта</a>.</div>
+</body></html>

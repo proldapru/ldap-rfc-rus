@@ -105,7 +105,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h2><a name="section-1">1</a>. Введение</h2>
 
-<p>В этом документе обсуждаются информационные модели каталога X.500 [<a href="#ref-X.501" title="The Directory: Models">X.501</a>], используемые протоколом Lightweight Directory Access Protocol (LDAP) [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>].</p>
+<p>В этом документе обсуждаются информационные модели каталога X.500 [<a href="#ref-X.501" title="The Directory: Models">X.501</a>], используемые протоколом Lightweight Directory Access Protocol (LDAP) [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификацииp">RFC4510</a>].</p>
 
 <p>Каталог&thinsp;&mdash;&thinsp;это "ряд открытых систем, взаимодействующих друг с другом для предоставления сервисов каталога" [<a href="#ref-X.500" title="The Directory: Overview of concepts, models and services,">X.500</a>]. Содержащаяся в каталоге информация собирательно называется информационной базой каталога (Directory Information Base, DIB). Пользователь каталога, человек или другая сущность, получает доступ к каталогу посредством клиента (или пользовательского агента каталога (Directory User Agent, DUA)). Клиент от имени пользователя взаимодействует с одним или несколькими серверами (или системными агентами каталога (Directory System Agents, DSA)). На сервере хранится фрагмент DIB.</p>
 
@@ -121,13 +121,13 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-1.1">1.1</a>. Взаимосвязь с другими спецификациями LDAP</h3>
 
-<p>Этот документ является неотъемлемой частью технической спецификации LDAP [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>], полностью отменяющей определённую ранее техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>.</p>
+<p>Этот документ является неотъемлемой частью технической спецификации LDAP [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], полностью отменяющей определённую ранее техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>.</p>
 
-<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2251#section-3.2">3.2</a> и <a href="http://tools.ietf.org/html/rfc2251#section-3.4">3.4</a>, а также части разделов <a href="http://tools.ietf.org/html/rfc2251#section-4">4</a> и <a href="http://tools.ietf.org/html/rfc2251#section-6">6</a> <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. Изменения этих разделов обобщены в <a href="#appendix-A.1">приложении A.1</a>. Остальные части <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> отменяются документами [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>], [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>] и [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>].</p>
+<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2251#section-3.2">3.2</a> и <a href="http://tools.ietf.org/html/rfc2251#section-3.4">3.4</a>, а также части разделов <a href="http://tools.ietf.org/html/rfc2251#section-4">4</a> и <a href="http://tools.ietf.org/html/rfc2251#section-6">6</a> <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. Изменения этих разделов обобщены в <a href="#appendix-A.1">приложении A.1</a>. Остальные части <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> отменяются документами [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>], [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасностиs">RFC4513</a>] и [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>].</p>
 
-<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2252#section-4">4</a>, <a href="http://tools.ietf.org/html/rfc2252#section-5">5</a> и <a href="http://tools.ietf.org/html/rfc2252#section-7">7</a> <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>. Изменения этих разделов обобщены в <a href="#appendix-A.2">приложении A.2</a>. Остальные части <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> отменяются документом [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2252#section-4">4</a>, <a href="http://tools.ietf.org/html/rfc2252#section-5">5</a> и <a href="http://tools.ietf.org/html/rfc2252#section-7">7</a> <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>. Изменения этих разделов обобщены в <a href="#appendix-A.2">приложении A.2</a>. Остальные части <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> отменяются документом [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
-<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2256#section-5.1">5.1</a>, <a href="http://tools.ietf.org/html/rfc2256#section-5.2">5.2</a>, <a href="http://tools.ietf.org/html/rfc2256#section-7.1">7.1</a> и <a href="http://tools.ietf.org/html/rfc2256#section-7.2">7.2</a> <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. Изменения этих разделов обобщены в <a href="#appendix-A.3">приложении A.3</a>. Остальные части <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменяются документами [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>] и [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2256#section-5.1">5.1</a>, <a href="http://tools.ietf.org/html/rfc2256#section-5.2">5.2</a>, <a href="http://tools.ietf.org/html/rfc2256#section-7.1">7.1</a> и <a href="http://tools.ietf.org/html/rfc2256#section-7.2">7.2</a> <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. Изменения этих разделов обобщены в <a href="#appendix-A.3">приложении A.3</a>. Остальные части <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a> отменяются документами [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>] и [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <p>Этот документ полностью отменяет <a href="http://tools.ietf.org/html/rfc3674">RFC 3674</a>. Изменения этого RFC обобщены в <a href="#appendix-A.4">приложении A.4</a>.</p>
 
@@ -140,7 +140,7 @@ K. Zeilenga, OpenLDAP Foundation
 <p>Ключевые слова "MUST" (необходимо), "MUST NOT" (недопустимо), "REQUIRED" (требуется), "SHALL" (нужно), "SHALL NOT" (не нужно), "SHOULD" (следует), "SHOULD NOT" (не следует), "RECOMMENDED" (рекомендуется), "MAY" (возможно) и  "OPTIONAL" (необязательно) в данном документе должны интерпретироваться так, как описано в <a href="http://rfc2.ru/2119.rfc">BCP 14</a> [<a href="http://rfc2.ru/2119.rfc" title="Ключевые слова для обозначения уровня требований в RFC">RFC2119</a>]
 </p>
 
-<p>Определения схемы данных даются с использованием форматов описания LDAP (как определено в <a href="#section-4.1">разделе 4.1</a>). Приводимые здесь определения отформатированы (произведено разбиение строк) с целью повышения читабельности. Спецификация правил соответствия и синтаксисов LDAP, упоминаемых в этих определениях, дана в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Определения схемы данных даются с использованием форматов описания LDAP (как определено в <a href="#section-4.1">разделе 4.1</a>). Приводимые здесь определения отформатированы (произведено разбиение строк) с целью повышения читабельности. Спецификация правил соответствия и синтаксисов LDAP, упоминаемых в этих определениях, дана в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h3><a name="section-1.4">1.4</a>. Общие конструкции ABNF</h3>
 
@@ -247,7 +247,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Запись состоит из набора атрибутов, содержащих информацию о том объекте, который представлен этой записью. Одни атрибуты представляют пользовательскую информацию и называются пользовательскими атрибутами. Другие атрибуты представляют операционную и/или административную информацию и называются операционными атрибутами.</p>
 
-<p>Атрибут&thinsp;&mdash;&thinsp;это описание атрибута (тип и ноль или более опций) с одним или несколькими ассоциированными значениями. На атрибут часто указывают с помощью описания этого атрибута. Например, атрибут 'givenName'&thinsp;&mdash;&thinsp;это атрибут, состоящий из описания атрибута 'givenName' (тип атрибута 'givenName' [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>] и ноль опций) и одного или более ассоциированных значений.</p>
+<p>Атрибут&thinsp;&mdash;&thinsp;это описание атрибута (тип и ноль или более опций) с одним или несколькими ассоциированными значениями. На атрибут часто указывают с помощью описания этого атрибута. Например, атрибут 'givenName'&thinsp;&mdash;&thinsp;это атрибут, состоящий из описания атрибута 'givenName' (тип атрибута 'givenName' [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>] и ноль опций) и одного или более ассоциированных значений.</p>
 
 <p>Тип атрибута определяет, может ли атрибут иметь несколько значений, синтаксис и правила соответствия, используемые для построения и сравнения значений этого атрибута, и другие функции. Опции указывают подтипы и другие функции.</p>
 
@@ -269,7 +269,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Относительное уникальное имя записи должно быть уникально среди записей, являющихся непосредственно подчинёнными записи, непосредственно вышестоящей относительно целевой записи (то есть всех одноуровневых записей относительно целевой записи).</p>
 
-<p>Примеры строкового представления RDN [<a href="http://tools.ietf.org/html/rfc4514" title="LDAP: String Representation of Distinguished Names">RFC4514</a>]:</p>
+<p>Примеры строкового представления RDN [<a href="rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>]:</p>
 
 <pre class="list">
       UID=12345
@@ -281,7 +281,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h4><a name="section-2.3.2">2.3.2</a>. Уникальные имена (Distinguished Names)</h4>
 
-<p>Полностью определенное имя записи, известное как уникальное имя (DN) [<a href="#ref-X.501" title="The Directory: Models">X.501</a>], представляет собой конкатенацию RDN этой записи и DN непосредственно вышестоящей по отношению к ней записи. Уникальное имя однозначно указывает на запись в дереве. Примеры строкового представления DN [<a href="http://tools.ietf.org/html/rfc4514" title="LDAP: String Representation of Distinguished Names">RFC4514</a>]:</p>
+<p>Полностью определенное имя записи, известное как уникальное имя (DN) [<a href="#ref-X.501" title="The Directory: Models">X.501</a>], представляет собой конкатенацию RDN этой записи и DN непосредственно вышестоящей по отношению к ней записи. Уникальное имя однозначно указывает на запись в дереве. Примеры строкового представления DN [<a href=rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>]:</p>
 <pre class="list">
       UID=nobody@example.com,DC=example,DC=com
       CN=John Smith,OU=Sales,O=ACME Limited,L=Moab,ST=Utah,C=US
@@ -422,13 +422,13 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Опции представляются в виде коротких, не чувствительных к регистру символов текстовых строк, соответствующих конструкции &lt;option&gt;, определённой в <a href="#section-2.5">разделе 2.5</a> этого документа.</p>
 
-<p>Процедуры регистрации опций подробно описаны в <a href="http://tools.ietf.org/html/bcp64">BCP 64</a> [<a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>].</p>
+<p>Процедуры регистрации опций подробно описаны в <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a> [<a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>].</p>
 
 <h5><a name="section-2.5.2.1">2.5.2.1</a>. Опции пометки (Tagging Options)</h5>
 
 <p>Содержащиеся в каталоге атрибуты могут иметь описания атрибутов с любым количеством опций пометки. Опции пометки никогда не бывают взаимоисключающими.</p>
 
-<p>Описание атрибута с N опциями пометки является прямым подтипом (описания) всех описаний атрибута того же типа атрибута и всех, кроме одной, из этих N опций. Если у типа атрибута есть супертип, то описание этого атрибута также является прямым подтипом (описания) описания атрибута его сурептипа и N опций пометки. То есть, описание 'cn;lang-de;lang-en' является прямым подтипом (описания) 'cn;lang-de', 'cn;lang-en' и 'name;lang-de;lang-en' (поскольку 'cn'&thinsp;&mdash;&thinsp;это подтип 'name'; оба типа атрибута определены в [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>]).</p>
+<p>Описание атрибута с N опциями пометки является прямым подтипом (описания) всех описаний атрибута того же типа атрибута и всех, кроме одной, из этих N опций. Если у типа атрибута есть супертип, то описание этого атрибута также является прямым подтипом (описания) описания атрибута его сурептипа и N опций пометки. То есть, описание 'cn;lang-de;lang-en' является прямым подтипом (описания) 'cn;lang-de', 'cn;lang-en' и 'name;lang-de;lang-en' (поскольку 'cn'&thinsp;&mdash;&thinsp;это подтип 'name'; оба типа атрибута определены в [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>]).</p>
 
 <h4><a name="section-2.5.3">2.5.3</a>. Иерархии описаний атрибутов</h4>
 
@@ -497,7 +497,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
         SINGLE-VALUE )
 </pre>
-<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h2><a name="section-3">3</a>. Административная и операционная информация каталога</h2>
 
@@ -515,7 +515,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Подзапись&thinsp;&mdash;&thinsp;это "специальный вид записи, известный каталогу, который используется для содержания информации, связанной с поддеревом или уточнением поддерева" [<a href="#ref-X.501" title="The Directory: Models">X.501</a>]. Подзаписи используются в каталоге для хранения данных в административных и операционных целях, как определено в стандарте [<a href="#ref-X.501" title="The Directory: Models">X.501</a>]. Их использование в LDAP подробно раскрыто в [<a href="http://tools.ietf.org/html/rfc3672" title="Subentries in LDAP">RFC3672</a>].</p>
 
-<p>Термин "(под)запись" в данной спецификации указывает на то, что серверы, реализующие модели X.500(93), должны, согласно описанным в [<a href="http://tools.ietf.org/html/rfc3672" title="Subentries in LDAP">RFC3672</a>] определениям X.500(93), использовать подзаписи, а также на то, что другие серверы должны использовать записи-объекты, принадлежащие соответствующему вспомогательному классу, обычно используемому с подзаписями (например, 'subschema' для подзаписей подсхемы) для имитации подзаписей. RDN этих записей-объектов должны (SHALL) быть сформированы от значения атрибута 'cn' (commonName) [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>] (поскольку все подзаписи именуются с использованием 'cn').</p>
+<p>Термин "(под)запись" в данной спецификации указывает на то, что серверы, реализующие модели X.500(93), должны, согласно описанным в [<a href="http://tools.ietf.org/html/rfc3672" title="Subentries in LDAP">RFC3672</a>] определениям X.500(93), использовать подзаписи, а также на то, что другие серверы должны использовать записи-объекты, принадлежащие соответствующему вспомогательному классу, обычно используемому с подзаписями (например, 'subschema' для подзаписей подсхемы) для имитации подзаписей. RDN этих записей-объектов должны (SHALL) быть сформированы от значения атрибута 'cn' (commonName) [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>] (поскольку все подзаписи именуются с использованием 'cn').</p>
 
 <h3><a name="section-3.3">3.3</a>. Атрибут 'objectClass'</h3>
 
@@ -525,7 +525,7 @@ K. Zeilenga, OpenLDAP Foundation
         EQUALITY objectIdentifierMatch
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
 </pre>
-<p>Правило соответствия 'objectIdentifierMatch' и синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierMatch' и синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <p>Атрибут 'objectClass' определяет объектные классы записи, которые (среди прочего) используются, в сочетании с управляющей схемой данных, для определения разрешённых атрибутов записи. Значения этого атрибута могут быть модифицированы клиентами, но атрибут 'objectClass' не может быть удалён.</p>
 
@@ -570,7 +570,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-3.4.2">3.4.2</a>. 'createTimestamp'</h4>
 
@@ -583,7 +583,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правила соответствия 'generalizedTimeMatch' и 'generalizedTimeOrderingMatch', а также синтаксис GeneralizedTime (1.3.6.1.4.1.1466.115.121.1.24) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правила соответствия 'generalizedTimeMatch' и 'generalizedTimeOrderingMatch', а также синтаксис GeneralizedTime (1.3.6.1.4.1.1466.115.121.1.24) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-3.4.3">3.4.3</a>. 'modifiersName'</h4>
 
@@ -595,7 +595,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-3.4.4">3.4.4</a>. 'modifyTimestamp'</h4>
 
@@ -608,7 +608,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правила соответствия 'generalizedTimeMatch' и 'generalizedTimeOrderingMatch', а также синтаксис GeneralizedTime (1.3.6.1.4.1.1466.115.121.1.24) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правила соответствия 'generalizedTimeMatch' и 'generalizedTimeOrderingMatch', а также синтаксис GeneralizedTime (1.3.6.1.4.1.1466.115.121.1.24) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-3.4.5">3.4.5</a>. 'structuralObjectClass'</h4>
 
@@ -620,7 +620,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierMatch' и синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierMatch' и синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-3.4.6">3.4.6</a>. 'governingStructureRule'</h4>
 
@@ -632,7 +632,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'integerMatch' и синтаксис INTEGER (1.3.6.1.4.1.1466.115.121.1.27) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'integerMatch' и синтаксис INTEGER (1.3.6.1.4.1.1466.115.121.1.27) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h2><a name="section-4">4</a>. Схема данных каталога (Directory Schema)</h2>
 
@@ -996,7 +996,7 @@ K. Zeilenga, OpenLDAP Foundation
         SINGLE-VALUE NO-USER-MODIFICATION
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'distinguishedNameMatch' и синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <p>Подсхема содержится в (под)записях, принадлежащих вспомогательному объектному классу subschema.</p>
 <pre class="list">
@@ -1022,7 +1022,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.37
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис ObjectClassDescription (1.3.6.1.4.1.1466.115.121.1.37) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис ObjectClassDescription (1.3.6.1.4.1.1466.115.121.1.37) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.2">4.2.2</a>. 'attributeTypes'</h4>
 
@@ -1033,7 +1033,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.3
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис AttributeTypeDescription (1.3.6.1.4.1.1466.115.121.1.3) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис AttributeTypeDescription (1.3.6.1.4.1.1466.115.121.1.3) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.3">4.2.3</a>. 'matchingRules'</h4>
 
@@ -1044,7 +1044,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.30
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис MatchingRuleDescription (1.3.6.1.4.1.1466.115.121.1.30) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rule">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис MatchingRuleDescription (1.3.6.1.4.1.1466.115.121.1.30) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.4">4.2.4</a>. 'matchingRuleUse'</h4>
 
@@ -1055,7 +1055,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.31
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис MatchingRuleUseDescription (1.3.6.1.4.1.1466.115.121.1.31) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис MatchingRuleUseDescription (1.3.6.1.4.1.1466.115.121.1.31) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.5">4.2.5</a>. 'ldapSyntaxes'</h4>
 
@@ -1066,7 +1066,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.54
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис SyntaxDescription (1.3.6.1.4.1.1466.115.121.1.54) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис SyntaxDescription (1.3.6.1.4.1.1466.115.121.1.54) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.6">4.2.6</a>. 'dITContentRules'</h4>
 
@@ -1077,7 +1077,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.16
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис DITContentRuleDescription (1.3.6.1.4.1.1466.115.121.1.16) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис DITContentRuleDescription (1.3.6.1.4.1.1466.115.121.1.16) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.7">4.2.7</a>. 'dITStructureRules'</h4>
 
@@ -1088,7 +1088,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.17
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'integerFirstComponentMatch' и синтаксис DITStructureRuleDescription (1.3.6.1.4.1.1466.115.121.1.17) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'integerFirstComponentMatch' и синтаксис DITStructureRuleDescription (1.3.6.1.4.1.1466.115.121.1.17) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-4.2.8">4.2.8</a>. 'nameForms'</h4>
 
@@ -1099,7 +1099,7 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.35
         USAGE directoryOperation )
 </pre>
-<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис NameFormDescription (1.3.6.1.4.1.1466.115.121.1.35) определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Правило соответствия 'objectIdentifierFirstComponentMatch' и синтаксис NameFormDescription (1.3.6.1.4.1.1466.115.121.1.35) определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h3><a name="section-4.3">4.3</a>. Объектный класс 'extensibleObject'</h3>
 
@@ -1112,7 +1112,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-4.4">4.4</a>. Изучение подсхемы</h3>
 
-<p>Чтобы определить DN (под)записи подсхемы, содержащей подсхему, управляющую конкретной записью, клиент считывает операционный атрибут 'subschemaSubentry' этой записи. Для чтения атрибутов схемы данных из (под)записи подсхемы клиент должен (MUST) выполнить операцию поиска Search [<a href="rfc4511.html#section-4.5" title="LDAP: Определение протокола">RFC4511</a>], где baseObject&thinsp;&mdash;&thinsp;DN (под)записи подсхемы, диапазон поиска&thinsp;&mdash;&thinsp;baseObject, фильтр&thinsp;&mdash;&thinsp;"(objectClass=subschema)" [<a href="http://tools.ietf.org/html/rfc4515" title="LDAP: String Representation of Search Filters">RFC4515</a>], а в поле атрибутов перечислены имена требуемых атрибутов схемы данных (поскольку они являются операционными). Примечание: фильтр "(objectClass=subschema)" позволяет серверам LDAP, выполняющим роль шлюза к X.500, определить, что запрашивается информация о подзаписи.</p>
+<p>Чтобы определить DN (под)записи подсхемы, содержащей подсхему, управляющую конкретной записью, клиент считывает операционный атрибут 'subschemaSubentry' этой записи. Для чтения атрибутов схемы данных из (под)записи подсхемы клиент должен (MUST) выполнить операцию поиска Search [<a href="rfc4511.html#section-4.5" title="LDAP: Определение протокола">RFC4511</a>], где baseObject&thinsp;&mdash;&thinsp;DN (под)записи подсхемы, диапазон поиска&thinsp;&mdash;&thinsp;baseObject, фильтр&thinsp;&mdash;&thinsp;"(objectClass=subschema)" [<a href="rfc4515.html" title="LDAP: Строковое представление поисковых фильтров">RFC4515</a>], а в поле атрибутов перечислены имена требуемых атрибутов схемы данных (поскольку они являются операционными). Примечание: фильтр "(objectClass=subschema)" позволяет серверам LDAP, выполняющим роль шлюза к X.500, определить, что запрашивается информация о подзаписи.</p>
 
 <p>Клиентам не следует (SHOULD NOT) предполагать, что опубликованная подсхема является полной, что сервер поддерживает все опубликованные им элементы схемы данных или что он не поддерживает неопубликованные.</p>
 
@@ -1132,9 +1132,9 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-5.1">5.1</a>. Требования к специфичной для сервера информации</h3>
 
-<p>LDAP-серверу следует (SHALL) предоставлять информацию о самом себе и другую информацию, специфичную для каждого сервера. Она представлена в виде группы атрибутов, расположенных в корневой DSE, имя которой&thinsp;&mdash;&thinsp;DN, состоящее из нуля RDN (строковое представление которой согласно [<a href="http://tools.ietf.org/html/rfc4514" title="LDAP: String Representation of Distinguished Names">RFC4514</a>]&thinsp;&mdash;&thinsp;строка нулевой длины).</p>
+<p>LDAP-серверу следует (SHALL) предоставлять информацию о самом себе и другую информацию, специфичную для каждого сервера. Она представлена в виде группы атрибутов, расположенных в корневой DSE, имя которой&thinsp;&mdash;&thinsp;DN, состоящее из нуля RDN (строковое представление которой согласно [<a href="rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>]&thinsp;&mdash;&thinsp;строка нулевой длины).</p>
 
-<p>Эти атрибуты можно затребовать, на них накладываются условия контроля доступа и другие ограничения. Для их запроса клиент выполняет операцию поиска Search [<a href="rfc4511.html#section-4.5" title="LDAP: Определение протокола">RFC4511</a>] с пустым baseObject, диапазоном поиска&thinsp;&mdash;&thinsp;baseObject, фильтром&thinsp;&mdash;&thinsp; "(objectClass=*)" [<a href="http://tools.ietf.org/html/rfc4515" title="LDAP: String Representation of Search Filters">RFC4515</a>], а в поле атрибутов перечислены имена описанных атрибутов. Имейте ввиду, что атрибуты корневой DSE являются операционными и, как и другие операционные атрибуты, не возвращаются в ответ на поисковый запрос, если не были запрошены явно по имени.</p>
+<p>Эти атрибуты можно затребовать, на них накладываются условия контроля доступа и другие ограничения. Для их запроса клиент выполняет операцию поиска Search [<a href="rfc4511.html#section-4.5" title="LDAP: Определение протокола">RFC4511</a>] с пустым baseObject, диапазоном поиска&thinsp;&mdash;&thinsp;baseObject, фильтром&thinsp;&mdash;&thinsp; "(objectClass=*)" [<a href="rfc4515.html" title="LDAP: Строковое представление поисковых фильтров">RFC4515</a>], а в поле атрибутов перечислены имена описанных атрибутов. Имейте ввиду, что атрибуты корневой DSE являются операционными и, как и другие операционные атрибуты, не возвращаются в ответ на поисковый запрос, если не были запрошены явно по имени.</p>
 
 <p>Корневая DSE не должна (SHALL NOT) быть включена в возвращаемые клиенту данные, если тот выполняет поиск по поддереву, начиная от корня.</p>
 
@@ -1150,19 +1150,19 @@ K. Zeilenga, OpenLDAP Foundation
 <li>supportedLDAPVersion: поддерживаемые версии LDAP; и</li>
 <li>supportedSASLMechanisms: механизмы Simple Authentication and Security Layers (SASL) [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>], которые распознаёт сервер.</li>
 </ul>
-<p>Значения этих атрибутов могут зависеть от конкретной сессии и других факторов. Например, сервер, поддерживающий механизм SASL EXTERNAL, может указать только "EXTERNAL" в списке поддерживаемых механизмов, если клиент прошёл проверку подлинности на более низком уровне. Смотрите [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+<p>Значения этих атрибутов могут зависеть от конкретной сессии и других факторов. Например, сервер, поддерживающий механизм SASL EXTERNAL, может указать только "EXTERNAL" в списке поддерживаемых механизмов, если клиент прошёл проверку подлинности на более низком уровне. Смотрите [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>].</p>
 
 <p>Корневая DSE может также включать атрибут 'subschemaSubentry', в этом случае он указывает на (под)запись подсхемы, содержащей схему данных, управляющую корневой DSE. Клиентам не следует (SHOULD NOT) предполагать, что данная (под)запись подсхемы управляет другими записями на этом сервере. Общие процедуры изучения подсхемы даны в <a href="#section-4.4">разделе 4.4</a>.</p>
 
 <h4><a name="section-5.1.1">5.1.1</a>. 'altServer'</h4>
 
-<p>В атрибуте 'altServer' перечисляются URI, указывающие на альтернативные серверы, с которыми можно связаться в случае, если этот сервер станет недоступен. URI для серверов, реализующих LDAP, составляются в соответствии с [<a href="http://tools.ietf.org/html/rfc4516" title="LDAP: Uniform Resource Locator">RFC4516</a>]. Могут предоставляться другие типы URI. Если серверу неизвестно о каких-либо других серверах, которые могут быть использованы, данный атрибут опускается. Клиенты могут кэшировать эту информацию на случай, если предпочитаемый ими сервер позже станет недоступен.</p>
+<p>В атрибуте 'altServer' перечисляются URI, указывающие на альтернативные серверы, с которыми можно связаться в случае, если этот сервер станет недоступен. URI для серверов, реализующих LDAP, составляются в соответствии с [<a href="rfc4516.html" title="LDAP: Единый указатель ресурса (URL)">RFC4516</a>]. Могут предоставляться другие типы URI. Если серверу неизвестно о каких-либо других серверах, которые могут быть использованы, данный атрибут опускается. Клиенты могут кэшировать эту информацию на случай, если предпочитаемый ими сервер позже станет недоступен.</p>
 <pre class="list">
       ( 1.3.6.1.4.1.1466.101.120.6 NAME 'altServer'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
         USAGE dSAOperation )
 </pre>
-<p>Синтаксис IA5String (1.3.6.1.4.1.1466.115.121.1.26) определён в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис IA5String (1.3.6.1.4.1.1466.115.121.1.26) определён в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-5.1.2">5.1.2</a>. 'namingContexts'</h4>
 
@@ -1174,19 +1174,19 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
         USAGE dSAOperation )
 </pre>
-<p>Синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определён в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис DistinguishedName (1.3.6.1.4.1.1466.115.121.1.12) определён в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-5.1.3">5.1.3</a>. 'supportedControl'</h4>
 
 <p>В атрибуте 'supportedControl' перечисляются идентификаторы объектов, идентифицирующие поддерживаемые сервером элементы управления запроса [<a href="rfc4511.html#section-4.1.11" title="LDAP: Определение протокола">RFC4511</a>]. Если сервер не поддерживает никаких элементов управления запроса, данный атрибут опускается. Идентификаторы объектов, идентифицирующие элементы управления ответа, перечислять не нужно.</p>
 
-<p>Процедуры запроса идентификаторов объектов, используемых для идентификации механизмов протокола, описаны в <a href="http://tools.ietf.org/html/bcp64">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>.</p>
+<p>Процедуры запроса идентификаторов объектов, используемых для идентификации механизмов протокола, описаны в <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>.</p>
 <pre class="list">
       ( 1.3.6.1.4.1.1466.101.120.13 NAME 'supportedControl'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
         USAGE dSAOperation )
 </pre>
-<p>Синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определён в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определён в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-5.1.4">5.1.4</a>. 'supportedExtension'</h4>
 
@@ -1194,13 +1194,13 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>В общем случае расширенная операция состоит из расширенного запроса и расширенного ответа, но также может включать и другие элементы протокола (такие как промежуточные ответы). Для идентификации расширенной операции используется идентификатор объекта, ассоциированный с расширенным запросом. Другие используемые в расширенной операции идентификаторы объектов в значениях этого атрибута перечислять не нужно.</p>
 
-<p>Процедуры запроса идентификаторов объектов, используемых для идентификации механизмов протокола, описаны в <a href="http://tools.ietf.org/html/bcp64">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>.</p>
+<p>Процедуры запроса идентификаторов объектов, используемых для идентификации механизмов протокола, описаны в <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>.</p>
 <pre class="list">
       ( 1.3.6.1.4.1.1466.101.120.7 NAME 'supportedExtension'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
         USAGE dSAOperation )
 </pre>
-<p>Синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определён в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) определён в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-5.1.5">5.1.5</a>. 'supportedFeatures'</h4>
 
@@ -1211,9 +1211,9 @@ K. Zeilenga, OpenLDAP Foundation
           SYNTAX 1.3.6.1.4.1.1466.115.121.1.38
           USAGE dSAOperation )
 </pre>
-<p>Процедуры запроса идентификаторов объектов, используемых для идентификации механизмов протокола, описаны в <a href="http://tools.ietf.org/html/bcp64">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>.</p>
+<p>Процедуры запроса идентификаторов объектов, используемых для идентификации механизмов протокола, описаны в <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>.</p>
 
-<p>Синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) и правило соответствия objectIdentifierMatch определены в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис OBJECT IDENTIFIER (1.3.6.1.4.1.1466.115.121.1.38) и правило соответствия objectIdentifierMatch определены в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-5.1.6">5.1.6</a>. 'supportedLDAPVersion'</h4>
 
@@ -1223,17 +1223,17 @@ K. Zeilenga, OpenLDAP Foundation
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
         USAGE dSAOperation )
 </pre>
-<p>Синтаксис INTEGER (1.3.6.1.4.1.1466.115.121.1.27) определён в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис INTEGER (1.3.6.1.4.1.1466.115.121.1.27) определён в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h4><a name="section-5.1.7">5.1.7</a>. 'supportedSASLMechanisms'</h4>
 
-<p>В атрибуте 'supportedSASLMechanisms' перечисляются распознаваемые и/или поддерживаемые сервером механизмы SASL [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>] [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>]. Содержимое этого атрибута может зависеть от состояния текущей сессии. Если сервер не поддерживает никаких механизмов SASL, данный атрибут опускается.</p>
+<p>В атрибуте 'supportedSASLMechanisms' перечисляются распознаваемые и/или поддерживаемые сервером механизмы SASL [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>] [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>]. Содержимое этого атрибута может зависеть от состояния текущей сессии. Если сервер не поддерживает никаких механизмов SASL, данный атрибут опускается.</p>
 <pre class="list">
       ( 1.3.6.1.4.1.1466.101.120.14 NAME 'supportedSASLMechanisms'
         SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
         USAGE dSAOperation )
 </pre>
-<p>Синтаксис Directory String (1.3.6.1.4.1.1466.115.121.1.15) определён в [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>].</p>
+<p>Синтаксис Directory String (1.3.6.1.4.1.1466.115.121.1.15) определён в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
 <h2><a name="section-6">6</a>. Прочие соображения</h2>
 
@@ -1253,7 +1253,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Реализации должны (MUST) быть готовы к тому, что одно и то же короткое имя может быть использовано в разных подсхемах для указания на разные элементы схемы данных. То есть, в разных подсхемах могут быть два разных правила соответствия 'x-fubar'.</p>
 
-<p>Процедуры регистрации коротких имён (дескрипторов) описаны в <a href="http://tools.ietf.org/html/bcp64">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="IANA Considerations for LDAP">RFC4520</a>.</p>
+<p>Процедуры регистрации коротких имён (дескрипторов) описаны в <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>.</p>
 
 <h3><a name="section-6.3">6.3</a>. Кэши и теневые копии</h3>
 
@@ -1263,7 +1263,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-7.1">7.1</a>. Рекомендации для серверов</h3>
 
-<p>Серверы должны (MUST) распознавать все имена типов атрибутов и объектных классов, определённых в этом документе, но, если не указано иное, от них не требуется поддерживать соответствующую функциональность. Серверам следует (SHOULD) распознавать все имена типов атрибутов и объектных классов, определённых в, соответственно, в разделах <a href="http://tools.ietf.org/html/rfc4519#section-3">3</a> и <a href="http://tools.ietf.org/html/rfc4519#section-4">4</a> [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>].</p>
+<p>Серверы должны (MUST) распознавать все имена типов атрибутов и объектных классов, определённых в этом документе, но, если не указано иное, от них не требуется поддерживать соответствующую функциональность. Серверам следует (SHOULD) распознавать все имена типов атрибутов и объектных классов, определённых в, соответственно, в разделах <a href="rfc4519.html#section-3">3</a> и <a href="rfc4519.html#section-4">4</a> [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>].</p>
 
 <p>Серверы должны (MUST) обеспечить удовлетворение записями правил пользовательской и системной схем данных или других ограничений модели данных. Серверы могут (MAY) поддерживать правила содержимого DIT. Серверы могут (MAY) поддерживать правила структуры DIT и формы имён.</p>
 
@@ -1285,7 +1285,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Атрибуты записей каталога используются для предоставления описательной информации об объектах реального мира, которые они представляют. Такими объектами могут быть люди, организации или устройства. В большинстве стран имеются законы, касающиеся защиты конфиденциальности при публикации информации о людях.</p>
 
-<p>Основные соображения безопасности при доступе к информации каталога посредством LDAP обсуждаются в [<a href="rfc4511.html#section-6" title="LDAP: Определение протокола">RFC4511</a>] и [<a href="http://tools.ietf.org/html/rfc4513" title="LDAP: Authentication Methods and Security Mechanisms">RFC4513</a>].</p>
+<p>Основные соображения безопасности при доступе к информации каталога посредством LDAP обсуждаются в [<a href="rfc4511.html#section-6" title="LDAP: Определение протокола">RFC4511</a>] и [<a href="rfc4513.html" title="LDAP: Методы аутентификации и механизмы обеспечения безопасности">RFC4513</a>].</p>
 
 <h2><a name="section-9">9</a>. Регистрация в IANA</h2>
 
@@ -1297,7 +1297,7 @@ K. Zeilenga, OpenLDAP Foundation
       Person &amp; email address to contact for further information:
           Kurt Zeilenga &lt;kurt@OpenLDAP.org&gt;
       Usage: see comment
-      Specification: <a href="rfc4512.html">RFC 4512</a>
+      Specification: RFC 4512
       Author/Change Controller: IESG
       Comments:
 
@@ -1391,7 +1391,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Это приложение не является нормативным.</p>
 
-<p>Этот документ состоит из практически неизменённых частей <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> и <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. Такая компоновка была предпринята для повышения общей ясности технической спецификации. В этом приложении приводится обзор основных изменений, внесённых во включённые в этот документ части перечисленных документов. Обзор оставшихся частей перечисленных документов смотрите в [<a href="http://tools.ietf.org/html/rfc4510" title="LDAP: Technical Specification Road Map">RFC4510</a>], [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>], [<a href="http://tools.ietf.org/html/rfc4517" title="LDAP: Syntaxes and Matching Rules">RFC4517</a>] и [<a href="http://tools.ietf.org/html/rfc4519" title="LDAP: Schema for User Applications">RFC4519</a>].</p>
+<p>Этот документ состоит из практически неизменённых частей <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a> и <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>. Такая компоновка была предпринята для повышения общей ясности технической спецификации. В этом приложении приводится обзор основных изменений, внесённых во включённые в этот документ части перечисленных документов. Обзор оставшихся частей перечисленных документов смотрите в [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>], [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>] и [<a href="rfc4519.html" title="LDAP: Схема данных для пользовательских приложений">RFC4519</a>].</p>
 
 <h3><a name="appendix-A.1">A.1</a>. Изменения, внесённые в RFC 2251</h3>
 
@@ -1494,15 +1494,15 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Copyright (C) Internet Society (2006).</p>
 
-<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
 
 <p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
 
 <h2>Интеллектуальная собственность</h2>
 
-<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a target="_blank" href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a target="_blank" href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
 
-<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a target="_blank" href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
 
 <p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
 

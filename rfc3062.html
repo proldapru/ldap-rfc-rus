@@ -36,11 +36,11 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h2><a name="section-1">1</a>. Предпосылки и предназначение</h2>
 
-<p>Протокол Lightweight Directory Access Protocol (LDAP) [<a href="http://tools.ietf.org/html/rfc2251" title="LDAPv3">RFC2251</a>] поддерживает несколько механизмов аутентификации, в том числе аутентификацию по простым парам имя пользователя/пароль. Традиционно пользователи LDAP идентифицировались по DN [<a href="http://tools.ietf.org/html/rfc2253" title="LDAPv3: UTF-8 String Representation of Distinguished Names">RFC2253</a>] записи каталога, и эта запись содержала атрибут userPassword [<a href="http://tools.ietf.org/html/rfc2256" title="A Summary of the X.500(96) User Schema for use with LDAPv3">RFC2256</a>], в котором хранились один или несколько паролей.</p>
+<p>Протокол Lightweight Directory Access Protocol (LDAP) [<a href="https://tools.ietf.org/html/rfc2251" title="LDAPv3">RFC2251</a>] поддерживает несколько механизмов аутентификации, в том числе аутентификацию по простым парам имя пользователя/пароль. Традиционно пользователи LDAP идентифицировались по DN [<a href="https://tools.ietf.org/html/rfc2253" title="LDAPv3: UTF-8 String Representation of Distinguished Names">RFC2253</a>] записи каталога, и эта запись содержала атрибут userPassword [<a href="https://tools.ietf.org/html/rfc2256" title="A Summary of the X.500(96) User Schema for use with LDAPv3">RFC2256</a>], в котором хранились один или несколько паролей.</p>
 
 <p>Протокол не устанавливает жёсткого требования, чтобы ассоциированные с пользователем пароли хранились в каталоге. Сервер может использовать любой подходящий атрибут для хранения пароля (например, userPassword), либо использовать отдельное от каталога хранилище.</p>
 
-<p>В результате интеграции протокола [<a href="http://tools.ietf.org/html/rfc2829" title="Authentication Methods for LDAP">RFC2829</a>] с независимыми от приложения сервисами SASL [<a href="http://tools.ietf.org/html/rfc2222" title="Simple Authentication and Security Layer (SASL)">RFC2222</a>], поддерживающими простые механизмы аутентификации по имени пользователя/паролю (такие как DIGEST-MD5), были введены в употребление отличные от LDAP DN формы аутентификационных идентификационных сущностей и хранение паролей  возложено на поставщика услуг SASL.</p>
+<p>В результате интеграции протокола [<a href="https://tools.ietf.org/html/rfc2829" title="Authentication Methods for LDAP">RFC2829</a>] с независимыми от приложения сервисами SASL [<a href="https://tools.ietf.org/html/rfc2222" title="Simple Authentication and Security Layer (SASL)">RFC2222</a>], поддерживающими простые механизмы аутентификации по имени пользователя/паролю (такие как DIGEST-MD5), были введены в употребление отличные от LDAP DN формы аутентификационных идентификационных сущностей и хранение паролей  возложено на поставщика услуг SASL.</p>
 
 <p>Операции обновления LDAP разработаны так, чтобы выполнять действия над атрибутами записи в каталоге. Операции обновления LDAP не могут быть использованы для модификации пароля пользователя, когда пользователь не представлен DN, не имеет записи, или когда используемый сервером пароль не хранится в качестве атрибута записи. Требовался альтернативный механизм.</p>
 
@@ -50,7 +50,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h2><a name="section-2">2</a>. Запрос и ответ Password Modify</h2>
 
-<p>Операция модификации пароля Password Modify&thinsp;&mdash;&thinsp;это расширенная операция LDAPv3 [<a href="http://tools.ietf.org/html/rfc2251#section-4.12">раздел 4.12 RFC2251</a>], она идентифицируется идентификатором объекта (OBJECT IDENTIFIER) passwdModifyOID. В этом разделе описывается синтаксис запроса и ответа протокола.</p>
+<p>Операция модификации пароля Password Modify&thinsp;&mdash;&thinsp;это расширенная операция LDAPv3 [<a href="https://tools.ietf.org/html/rfc2251#section-4.12">раздел 4.12 RFC2251</a>], она идентифицируется идентификатором объекта (OBJECT IDENTIFIER) passwdModifyOID. В этом разделе описывается синтаксис запроса и ответа протокола.</p>
 <pre class="list">
    passwdModifyOID OBJECT IDENTIFIER ::= 1.3.6.1.4.1.4203.1.11.1
 
@@ -67,7 +67,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Запрос Password Modify является расширенным запросом ExtendedRequest, поле requestName которого содержит OID passwdModifyOID; кроме того, в нём может опционально предоставляться поле requestValue. Если поле requestValue предоставляется, в нём должно (SHALL) содержаться значение PasswdModifyRequestValue, в котором присутствует одно или несколько полей.</p>
 
-<p>Поле userIdentity, если оно присутствует, должно (SHALL) содержать строку октетов, представляющую собой пользователя, ассоциированного с запросом. Данная строка может быть, а может и не быть LDAPDN [<a href="http://tools.ietf.org/html/rfc2253" title="LDAPv3: UTF-8 String Representation of Distinguished Names">RFC2253</a>]. Если поле userIdentity не присутствует, запрос выполняется над паролем пользователя, который в текущий момент ассоциирован с сессией LDAP.</p>
+<p>Поле userIdentity, если оно присутствует, должно (SHALL) содержать строку октетов, представляющую собой пользователя, ассоциированного с запросом. Данная строка может быть, а может и не быть LDAPDN [<a href="https://tools.ietf.org/html/rfc2253" title="LDAPv3: UTF-8 String Representation of Distinguished Names">RFC2253</a>]. Если поле userIdentity не присутствует, запрос выполняется над паролем пользователя, который в текущий момент ассоциирован с сессией LDAP.</p>
 
 <p>Поле oldPasswd, если оно присутствует, должно (SHALL) содержать текущий пароль пользователя.</p>
 
@@ -101,25 +101,25 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h2><a name="section-4">4</a>. О безопасности</h2>
 
-<p>Эта операция используется для изменения паролей пользователей. Сама по себе данная операция не обеспечивает какой-либо защиты целостности и/или конфиденциальности данных. Настоятельно не рекомендуется использовать данную операцию, если не были соблюдены должные меры защиты, гарантирующие конфиденциальность, в противном случае возможно раскрытие пароля неавторизованными третьими лицами. Это расширение необходимо (MUST) использовать, когда защита конфиденциальности обеспечена, например, с помощью операции Start TLS [<a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>]. Недопустимо (MUST NOT) использовать наборы NULL-шифров.</p>
+<p>Эта операция используется для изменения паролей пользователей. Сама по себе данная операция не обеспечивает какой-либо защиты целостности и/или конфиденциальности данных. Настоятельно не рекомендуется использовать данную операцию, если не были соблюдены должные меры защиты, гарантирующие конфиденциальность, в противном случае возможно раскрытие пароля неавторизованными третьими лицами. Это расширение необходимо (MUST) использовать, когда защита конфиденциальности обеспечена, например, с помощью операции Start TLS [<a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>]. Недопустимо (MUST NOT) использовать наборы NULL-шифров.</p>
 
 <h2><a name="section-5">5</a>. Библиография</h2>
 
 <p>[<a name="ref-RFC2219" id="ref-RFC2219">RFC2219</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
 
-<p>[<a name="ref-RFC2222" id="ref-RFC2222">RFC2222</a>] Myers, J., "Simple Authentication and Security Layer (SASL)", <a href="http://tools.ietf.org/html/rfc2222">RFC 2222</a>, октябрь 1997 г.</p>
+<p>[<a name="ref-RFC2222" id="ref-RFC2222">RFC2222</a>] Myers, J., "Simple Authentication and Security Layer (SASL)", <a href="https://tools.ietf.org/html/rfc2222">RFC 2222</a>, октябрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2251" id="ref-RFC2251">RFC2251</a>] Wahl, M., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3)", <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2251" id="ref-RFC2251">RFC2251</a>] Wahl, M., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3)", <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2252" id="ref-RFC2252">RFC2252</a>] Wahl, M., Coulbeck, A., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions", <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2252" id="ref-RFC2252">RFC2252</a>] Wahl, M., Coulbeck, A., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions", <a href="https://tools.ietf.org/html/rfc2252">RFC 2252</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2253" id="ref-RFC2253">RFC2253</a>] Wahl, M., Kille,S. и T. Howes, "Lightweight Directory Access Protocol (v3): UTF-8 String Representation of Distinguished Names", <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2253" id="ref-RFC2253">RFC2253</a>] Wahl, M., Kille,S. и T. Howes, "Lightweight Directory Access Protocol (v3): UTF-8 String Representation of Distinguished Names", <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2256" id="ref-RFC2256">RFC2256</a>] Wahl, M., "A Summary of the X.500(96) User Schema for use with LDAPv3", <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2256" id="ref-RFC2256">RFC2256</a>] Wahl, M., "A Summary of the X.500(96) User Schema for use with LDAPv3", <a href="https://tools.ietf.org/html/rfc2256">RFC 2256</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2829" id="ref-RFC2829">RFC2829</a>] Wahl, M., Alvestrand, H., Hodges, J. и R. Morgan, "Authentication Methods for LDAP", <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a>, май 2000 г.</p>
+<p>[<a name="ref-RFC2829" id="ref-RFC2829">RFC2829</a>] Wahl, M., Alvestrand, H., Hodges, J. и R. Morgan, "Authentication Methods for LDAP", <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a>, май 2000 г.</p>
 
-<p>[<a name="ref-RFC2830" id="ref-RFC2830">RFC2830</a>] Hodges, J., Morgan, R. и M. Wahl, "Lightweight Directory Access Protocol (v3): Extension for Transport Layer Security", <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>, май 2000 г.</p>
+<p>[<a name="ref-RFC2830" id="ref-RFC2830">RFC2830</a>] Hodges, J., Morgan, R. и M. Wahl, "Lightweight Directory Access Protocol (v3): Extension for Transport Layer Security", <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>, май 2000 г.</p>
 
 <h2><a name="section-6">6</a>. Благодарности</h2>
 

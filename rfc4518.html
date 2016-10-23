@@ -56,9 +56,9 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-1.3">1.3</a>. Взаимосвязь с "stringprep"</h3>
 
-<p>Описанные в этом документе алгоритмы подготовки символьных строк основаны на подходе "stringprep" [<a href="http://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>]. В "stringprep" предоставляемые и хранимые значения сначала подготавливаются для сравнения, поэтому посимвольное сравнение даёт "правильный" результат.</p>
+<p>Описанные в этом документе алгоритмы подготовки символьных строк основаны на подходе "stringprep" [<a href="https://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>]. В "stringprep" предоставляемые и хранимые значения сначала подготавливаются для сравнения, поэтому посимвольное сравнение даёт "правильный" результат.</p>
 
-<p>Описанный в данном документе подход является усовершенствованием подхода "stringprep" [<a href="http://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>]. Каждый алгоритм включает в себя два дополнительных шага подготовки:</p>
+<p>Описанный в данном документе подход является усовершенствованием подхода "stringprep" [<a href="https://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>]. Каждый алгоритм включает в себя два дополнительных шага подготовки:</p>
 
 <ol type="a">
 <li>Перед применением изложенных в "stringprep" шагов подготовки строки Unicode, строка транскодируется в Unicode.</p>
@@ -82,7 +82,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-1.4">1.4</a>. Взаимосвязь с технической спецификацией LDAP</h3>
 
-<p>Данный документ является неотъемлемой частью технической спецификации LDAP [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], полностью отменяющей ранее определённую техническую спецификацию LDAP [<a href="http://tools.ietf.org/html/rfc3377" title="Lightweight Directory Access Protocol (v3): Technical Specification">RFC3377</a>].</p>
+<p>Данный документ является неотъемлемой частью технической спецификации LDAP [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], полностью отменяющей ранее определённую техническую спецификацию LDAP [<a href="https://tools.ietf.org/html/rfc3377" title="Lightweight Directory Access Protocol (v3): Technical Specification">RFC3377</a>].</p>
 
 <p>В данном документе определяются новые алгоритмы подготовки интернационализированных символьных строк LDAP, используемые в [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>] и, возможно, в других технических спецификациях, определяющих синтаксисы и/или правила соответствия LDAP.</p>
 
@@ -143,7 +143,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>ZERO WIDTH SPACE (U+200B) отображается в ничто. Все остальные коды со свойством разделителя (пробела, строки или параграфа) (например, Zs, Zl или Zp) отображаются в SPACE (U+0020). Полный список таких кодов: U+0020, 00A0, 1680, 2000-200A, 2028-2029, 202F, 205F, 3000.</p>
 
-<p>Для правил соответствия с игнорированием регистра символов, правил соответствия для числовых строк и строк с сохранённым префиксом, унификация регистра символов выполняется согласно <a href="http://tools.ietf.org/html/rfc3454#appendix-B.2" title="Preparation of Internationalized Strings">пункту B.2 RFC3454</a>.</p>
+<p>Для правил соответствия с игнорированием регистра символов, правил соответствия для числовых строк и строк с сохранённым префиксом, унификация регистра символов выполняется согласно <a href="https://tools.ietf.org/html/rfc3454#appendix-B.2" title="Preparation of Internationalized Strings">пункту B.2 RFC3454</a>.</p>
 
 <p>На выходе этого шага получается отображённая строка.</p>
 
@@ -153,15 +153,15 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h3><a name="section-2.4">2.4</a>. Запрет</h3>
 
-<p>Все неназначенные коды запрещены. Неназначенные коды перечислены в <a href="http://tools.ietf.org/html/rfc3454#appendix-A.1" title="Preparation of Internationalized Strings">таблице A.1 RFC3454</a>.</p>
+<p>Все неназначенные коды запрещены. Неназначенные коды перечислены в <a href="https://tools.ietf.org/html/rfc3454#appendix-A.1" title="Preparation of Internationalized Strings">таблице A.1 RFC3454</a>.</p>
 
-<p>Символы, которые (согласно <a href="http://tools.ietf.org/html/rfc3454#section-5.8">разделу 5.8 RFC3454</a>) изменяют параметры экрана, либо являются устаревшими, запрещены. Такие символы перечислены в <a href="http://tools.ietf.org/html/rfc3454#appendix-C.8" title="Preparation of Internationalized Strings">таблице C.8 RFC3454</a>.</p>
+<p>Символы, которые (согласно <a href="https://tools.ietf.org/html/rfc3454#section-5.8">разделу 5.8 RFC3454</a>) изменяют параметры экрана, либо являются устаревшими, запрещены. Такие символы перечислены в <a href="https://tools.ietf.org/html/rfc3454#appendix-C.8" title="Preparation of Internationalized Strings">таблице C.8 RFC3454</a>.</p>
 
-<p>Коды, выделенные для частного использования, запрещены. Такие символы перечислены в <a href="http://tools.ietf.org/html/rfc3454#appendix-C.3" title="Preparation of Internationalized Strings">таблице C.3 RFC3454</a>.</p>
+<p>Коды, выделенные для частного использования, запрещены. Такие символы перечислены в <a href="https://tools.ietf.org/html/rfc3454#appendix-C.3" title="Preparation of Internationalized Strings">таблице C.3 RFC3454</a>.</p>
 
-<p>Все несимвольные коды запрещены. Такие коды перечислены в <a href="http://tools.ietf.org/html/rfc3454#appendix-C.4" title="Preparation of Internationalized Strings">таблице C.4 RFC3454</a>.</p>
+<p>Все несимвольные коды запрещены. Такие коды перечислены в <a href="https://tools.ietf.org/html/rfc3454#appendix-C.4" title="Preparation of Internationalized Strings">таблице C.4 RFC3454</a>.</p>
 
-<p>Суррогатные коды запрещены. Такие символы перечислены в <a href="http://tools.ietf.org/html/rfc3454#appendix-C.5" title="Preparation of Internationalized Strings">таблице C.5 RFC3454</a>.</p>
+<p>Суррогатные коды запрещены. Такие символы перечислены в <a href="https://tools.ietf.org/html/rfc3454#appendix-C.5" title="Preparation of Internationalized Strings">таблице C.5 RFC3454</a>.</p>
 
 <p>Код REPLACEMENT CHARACTER (U+FFFD) запрещён.</p>
 
@@ -271,11 +271,11 @@ K. Zeilenga, OpenLDAP Foundation
 
 <h2><a name="section-3">3</a>. О безопасности</h2>
 
-<p>Соображения безопасности, приведённые в "Preparation of Internationalized Strings ("stringprep")" [<a href="http://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>], в целом относятся и к описанным здесь алгоритмам.</p>
+<p>Соображения безопасности, приведённые в "Preparation of Internationalized Strings ("stringprep")" [<a href="https://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>], в целом относятся и к описанным здесь алгоритмам.</p>
 
 <h2><a name="section-4">4</a>. Благодарности</h2>
 
-<p>Используемый в данном документе подход основан на принципах построения и алгоритмах, описанных в "Preparation of Internationalized Strings ("stringprep")" [<a href="http://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>], авторы Paul Hoffman и Marc Blanchet. Некоторые дополнительные указания были взяты из технических стандартов, технических отчётов и замечаний по Unicode.</p>
+<p>Используемый в данном документе подход основан на принципах построения и алгоритмах, описанных в "Preparation of Internationalized Strings ("stringprep")" [<a href="https://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>], авторы Paul Hoffman и Marc Blanchet. Некоторые дополнительные указания были взяты из технических стандартов, технических отчётов и замечаний по Unicode.</p>
 
 <p>Данный документ&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAP Revision (LDAPBIS).</p>
 
@@ -285,7 +285,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
 
-<p>[<a name="ref-RFC3454" id="ref-RFC3454">RFC3454</a>] Hoffman, P. и M. Blanchet, "Preparation of Internationalized Strings ("stringprep")", <a href="http://tools.ietf.org/html/rfc3454">RFC 3454</a>, декабрь 2002 г.</p>
+<p>[<a name="ref-RFC3454" id="ref-RFC3454">RFC3454</a>] Hoffman, P. и M. Blanchet, "Preparation of Internationalized Strings ("stringprep")", <a href="https://tools.ietf.org/html/rfc3454">RFC 3454</a>, декабрь 2002 г.</p>
 
 <p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Путеводитель по технической спецификации", <a href="rfc4510.html">RFC4510</a>, июнь 2006 г.</p>
 
@@ -309,7 +309,7 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>[<a name="ref-CharModel" id="ref-CharModel">CharModel</a>] Whistler, K. and M. Davis, "Unicode Technical Report #17, Character Encoding Model", UTR17, &lt;<a href="http://www.unicode.org/unicode/reports/tr17/">http://www.unicode.org/unicode/reports/tr17/</a>&gt;, август 2000 г.</p>
 
-<p>[<a name="ref-RFC3377" id="ref-RFC3377">RFC3377</a>] Hodges, J. и R. Morgan, "Lightweight Directory Access Protocol (v3): Technical Specification", <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>, сентябрь 2002 г.</p>
+<p>[<a name="ref-RFC3377" id="ref-RFC3377">RFC3377</a>] Hodges, J. и R. Morgan, "Lightweight Directory Access Protocol (v3): Technical Specification", <a href="https://tools.ietf.org/html/rfc3377">RFC 3377</a>, сентябрь 2002 г.</p>
 
 <p>[<a name="ref-RFC4515" id="ref-RFC4515">RFC4515</a>] Под редакцией Smith, M., и T. Howes, "Lightweight Directory Access Protocol (LDAP): Строковое представление поисковых фильтров", <a href="rfc4515.html">RFC 4515</a>, июнь 2006 г.</p>
 
@@ -452,15 +452,15 @@ K. Zeilenga, OpenLDAP Foundation
 
 <p>Copyright (C) Internet Society (2006).</p>
 
-<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="https://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
 
 <p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
 
 <h2>Интеллектуальная собственность</h2>
 
-<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="https://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="https://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
 
-<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="https://www.ietf.org/ipr">https://www.ietf.org/ipr</a>.</p>
 
 <p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
 

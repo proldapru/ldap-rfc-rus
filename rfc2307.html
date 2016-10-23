@@ -29,7 +29,7 @@ L. Howard, независимый консультант
 
 <h3>Тезисы</h3>
 
-<p>В этом документе описан экспериментальный механизм для отображения объектов, связанных с TCP/IP и системами UNIX, в записи X.500 [<a href="#ref-X500">X500</a>] так, чтобы с ними можно было работать посредством протокола Lightweight Directory Access Protocol [<a href="http://tools.ietf.org/html/rfc2251">RFC2251</a>]. Предлагается набор типов атрибутов и объектных классов, а также указания по их интерпретации.</p>
+<p>В этом документе описан экспериментальный механизм для отображения объектов, связанных с TCP/IP и системами UNIX, в записи X.500 [<a href="#ref-X500">X500</a>] так, чтобы с ними можно было работать посредством протокола Lightweight Directory Access Protocol [<a href="https://tools.ietf.org/html/rfc2251">RFC2251</a>]. Предлагается набор типов атрибутов и объектных классов, а также указания по их интерпретации.</p>
 
 <p>Идея этой работы состоит в оказании помощи при развертывании системы LDAP в качестве службы имен организации. Предлагаемый подход не предназначен для использования в качестве стандарта Интернет. Скорее, мы надеемся на появление общего консенсуса, который может стать приемлемым решением подобного рода проблем и в конечном итоге привести к принятию стандарта. Уже есть успешный опыт реализации предлагаемого механизма.</p>
 
@@ -37,7 +37,7 @@ L. Howard, независимый консультант
 
 <p>В операционной системе UNIX (R) и её производных (в частности, тех, которые поддерживают TCP/IP и соответствуют спецификации X/Open Single UNIX [<a href="#ref-XOPEN">XOPEN</a>]) требуется наличие средства просмотра объектов путём сопоставления их с критериями поиска или путём перечисления. (Другие операционные системы, поддерживающие TCP/IP, могут предоставлять некоторые средства разрешения некоторых из этих объектов. Данная схема также применима к подобным средам.)</p>
 
-<p>Упомянутые объекты включают в себя пользователей, группы, IP-службы (которые отображают имена в IP-порты и протоколы, и обратно), IP-протоколы (которые отображают имена в номера IP-протоколов и обратно), RPC (которые отображают имена в номера ONC Remote Procedure Call [<a href="http://tools.ietf.org/html/rfc1057">RFC1057</a>] и обратно), сетевые группы NIS, информацию по загрузке (параметры загрузки и отображение MAC-адресов), монтирование файловых систем, IP-хосты и сети, а также почтовые псевдонимы <a href="http://tools.ietf.org/html/rfc822">RFC822</a>.</p>
+<p>Упомянутые объекты включают в себя пользователей, группы, IP-службы (которые отображают имена в IP-порты и протоколы, и обратно), IP-протоколы (которые отображают имена в номера IP-протоколов и обратно), RPC (которые отображают имена в номера ONC Remote Procedure Call [<a href="https://tools.ietf.org/html/rfc1057">RFC1057</a>] и обратно), сетевые группы NIS, информацию по загрузке (параметры загрузки и отображение MAC-адресов), монтирование файловых систем, IP-хосты и сети, а также почтовые псевдонимы <a href="https://tools.ietf.org/html/rfc822">RFC822</a>.</p>
 
 <p>Запросы на преобразование выполняются посредством набора C-функций, предоставляемых в системной библиотеке UNIX. Например, системная утилита UNIX "ls", перечисляющая содержимое директории файловой системы, использует библиотечную функцию C getpwuid() для отображения идентификаторов пользователей в регистрационные имена (логины). После того, как запрос был сделан, он будет разрешен с использованием "службы имен", которая поддерживается клиентской библиотекой. В простейшем случае в качестве такой службы имён может выступать набор файлов в локальной файловой системе. Библиотека C открывает эти файлы и выполняется поиск по их содержимому. Другие распространённые службы имён&thinsp;&mdash;&thinsp;Network Information Service (NIS) и Domain Name System (DNS). (Последняя обычно используется для разрешения имён хостов, сервисов и сетей.) Преимущество обеих этих служб имён&thinsp;&mdash;&thinsp;то, что они имеют распределённую структуру, таким образом позволяя иметь на многих клиентах общий набор объектов.</p>
 
@@ -101,7 +101,7 @@ L. Howard, независимый консультант
            nisMapEntry
 </pre>
 
-<p>Кроме того, требуются некоторые атрибуты, определённые в [<a href="http://tools.ietf.org/html/rfc2256">RFC2256</a>].</p>
+<p>Кроме того, требуются некоторые атрибуты, определённые в [<a href="https://tools.ietf.org/html/rfc2256">RFC2256</a>].</p>
 
 <h3><a name="section-2.3">2.3</a>. Объектные классы</h3>
 
@@ -123,11 +123,11 @@ L. Howard, независимый консультант
            bootableDevice
 </pre>
 
-<p>Кроме того, требуются некоторые классы, определённые в [<a href="http://tools.ietf.org/html/rfc2256">RFC2256</a>].</p>
+<p>Кроме того, требуются некоторые классы, определённые в [<a href="https://tools.ietf.org/html/rfc2256">RFC2256</a>].</p>
 
 <h3><a name="section-2.4">2.4</a>. Определения синтаксисов</h3>
 
-<p>Ниже представлены определения синтаксисов [<a href="http://tools.ietf.org/html/rfc2252">RFC2252</a>], используемые в этом наборе схемы. nisNetgroupTripleSyntax отражает триплеты сетевых групп NIS:</p>
+<p>Ниже представлены определения синтаксисов [<a href="https://tools.ietf.org/html/rfc2252">RFC2252</a>], используемые в этом наборе схемы. nisNetgroupTripleSyntax отражает триплеты сетевых групп NIS:</p>
 
 <pre class="list">
            ( nisSchema.0.0 NAME 'nisNetgroupTripleSyntax'
@@ -353,7 +353,7 @@ L. Howard, независимый консультант
 
         ( nisSchema.2.5 NAME 'oncRpc' SUP top STRUCTURAL
           DESC 'Абстракция привязки Open Network Computing (ONC)
-               [<a href="http://tools.ietf.org/html/rfc1057">RFC1057</a>] Remote Procedure Call (RPC).
+               [<a href="https://tools.ietf.org/html/rfc1057">RFC1057</a>] Remote Procedure Call (RPC).
                Этот класс отображает номер ONC RPC в имя.
                В отличительном значении атрибута cn указывается
                каноническое имя сервиса RPC'
@@ -410,7 +410,7 @@ L. Howard, независимый консультант
 
 <h3><a name="section-5.2">5.2</a>. Затрагиваемые библиотечные функции</h3>
 
-<p>Приведённые ниже функции обычно можно найти в библиотеках C большинства UNIX и POSIX-совместимых систем. Рядом с именем функции указан поисковый фильтр LDAP [<a href="http://tools.ietf.org/html/rfc2254">RFC2254</a>], который можно использовать для нахождения данных при вызове функции. Параметры обозначены шаблонами %s и %d для строковых и целочисленных аргументов, соответственно. Длинные строки разбиты на несколько.</p>
+<p>Приведённые ниже функции обычно можно найти в библиотеках C большинства UNIX и POSIX-совместимых систем. Рядом с именем функции указан поисковый фильтр LDAP [<a href="https://tools.ietf.org/html/rfc2254">RFC2254</a>], который можно использовать для нахождения данных при вызове функции. Параметры обозначены шаблонами %s и %d для строковых и целочисленных аргументов, соответственно. Длинные строки разбиты на несколько.</p>
 
 <pre class="list">
         getpwnam()              (&amp;(objectClass=posixAccount)(uid=%s))
@@ -509,15 +509,15 @@ L. Howard, независимый консультант
 
 <h3><a name="section-5.4">5.4</a>. Интерпретация хостов и сетей</h3>
 
-<p>Атрибуты ipHostNumber и ipNetworkNumber предназначены для использования вместо атрибута dNSRecord (определённого в <a href="http://tools.ietf.org/html/rfc1279">RFC1279</a>) с целью упрощения задачи DUA по интерпретации записей в каталоге. Значение атрибута dNSRecord выражает полное представление ресурса, в том числе данные о классе и времени жизни, что является избыточным для данной схемы.</p>
+<p>Атрибуты ipHostNumber и ipNetworkNumber предназначены для использования вместо атрибута dNSRecord (определённого в <a href="https://tools.ietf.org/html/rfc1279">RFC1279</a>) с целью упрощения задачи DUA по интерпретации записей в каталоге. Значение атрибута dNSRecord выражает полное представление ресурса, в том числе данные о классе и времени жизни, что является избыточным для данной схемы.</p>
 
 <p>Кроме того, классы ipHost и ipNetwork позволяют представить хост и сеть (соответственно) и все их псевдонимы одной записью в каталоге. Это не всегда возможно, если запись ресурса DNS напрямую отображается в запись LDAP. Реализации, в которых планируется использовать LDAP для управления информацией по зонам DNS, не лишены такой возможности, в них можно просто не использовать классы ipHost и ipNetwork.</p>
 
-<p>В этом документе переопределяется (без претензий на исключительность) определённый в <a href="http://tools.ietf.org/html/rfc1279">RFC1279</a> класс ipNetwork, с целью достижения согласованного именования с классом ipHost. Атрибут ipNetworkNumber также используется в объектном классе siteContact [<a href="#ref-ROSE">ROSE</a>].</p>
+<p>В этом документе переопределяется (без претензий на исключительность) определённый в <a href="https://tools.ietf.org/html/rfc1279">RFC1279</a> класс ipNetwork, с целью достижения согласованного именования с классом ipHost. Атрибут ipNetworkNumber также используется в объектном классе siteContact [<a href="#ref-ROSE">ROSE</a>].</p>
 
 <p>Конечные нули в адресе сети должны (MUST) быть опущены. Можно использовать CIDR-стиль сетевых адресов (например, 192.168.1/24).</p>
 
-<p>IPv6-адреса хостов должны (MUST) быть записаны в их "предпочтительной" форме (как определено в <a href="http://tools.ietf.org/html/rfc1884#section-2.2">разделе 2.2.1 RFC1884</a>), где указываются все компоненты адреса и опускаются начальные нули каждого компонента. Такая форма записи обеспечивает согласованные средства разрешения ip-хостов по адресу.</p>
+<p>IPv6-адреса хостов должны (MUST) быть записаны в их "предпочтительной" форме (как определено в <a href="https://tools.ietf.org/html/rfc1884#section-2.2">разделе 2.2.1 RFC1884</a>), где указываются все компоненты адреса и опускаются начальные нули каждого компонента. Такая форма записи обеспечивает согласованные средства разрешения ip-хостов по адресу.</p>
 
 <h3><a name="section-5.5">5.5</a>. Интерпретация других объектов</h3>
 
@@ -583,21 +583,21 @@ L. Howard, независимый консультант
 
 <h2><a name="section-9">9</a>. Документы</h2>
 
-<p>[<a name="ref-RFC1057" id="ref-RFC1057">RFC1057</a>] Sun Microsystems, Inc., "RPC: Remote Procedure Call: Protocol Specification Version 2", <a href="http://tools.ietf.org/html/rfc1057">RFC 1057</a>, июнь 1988 г.</p>
+<p>[<a name="ref-RFC1057" id="ref-RFC1057">RFC1057</a>] Sun Microsystems, Inc., "RPC: Remote Procedure Call: Protocol Specification Version 2", <a href="https://tools.ietf.org/html/rfc1057">RFC 1057</a>, июнь 1988 г.</p>
 
-<p>[<a name="ref-RFC1279" id="ref-RFC1279">RFC1279</a>] Kille, S., "X.500 and Domains", <a href="http://tools.ietf.org/html/rfc1279">RFC 1279</a>, ноябрь 1991 г.</p>
+<p>[<a name="ref-RFC1279" id="ref-RFC1279">RFC1279</a>] Kille, S., "X.500 and Domains", <a href="https://tools.ietf.org/html/rfc1279">RFC 1279</a>, ноябрь 1991 г.</p>
 
-<p>[<a name="ref-RFC1884" id="ref-RFC1884">RFC1884</a>] Hinden, R. и S. Deering, "IP Version 6 Addressing Architecture", <a href="http://tools.ietf.org/html/rfc1884">RFC 1884</a>, декабрь 1995 г.</p>
+<p>[<a name="ref-RFC1884" id="ref-RFC1884">RFC1884</a>] Hinden, R. и S. Deering, "IP Version 6 Addressing Architecture", <a href="https://tools.ietf.org/html/rfc1884">RFC 1884</a>, декабрь 1995 г.</p>
 
 <p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
 
-<p>[<a name="ref-RFC2251" id="ref-RFC2251">RFC2251</a>] Wahl, M., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3)", <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2251" id="ref-RFC2251">RFC2251</a>] Wahl, M., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3)", <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2252" id="ref-RFC2252">RFC2252</a>] Wahl, M., Coulbeck, A., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions", <a href="http://tools.ietf.org/html/rfc2252">RFC 2252</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2252" id="ref-RFC2252">RFC2252</a>] Wahl, M., Coulbeck, A., Howes, T. и S. Kille, "Lightweight Directory Access Protocol (v3): Attribute Syntax Definitions", <a href="https://tools.ietf.org/html/rfc2252">RFC 2252</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2254" id="ref-RFC2254">RFC2254</a>] Howes, T., "The String Representation of LDAP Search Filters", <a href="http://tools.ietf.org/html/rfc2254">RFC 2254</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2254" id="ref-RFC2254">RFC2254</a>] Howes, T., "The String Representation of LDAP Search Filters", <a href="https://tools.ietf.org/html/rfc2254">RFC 2254</a>, декабрь 1997 г.</p>
 
-<p>[<a name="ref-RFC2256" id="ref-RFC2256">RFC2256</a>] Wahl, M., "A Summary of the X.500(96) User Schema for use with LDAPv3", <a href="http://tools.ietf.org/html/rfc2256">RFC 2256</a>, декабрь 1997 г.</p>
+<p>[<a name="ref-RFC2256" id="ref-RFC2256">RFC2256</a>] Wahl, M., "A Summary of the X.500(96) User Schema for use with LDAPv3", <a href="https://tools.ietf.org/html/rfc2256">RFC 2256</a>, декабрь 1997 г.</p>
 
 <p>[<a name="ref-ROSE" id="ref-ROSE">ROSE</a>] M. T. Rose, "The Little Black Book: Mail Bonding with OSI Directory Services", ISBN 0-13-683210-5, Prentice-Hall, Inc., 1992 г.</p>
 

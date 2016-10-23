@@ -16,7 +16,7 @@
 Категория: Standards Track
 Под редакцией K. Zeilenga, OpenLDAP Foundation
 Июнь 2006 года
-Отменяет: <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>
+Отменяет: <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>
 </pre>
 
 <h1>Lightweight Directory Access Protocol (LDAP): Строковое представление уникальных имён</h1>
@@ -47,7 +47,7 @@
 
 <p>В этом документе не определяется каноническое строковое представление для DN. Сравнение DN на эквивалентность должно выполняться согласно правилу соответствия distinguishedNameMatch [<a href="rfc4517.html" title="LDAP: Синтаксисы и правила соответствия">RFC4517</a>].</p>
 
-<p>Этот документ является неотъемлемой частью технической спецификации LDAP [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], полностью отменяющей предыдущую техническую спецификацию LDAP, <a href="http://tools.ietf.org/html/rfc3377">RFC 3377</a>. Этот документ отменяет <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>. Изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, обобщены в <a href="#appendix-B">приложении B</a>.</p>
+<p>Этот документ является неотъемлемой частью технической спецификации LDAP [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], полностью отменяющей предыдущую техническую спецификацию LDAP, <a href="https://tools.ietf.org/html/rfc3377">RFC 3377</a>. Этот документ отменяет <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>. Изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>, обобщены в <a href="#appendix-B">приложении B</a>.</p>
 
 <p>В этой спецификации предполагается, что читатель знаком со стандартом X.500 [<a href="#ref-X.500" title="The Directory: Overview of concepts, models and services,">X.500</a>] и концепцией уникального имени [<a href="#ref-X.501" title="The Directory: Models,">X.501</a>][<a href="rfc4512.html#section-2.3" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
 
@@ -76,7 +76,7 @@
           value AttributeValue }
 </pre>
 
-<p>В этом разделе определяется рекомендуемый (RECOMMENDED) алгоритм конвертирования уникального имени из структурированного представления ASN.1 в строковое представление в виде символов Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированных UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. В других документах могут быть описаны другие алгоритмы конвертирования уникального имени в строку, но реализации LDAP должны (SHALL) выдавать только строки, которые соответствуют грамматике, определённой в <a href="#section-3">разделе 3</a>.</p>
+<p>В этом разделе определяется рекомендуемый (RECOMMENDED) алгоритм конвертирования уникального имени из структурированного представления ASN.1 в строковое представление в виде символов Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированных UTF-8 [<a href="https://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. В других документах могут быть описаны другие алгоритмы конвертирования уникального имени в строку, но реализации LDAP должны (SHALL) выдавать только строки, которые соответствуют грамматике, определённой в <a href="#section-3">разделе 3</a>.</p>
 
 <h3><a name="section-2.1">2.1</a>. Конвертирование RDNSequence</h3>
 
@@ -96,7 +96,7 @@
 
 <p>Последовательность AttributeTypeAndValue кодируется как строковое представление AttributeType, за которым следует символ знака равенства ('=' U+003D), за которым следует строковое представление AttributeValue. Правила кодирования AttributeValue даны в <a href="#section-2.4">разделе 2.4</a>.</p>
 
-<p>Если в определении AttributeType имеется короткое имя (дескриптор) [<a href="rfc4512.html#section-6.2" title="LDAP: Информационные модели каталога">RFC4512</a>] и известно, что это короткое имя зарегистрировано [<a href="#ref-REGISTRY" title="Object Identifier Descriptors Registry">REGISTRY</a>] [<a href="http://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>] как идентифицирующее данный AttributeType, используется это короткое имя (&lt;descr&gt;). В противном случае, AttributeType кодируется в виде точечно-цифрового представления (&lt;numericoid&gt;) его идентификатора объекта (OBJECT IDENTIFIER). Форматы &lt;descr&gt; и &lt;numericoid&gt; определены в [<a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
+<p>Если в определении AttributeType имеется короткое имя (дескриптор) [<a href="rfc4512.html#section-6.2" title="LDAP: Информационные модели каталога">RFC4512</a>] и известно, что это короткое имя зарегистрировано [<a href="#ref-REGISTRY" title="Object Identifier Descriptors Registry">REGISTRY</a>] [<a href="https://tools.ietf.org/html/rfc4520" title="Соглашения IANA о LDAP">RFC4520</a>] как идентифицирующее данный AttributeType, используется это короткое имя (&lt;descr&gt;). В противном случае, AttributeType кодируется в виде точечно-цифрового представления (&lt;numericoid&gt;) его идентификатора объекта (OBJECT IDENTIFIER). Форматы &lt;descr&gt; и &lt;numericoid&gt; определены в [<a href="rfc4512.html#section-1.4" title="LDAP: Информационные модели каталога">RFC4512</a>].</p>
 
 <p>Не ожидается, что реализации будут динамически обновлять свою базу знаний зарегистрированных коротких имён. Однако, в реализациях следует (SHOULD) предусматривать механизм, который позволял бы обновлять их базу знаний зарегистрированных коротких имён.</p>
 
@@ -126,7 +126,7 @@
 
 <h2><a name="section-3">3</a>. Обратный разбор строки в уникальное имя</h2>
 
-<p>Строковое представление уникального имени ограничивается символами Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированными UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. Структура этого строкового представления определяется с использованием следующей грамматики ABNF [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:
+<p>Строковое представление уникального имени ограничивается символами Unicode [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированными UTF-8 [<a href="https://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>]. Структура этого строкового представления определяется с использованием следующей грамматики ABNF [<a href="https://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:
 
 <pre class="list">
       distinguishedName = [ relativeDistinguishedName
@@ -276,7 +276,7 @@
 
 <h2><a name="section-6">6</a>. Благодарности</h2>
 
-<p>Этот документ обновляет <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, авторы Mark Wahl, Tim Howes и Steve Kille. <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF ASID.</p>
+<p>Этот документ обновляет <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>, авторы Mark Wahl, Tim Howes и Steve Kille. <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>&thinsp;&mdash;&thinsp;продукт рабочей группы IETF ASID.</p>
 
 <p>Данный документ&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAPBIS.</p>
 
@@ -294,23 +294,23 @@
 
 <p>[<a name="ref-RFC2119" id="ref-RFC2119">RFC2119</a>] Bradner, S., "Ключевые слова для обозначения уровня требований в RFC", <a href="http://rfc2.ru/2119.rfc">BCP 14</a>, <a href="http://rfc2.ru/2119.rfc">RFC 2119</a>, март 1997 г.</p>
 
-<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="http://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003 г.</p>
+<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="https://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003 г.</p>
 
-<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax  Specifications: ABNF", <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
+<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax  Specifications: ABNF", <a href="https://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
 
 <p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Путеводитель по технической спецификации", <a href="rfc4510.html">RFC 4510</a>, июнь 2006 г.</p>
 
 <p>[<a name="ref-RFC4511" id="ref-RFC4511">RFC4511</a>] Под редакцией Sermersheim, J., "Lightweight Directory Access Protocol (LDAP): Определение протокола", <a href="rfc4511.html">RFC 4511</a>, июнь 2006 г.</p>
 
-<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Информационные модели каталога", <a href="rfc4512.html">RFC4512</a>, июнь 2006 г.</p>
+<p>[<a name="ref-RFC4512" id="ref-RFC4512">RFC4512</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Информационные модели каталога", <a href="rfc4512.html">RFC 4512</a>, июнь 2006 г.</p>
 
 <p>[<a name="ref-RFC4513" id="ref-RFC4513">RFC4513</a>] Под редакцией Harrison, R., "Lightweight Directory Access Protocol (LDAP): Методы аутентификации и механизмы обеспечения безопасности", <a href="rfc4513.html">RFC 4513</a>, июнь 2006 г.</p>
 
 <p>[<a name="ref-RFC4517" id="ref-RFC4517">RFC4517</a>] Под редакцией Legg, S., "Lightweight Directory Access Protocol (LDAP): Синтаксисы и правила соответствия", <a href="rfc4517.html">RFC 4517</a>, июнь 2006 г.</p>
 
-<p>[<a name="ref-RFC4519" id="ref-RFC4519">RFC4519</a>] Под редакцией Sciberras, A., "Lightweight Directory Access Protocol (LDAP): Схема данных для пользовательских приложений", <a href="rfc4519.html">RFC4519</a>, июнь 2006 г.</p>
+<p>[<a name="ref-RFC4519" id="ref-RFC4519">RFC4519</a>] Под редакцией Sciberras, A., "Lightweight Directory Access Protocol (LDAP): Схема данных для пользовательских приложений", <a href="rfc4519.html">RFC 4519</a>, июнь 2006 г.</p>
 
-<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Соглашения Internet Assigned Numbers Authority (IANA) о Lightweight Directory Access Protocol (LDAP)", <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006 г.</p>
+<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Соглашения Internet Assigned Numbers Authority (IANA) о Lightweight Directory Access Protocol (LDAP)", <a href="https://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="https://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006 г.</p>
 
 <h3><a name="section-7.2">7.2</a>. Информативные документы</h3>
 
@@ -368,17 +368,17 @@
 
 <p>Это приложение приводится только в информационных целях; оно не является нормативной частью данной спецификации.</p>
 
-<p>Основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>:</p>
+<p>Основные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>:</p>
 <ul>
 <li>Удалено примечание IESG. Поднимаемые в нём вопросы были решены.</li>
 <li>Все ссылки на ISO 10646-1 заменены на [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>].</li>
 <li>Уточнено (в <a href="#section-1">разделе 1</a>), что в этом документе не определяется каноническое строковое представление.</li>
-<li>Уточнено, что в <a href="#section-2">разделе 2</a> описывается рекомендуемый (RECOMMENDED) алгоритм кодирования и что разрешены альтернативные алгоритмы. Некоторые опции кодирования, описанные в <a href="http://tools.ietf.org/html/rfc2253">RFC 2253</a>, в данной спецификации рассматриваются как альтернативные алгоритмы.</li>
+<li>Уточнено, что в <a href="#section-2">разделе 2</a> описывается рекомендуемый (RECOMMENDED) алгоритм кодирования и что разрешены альтернативные алгоритмы. Некоторые опции кодирования, описанные в <a href="https://tools.ietf.org/html/rfc2253">RFC 2253</a>, в данной спецификации рассматриваются как альтернативные алгоритмы.</li>
 <li>Пересмотрена спецификация (в <a href="#section-2">разделе 2</a>): в строковом представлении DN разрешены короткие имена любых зарегистрированных типов атрибутов, а не только "приведённых в таблице". Убраны формулировки "в качестве примера". Добавлено заявление (в <a href="#section-3">разделе 3</a>), обязывающее распознавать приведённые в таблице имена, но также позволяющее распознавать дополнительные имена. Сама таблица обязательных для распознавания имён теперь находится в <a href="#section-3">разделе 3</a>.</li>
-<li>Удалена спецификация дополнительных требований для реализаций LDAPv2, также поддерживающих LDAPv3 (<a href="http://tools.ietf.org/html/rfc2253#section-4">раздел 4 RFC 2253</a>), поскольку LDAPv2 сейчас считается историческим протоколом.</li>
+<li>Удалена спецификация дополнительных требований для реализаций LDAPv2, также поддерживающих LDAPv3 (<a href="https://tools.ietf.org/html/rfc2253#section-4">раздел 4 RFC 2253</a>), поскольку LDAPv2 сейчас считается историческим протоколом.</li>
 <li>Разрешено распознавание альтернативных строковых представлений.</li>
 <li>Обновлён <a href="#section-2.4">раздел 2.4</a>: разрешено экранирование в виде шестнадцатеричных пар всех символов, а также уточнён порядок экранирования при наличии кодировок UTF-8 в несколько байт. Указано, что символ null (U+0000) должен экранироваться. Указано, что символ знака равенства ('=' U+003D) может экранироваться как '\='.</li>
-<li><a href="#section-3">Раздел 3</a> переписан так, чтобы использованная в нём ABNF соответствовала <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>.</li>
+<li><a href="#section-3">Раздел 3</a> переписан так, чтобы использованная в нём ABNF соответствовала <a href="https://tools.ietf.org/html/rfc4234">RFC 4234</a>.</li>
 <li>Обновлена ABNF в <a href="#section-3">разделе 3</a>. Изменения:
     <ul>
     <li>разрешены короткие имена AttributeType длиной 1 символ (например, 'L'),</li>
@@ -408,15 +408,15 @@
 
 <p>Copyright (C) Internet Society (2006).</p>
 
-<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="https://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
 
 <p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
 
 <h2>Интеллектуальная собственность</h2>
 
-<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность, или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="https://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="https://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
 
-<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="https://www.ietf.org/ipr">https://www.ietf.org/ipr</a>.</p>
 
 <p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
 

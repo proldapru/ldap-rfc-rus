@@ -16,7 +16,7 @@
 Категория: Standards Track
 Под редакцией R. Harrison, Novell, Inc.
 Июнь 2006 года
-Отменяет: <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a>, <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>
+Отменяет: <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a>, <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>
 </pre>
 
 <h1>Lightweight Directory Access Protocol (LDAP): Методы аутентификации и механизмы обеспечения безопасности</h1>
@@ -37,7 +37,7 @@
 
 <p>В этом документе обсуждаются различные состояния аутентификации и авторизации, через которые может пройти сеанс работы с LDAP-сервером, а также действия, которые вызывают изменение этих состояний.</p>
 
-<p>Этот документ, совместно с другими документами технической спецификации LDAP (смотрите <a href="#section-1">раздел 1</a> и <a href="rfc4510.html">путеводитель по технической спецификации</a>), отменяет <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>.</p>
+<p>Этот документ, совместно с другими документами технической спецификации LDAP (смотрите <a href="#section-1">раздел 1</a> и <a href="rfc4510.html">путеводитель по технической спецификации</a>), отменяет <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>.</p>
 
 <h3>Содержание</h3>
 <div class="contents">
@@ -198,12 +198,12 @@
 <li>Сервис обеспечения конфиденциальности данных посредством уровней безопасности в TLS или механизмов SASL.</li>
 <li>Ограничение использования ресурсов сервера посредством настраиваемых на сервере административных ограничений.</li>
 <li>Аутентификация сервера посредством протокола TLS или механизмов SASL.</li>
-<li>LDAP также может быть защищён с помощью средств, выходящих за рамки технической спецификации протокола LDAP, например, с помощью уровня безопасности IP [<a href="http://tools.ietf.org/html/rfc4301" title="Security Architecture for the Internet Protocol">RFC4301</a>].</li>
+<li>LDAP также может быть защищён с помощью средств, выходящих за рамки технической спецификации протокола LDAP, например, с помощью уровня безопасности IP [<a href="https://tools.ietf.org/html/rfc4301" title="Security Architecture for the Internet Protocol">RFC4301</a>].</li>
 </ol>
 
 <p>Опыт показывает, что если просто позволять внедрять в реализациях протокола механизмы обеспечения безопасности по своему выбору, то такая стратегия не приводит к совместимости приложений. В отсутствии обязательных требований клиенты будут продолжать выдавать сообщения, что они не поддерживают какие-либо функции обеспечения безопасности, поддерживаемые сервером, или, и того хуже, они будут поддерживать только те механизмы, которые обеспечивают недостаточный уровень безопасности в большинстве ситуаций.</p>
 
-<p>Желательно позволить клиентам проводить аутентификацию с использованием различных механизмов, в том числе механизмов, где идентификационные сущности представлены как уникальные имена [<a href="#ref-X.501" title="The Directory: Models">X.501</a>][<a href="rfc4512.html#section-2.3" title="LDAP: Информационные модели каталога">RFC4512</a>], в строковой форме [<a href="rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>] или так, как они используются в различных системах (например, простые имена пользователей [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>]). Поскольку некоторые механизмы аутентификации передают идентификационные данные в форме открытого текста, и/или не предоставляют сервисов обеспечения безопасности данных, и/или являются предметом пассивных атак, необходимо обеспечить совместимость приложений с точки зрения защиты данных путем определения обязательного для реализации механизма установления сервисов безопасности транспортного уровня.</p>
+<p>Желательно позволить клиентам проводить аутентификацию с использованием различных механизмов, в том числе механизмов, где идентификационные сущности представлены как уникальные имена [<a href="#ref-X.501" title="The Directory: Models">X.501</a>][<a href="rfc4512.html#section-2.3" title="LDAP: Информационные модели каталога">RFC4512</a>], в строковой форме [<a href="rfc4514.html" title="LDAP: Строковое представление уникальных имён">RFC4514</a>] или так, как они используются в различных системах (например, простые имена пользователей [<a href="https://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>]). Поскольку некоторые механизмы аутентификации передают идентификационные данные в форме открытого текста, и/или не предоставляют сервисов обеспечения безопасности данных, и/или являются предметом пассивных атак, необходимо обеспечить совместимость приложений с точки зрения защиты данных путем определения обязательного для реализации механизма установления сервисов безопасности транспортного уровня.</p>
 
 <p>Предоставляемый в LDAP и описываемый в этом документе набор механизмов обеспечения безопасности предназначен для того, чтобы удовлетворить потребности безопасности широкого спектра сценариев развертывания и при этом обеспечить высокую степень совместимости между различными реализациями и системами LDAP.</p>
 
@@ -211,11 +211,11 @@
 
 <p>Этот документ является неотъемлемой частью технической спецификации LDAP [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>].</p>
 
-<p>Этот документ, совместно с [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>] и [<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>], полностью отменяет <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. Этот документ отменяет разделы <a href="http://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> (частично) и <a href="http://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. Основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> этим документом, обобщены в <a href="#appendix-B.1">приложении B.1</a>.</p>
+<p>Этот документ, совместно с [<a href="rfc4510.html" title="LDAP: Путеводитель по технической спецификации">RFC4510</a>], [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>] и [<a href="rfc4512.html" title="LDAP: Информационные модели каталога">RFC4512</a>], полностью отменяет <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>. Этот документ отменяет разделы <a href="https://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> (частично) и <a href="https://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>. Основные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a> этим документом, обобщены в <a href="#appendix-B.1">приложении B.1</a>.</p>
 
-<p>Этот документ полностью отменяет <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a>. Основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a> этим документом, обобщены в <a href="#appendix-B.2">приложении B.2</a>.</p>
+<p>Этот документ полностью отменяет <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a>. Основные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a> этим документом, обобщены в <a href="#appendix-B.2">приложении B.2</a>.</p>
 
-<p>Разделы <a href="http://tools.ietf.org/html/rfc2830#section-2">2</a> and <a href="http://tools.ietf.org/html/rfc2830#section-4">4</a> <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a> отменены [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>]. Оставшаяся часть <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a> отменяется этим документом. Основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a> этим документом, обобщены в <a href="#appendix-B.3">приложении B.3</a>.</p>
+<p>Разделы <a href="https://tools.ietf.org/html/rfc2830#section-2">2</a> and <a href="https://tools.ietf.org/html/rfc2830#section-4">4</a> <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a> отменены [<a href="rfc4511.html" title="LDAP: Определение протокола">RFC4511</a>]. Оставшаяся часть <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a> отменяется этим документом. Основные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a> этим документом, обобщены в <a href="#appendix-B.3">приложении B.3</a>.</p>
 
 <h3><a name="section-1.2">1.2</a>. Соглашения</h3>
 
@@ -233,7 +233,7 @@
 
 <p>Термин "сессия LDAP" ("LDAP session") обозначает комбинированные сервисы (транспортное соединение, уровень TLS, уровень SASL, уровень сообщений LDAP) и их соединения.</p>
 
-<p>В общем случае, термины безопасности в этом документе используются так, как они определены в [<a href="http://tools.ietf.org/html/rfc2828" title="Internet Security Glossary">RFC2828</a>]. Кроме того, некоторые термины и концепции, относящиеся к защите информации, аутентификации и авторизации, приведены в <a href="#appendix-A">приложении A</a> этого документа. Хотя формальные определения этих терминов и концепций выходят за рамки настоящего документа, понимание их является необходимым условием для понимания большей части материала в этом документе. Читателям, которые не знакомы с концепциями защиты информации, рекомендуется перед тем, как читать этот документ далее, ознакомиться с <a href="#appendix-A">приложением A</a>.</p>
+<p>В общем случае, термины безопасности в этом документе используются так, как они определены в [<a href="https://tools.ietf.org/html/rfc2828" title="Internet Security Glossary">RFC2828</a>]. Кроме того, некоторые термины и концепции, относящиеся к защите информации, аутентификации и авторизации, приведены в <a href="#appendix-A">приложении A</a> этого документа. Хотя формальные определения этих терминов и концепций выходят за рамки настоящего документа, понимание их является необходимым условием для понимания большей части материала в этом документе. Читателям, которые не знакомы с концепциями защиты информации, рекомендуется перед тем, как читать этот документ далее, ознакомиться с <a href="#appendix-A">приложением A</a>.</p>
 
 <h2><a name="section-2">2</a>. Требования к реализациям</h2>
 
@@ -253,7 +253,7 @@
 
 <h2><a name="section-3">3</a>. Операция StartTLS</h2>
 
-<p>Операция Start Transport Layer Security (StartTLS), определённая в <a href="rfc4511.html#section-4.14">разделе 4.14 [RFC4511]</a>, обеспечивает возможность установления TLS [<a href="http://tools.ietf.org/html/rfc4346" title="The TLS Protocol Version 1.1">RFC4346</a>] в сессии LDAP.</p>
+<p>Операция Start Transport Layer Security (StartTLS), определённая в <a href="rfc4511.html#section-4.14">разделе 4.14 [RFC4511]</a>, обеспечивает возможность установления TLS [<a href="https://tools.ietf.org/html/rfc4346" title="The TLS Protocol Version 1.1">RFC4346</a>] в сессии LDAP.</p>
 
 <p>Целью использования протокола TLS с LDAP является обеспечение конфиденциальности и целостности данных, а также, опционально, предоставление данных для аутентификации.  Эти возможности явно предусмотрены в TLS, хотя сервисы аутентификации TLS доступны для LDAP только в комбинации с методом аутентификации SASL EXTERNAL (смотрите <a href="#section-5.2.3">раздел 5.2.3</a>), и то лишь в том случае, когда реализация SASL EXTERNAL примет решение использовать удостоверяющие данные TLS.</p>
 
@@ -297,14 +297,14 @@
 
 <h5><a name="section-3.1.3.1">3.1.3.1</a>. Сравнение имён DNS</h5>
 
-<p>Если заявляемая идентификационная сущность представляет собой интернационализованное доменное имя (IDN), реализации, соответствующие требованиям этого документа, должны (MUST) преобразовать его в формат ASCII Compatible  Encoding (ACE) как определено в <a href="http://tools.ietf.org/html/rfc3490#section-4" title="Internationalizing Domain Names in Applications (IDNA)">разделе 4 RFC 3490</a> перед тем, как выполнять сравнение со значениями поля subjectAltName типа dNSName. Конкретнее, реализации, соответствующие требованиям этого документа, должны (MUST) выполнять определённую в <a href="http://tools.ietf.org/html/rfc3490#section-4">разделе 4 RFC3490</a> операцию преобразования следующим образом:</p>
+<p>Если заявляемая идентификационная сущность представляет собой интернационализованное доменное имя (IDN), реализации, соответствующие требованиям этого документа, должны (MUST) преобразовать его в формат ASCII Compatible  Encoding (ACE) как определено в <a href="https://tools.ietf.org/html/rfc3490#section-4" title="Internationalizing Domain Names in Applications (IDNA)">разделе 4 RFC 3490</a> перед тем, как выполнять сравнение со значениями поля subjectAltName типа dNSName. Конкретнее, реализации, соответствующие требованиям этого документа, должны (MUST) выполнять определённую в <a href="https://tools.ietf.org/html/rfc3490#section-4">разделе 4 RFC3490</a> операцию преобразования следующим образом:</p>
 <ul>
 <li>на шаге 1 доменное имя нужно (SHALL) рассматривать как "хранимую строку" ("stored string");</li>
 <li>на шаге 3 устанавливается флаг, называемый "UseSTD3ASCIIRules";</li>
 <li>на шаге 4 каждая метка обрабатывается операцией "ToASCII"; и</li>
 <li>на шаге 5 все разделители меток меняются на U+002E (полная остановка).</li>
 </ul>
-<p>После выполнения преобразования "to-ASCII", должно (MUST) быть выполнено сравнение меток и имён DNS на эквивалентность согласно правилам, определённым в <a href="http://tools.ietf.org/html/rfc3490#section-3">разделе 3 RFC3490</a>.</p>
+<p>После выполнения преобразования "to-ASCII", должно (MUST) быть выполнено сравнение меток и имён DNS на эквивалентность согласно правилам, определённым в <a href="https://tools.ietf.org/html/rfc3490#section-3">разделе 3 RFC3490</a>.</p>
 
 <p>Знак шаблона '*' (ASCII 42) разрешён в значениях поля subjectAltName типа dNSName, но только в качестве крайней слева (наименее значимой) метки DNS в таком значении. Этот шаблон совпадает с любой крайней слева меткой DNS в имени сервера. То есть, субъект *.example.com совпадает с именами сервера a.example.com и b.example.com, но не совпадает с example.com или a.b.example.com.</p>
 
@@ -399,9 +399,9 @@
 
 <h4><a name="section-5.2.1">5.2.1</a>. SASL-профиль протокола</h4>
 
-<p>LDAP позволяет проводить аутентификацию посредством любого механизма SASL [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>]. Поскольку в LDAP есть собственные методы анонимной аутентификации и аутентификации по имени пользователя и паролю (в открытом виде), механизмы SASL ANONYMOUS [<a href="http://tools.ietf.org/html/rfc4505" title="The Anonymous SASL Mechanism">RFC4505</a>] и PLAIN [<a href="#ref-PLAIN" title="The Plain SASL Mechanism">PLAIN</a>] обычно с LDAP не используются.</p>
+<p>LDAP позволяет проводить аутентификацию посредством любого механизма SASL [<a href="https://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>]. Поскольку в LDAP есть собственные методы анонимной аутентификации и аутентификации по имени пользователя и паролю (в открытом виде), механизмы SASL ANONYMOUS [<a href="https://tools.ietf.org/html/rfc4505" title="The Anonymous SASL Mechanism">RFC4505</a>] и PLAIN [<a href="#ref-PLAIN" title="The Plain SASL Mechanism">PLAIN</a>] обычно с LDAP не используются.</p>
 
-<p>От каждого протокола, использующего сервисы SASL, требуется предоставлять определённую информацию, в совокупности представляющую собой профиль того, как эти сервисы вписываются в работу протокола (<a href="http://tools.ietf.org/html/rfc4422#section-4">раздел 4 RFC4422</a>). В этом разделе объясняется, как эти требования профилирования удовлетворяются в LDAP.</p>
+<p>От каждого протокола, использующего сервисы SASL, требуется предоставлять определённую информацию, в совокупности представляющую собой профиль того, как эти сервисы вписываются в работу протокола (<a href="https://tools.ietf.org/html/rfc4422#section-4">раздел 4 RFC4422</a>). В этом разделе объясняется, как эти требования профилирования удовлетворяются в LDAP.</p>
 
 <h5><a name="section-5.2.1.1">5.2.1.1</a>. Имя сервиса SASL для LDAP</h5>
 
@@ -414,7 +414,7 @@
 <li>Версия&thinsp;&mdash;&thinsp;3.</li>
 <li>AuthenticationChoice&thinsp;&mdash;&thinsp;sasl.</li>
 <li>Элемент mechanism последовательности SaslCredentials содержит значение желаемого механизма SASL.</li>
-<li>Опциональное поле credentials последовательности SaslCredentials может (MAY) быть использовано для предоставления первоначального отклика клиента в механизмах, в которых предусмотрено, что клиент отправляет данные первым (смотрите разделы <a href="http://tools.ietf.org/html/rfc4422#section-3">3</a> и <a href="http://tools.ietf.org/html/rfc4422#section-5">5</a> <a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>).</li>
+<li>Опциональное поле credentials последовательности SaslCredentials может (MAY) быть использовано для предоставления первоначального отклика клиента в механизмах, в которых предусмотрено, что клиент отправляет данные первым (смотрите разделы <a href="https://tools.ietf.org/html/rfc4422#section-3">3</a> и <a href="https://tools.ietf.org/html/rfc4422#section-5">5</a> <a href="https://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>).</li>
 </ul>
 <p>В общем случае, обмен сообщениями протокола аутентификации SASL состоит из серии вызовов сервера и откликов клиента, содержимое которых специфично для механизма SASL и определяется им. Так, для некоторых механизмов аутентификации SASL, от клиента может потребоваться посылать отклик на один или несколько вызовов сервера путём отправки сообщений BindRequest несколько раз. Вызов обозначается отправкой сервером сообщения BindResponse с результирующим кодом saslBindInProgress. Это означает, что для продолжения процесса аутентификации сервер требует от клиента отправки нового сообщения BindRequest с тем же механизмом SASL.</p>
 
@@ -446,7 +446,7 @@
 
 <h5><a name="section-5.2.1.5">5.2.1.5</a>. Определение поддерживаемых механизмов SASL</h5>
 
-<p>Клиенты могут определить поддерживаемые сервером механизмы SASL путём считывания атрибута 'supportedSASLMechanisms' из записи корневой DSE (DSA-Specific Entry) (<a href="rfc4512.html#section-5.1">раздел 5.1 RFC4512</a>). В значениях этого атрибута, если таковые имеются, перечисляются поддерживаемые сервером в текущем состоянии сессии LDAP механизмы.  LDAP-серверам следует (SHOULD) разрешать всем клиентам&thinsp;&mdash;&thinsp;даже с анонимной авторизацией&thinsp;&mdash;&thinsp;получать атрибут 'supportedSASLMechanisms' корневой DSE как до, так и после аутентификационного обмена SASL. Цель повторного получения поддерживаемых механизмов после установления уровня SASL&thinsp;&mdash;&thinsp;позволить клиентам выявить возможные атаки типа <a href="https://ru.wikipedia.org/wiki/%D0%A7%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA_%D0%BF%D0%BE%D1%81%D0%B5%D1%80%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5#Downgrade_Attack">"downgrade attack"</a> (смотрите <a href="#section-6.4">раздел 6.4</a> этого документа и <a href="http://tools.ietf.org/html/rfc4422#section-6.1.2">раздел 6.1.2 RFC4422</a>).</p>
+<p>Клиенты могут определить поддерживаемые сервером механизмы SASL путём считывания атрибута 'supportedSASLMechanisms' из записи корневой DSE (DSA-Specific Entry) (<a href="rfc4512.html#section-5.1">раздел 5.1 RFC4512</a>). В значениях этого атрибута, если таковые имеются, перечисляются поддерживаемые сервером в текущем состоянии сессии LDAP механизмы.  LDAP-серверам следует (SHOULD) разрешать всем клиентам&thinsp;&mdash;&thinsp;даже с анонимной авторизацией&thinsp;&mdash;&thinsp;получать атрибут 'supportedSASLMechanisms' корневой DSE как до, так и после аутентификационного обмена SASL. Цель повторного получения поддерживаемых механизмов после установления уровня SASL&thinsp;&mdash;&thinsp;позволить клиентам выявить возможные атаки типа <a href="https://ru.wikipedia.org/wiki/%D0%A7%D0%B5%D0%BB%D0%BE%D0%B2%D0%B5%D0%BA_%D0%BF%D0%BE%D1%81%D0%B5%D1%80%D0%B5%D0%B4%D0%B8%D0%BD%D0%B5#Downgrade_Attack">"downgrade attack"</a> (смотрите <a href="#section-6.4">раздел 6.4</a> этого документа и <a href="https://tools.ietf.org/html/rfc4422#section-6.1.2">раздел 6.1.2 RFC4422</a>).</p>
 
 <p>Поскольку механизмы SASL обеспечивают критические функции безопасности, клиентам и серверам следует иметь возможность настройки таким образом, чтобы указать, какие механизмы являются приемлемыми, и разрешать использовать только эти механизмы. Перед началом использования сессии и клиенты, и серверы должны убедиться, что установленный уровень обеспечения безопасности удовлетворяет их требованиям.</p>
 
@@ -458,11 +458,11 @@
 
 <h5><a name="section-5.2.1.7">5.2.1.7</a>. Поддержка множественной аутентификации</h5>
 
-<p>LDAP поддерживает множественную аутентификацию SASL согласно определению, приведённому в <a href="http://tools.ietf.org/html/rfc4422#section-4">разделе 4 RFC4422</a>.</p>
+<p>LDAP поддерживает множественную аутентификацию SASL согласно определению, приведённому в <a href="https://tools.ietf.org/html/rfc4422#section-4">разделе 4 RFC4422</a>.</p>
 
 <h5><a name="section-5.2.1.8">5.2.1.8</a>. Авторизационные идентификационные сущности SASL</h5>
 
-<p>Некоторые механизмы SASL позволяют клиентам запрашивать для сессии LDAP желаемую авторизационную идентификационную сущность (<a href="http://tools.ietf.org/html/rfc4422#section-3.4">раздел 3.4 RFC4422</a>). Решение о том, позволять или не позволять текущей аутентификационной идентификационной сущности получать доступ от имени запрашиваемой авторизационной идентификационной сущности возлагается на локальную политику. Авторизационная идентификационная сущность представляет собой строку символов [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированную UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>], соответствующую грамматике, описанной следующей расширенной формой Бэкуса-Наура (ABNF) [<a href="http://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:
+<p>Некоторые механизмы SASL позволяют клиентам запрашивать для сессии LDAP желаемую авторизационную идентификационную сущность (<a href="https://tools.ietf.org/html/rfc4422#section-3.4">раздел 3.4 RFC4422</a>). Решение о том, позволять или не позволять текущей аутентификационной идентификационной сущности получать доступ от имени запрашиваемой авторизационной идентификационной сущности возлагается на локальную политику. Авторизационная идентификационная сущность представляет собой строку символов [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированную UTF-8 [<a href="https://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>], соответствующую грамматике, описанной следующей расширенной формой Бэкуса-Наура (ABNF) [<a href="https://tools.ietf.org/html/rfc4234" title="Augmented BNF for Syntax Specifications: ABNF">RFC4234</a>]:
 <pre class="list">
       authzId = dnAuthzId / uAuthzId
 
@@ -479,19 +479,19 @@
 
 <p>Пункт dnAuthzId используется для заявления авторизационных идентификационных сущностей в форме уникального имени, которые должны сравниваться по правилу соответствия distinguishedNameMatch (<a href="rfc4517.html#section-4.2.15">раздел 4.2.15 RFC 4517</a>). Не выдвигается требование, чтобы заявляемое значение distinguishedName соответствовало имени реальной записи, хранящейся в каталоге.</p>
 
-<p>Пункт uAuthzId позволяет клиентам заявлять авторизационную идентификационную сущность в форме, отличной от уникального имени. Формат значения userid определяется только как последовательность символов [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированных UTF-8 [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>], а дальнейшие интерпретации оставлены для решения на локальном уровне. Например, userid может идентифицировать пользователя конкретной службы каталогов, быть именем пользователя (логином) или адресом электронной почты. Не следует (SHOULD NOT) считать, что значение uAuthzId глобально уникально. Для сравнения значений uAuthzId каждое из них должно (MUST) быть подготовлено как строка "query" (<a href="http://tools.ietf.org/html/rfc3454#section-7">раздел 7 RFC3454</a>) с помощью алгоритма SASLprep [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>], после чего два значения сравниваются побайтно.</p>
+<p>Пункт uAuthzId позволяет клиентам заявлять авторизационную идентификационную сущность в форме, отличной от уникального имени. Формат значения userid определяется только как последовательность символов [<a href="#ref-Unicode" title="The Unicode Standard, Version 3.2.0">Unicode</a>], закодированных UTF-8 [<a href="https://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>], а дальнейшие интерпретации оставлены для решения на локальном уровне. Например, userid может идентифицировать пользователя конкретной службы каталогов, быть именем пользователя (логином) или адресом электронной почты. Не следует (SHOULD NOT) считать, что значение uAuthzId глобально уникально. Для сравнения значений uAuthzId каждое из них должно (MUST) быть подготовлено как строка "query" (<a href="https://tools.ietf.org/html/rfc3454#section-7">раздел 7 RFC3454</a>) с помощью алгоритма SASLprep [<a href="https://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>], после чего два значения сравниваются побайтно.</p>
 
-<p>Приведённая выше грамматика является расширяемой. Конструкция authzId может быть расширена для поддержки дополнительных форм идентификационных сущностей. Каждая форма отличается от других своим уникальным префиксом (регистрационные требования смотрите в <a href="http://tools.ietf.org/html/rfc4520#section-3.12">разделе 3.12 RFC 4520</a>).</p>
+<p>Приведённая выше грамматика является расширяемой. Конструкция authzId может быть расширена для поддержки дополнительных форм идентификационных сущностей. Каждая форма отличается от других своим уникальным префиксом (регистрационные требования смотрите в <a href="https://tools.ietf.org/html/rfc4520#section-3.12">разделе 3.12 RFC 4520</a>).</p>
 
 <h4><a name="section-5.2.2">5.2.2</a>. Семантики SASL в LDAP</h4>
 
 <p>Разработчики должны позаботиться о сохранении семантик спецификаций SASL при обработке данных, имеющих другие семантики в протоколе LDAP.</p>
 
-<p>Например, механизм аутентификации SASL DIGEST-MD5 [<a href="#ref-DIGEST-MD5" title="Using Digest Authentication as a SASL Mechanism">DIGEST-MD5</a>] использует аутентификационную идентификационную сущность и область действия (realm), которые синтаксически представляют собой простые строки, а семантически&thinsp;&mdash;&thinsp;простые значения username [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>] и realm. Эти значения не являются LDAP DN, и не требуется, чтобы они были представлены или рассматривались в качестве таковых.</p>
+<p>Например, механизм аутентификации SASL DIGEST-MD5 [<a href="#ref-DIGEST-MD5" title="Using Digest Authentication as a SASL Mechanism">DIGEST-MD5</a>] использует аутентификационную идентификационную сущность и область действия (realm), которые синтаксически представляют собой простые строки, а семантически&thinsp;&mdash;&thinsp;простые значения username [<a href="https://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>] и realm. Эти значения не являются LDAP DN, и не требуется, чтобы они были представлены или рассматривались в качестве таковых.</p>
 
 <h4><a name="section-5.2.3">5.2.3</a>. Механизм аутентификации SASL EXTERNAL</h4>
 
-<p>Клиент может использовать механизм SASL EXTERNAL (<a href="http://tools.ietf.org/html/rfc4422#appendix-A">приложение A RFC4422</a>), чтобы запросить LDAP-сервер провести аутентификацию и установить результирующую авторизационную идентификационную сущность, используя защищённые удостоверяющие данные, обмен которыми произошёл на более низком уровне обеспечения безопасности (например, в ходе аутентификации TLS). Если клиент не предоставлял свои удостоверяющие данные аутентификации при установке более низкого уровня обеспечения безопасности, операция Bind с механизмом SASL EXTERNAL должна (MUST) завершиться неудачей с результирующим кодом inappropriateAuthentication. Хотя следствием этой ситуации является то, что сессия LDAP остаётся в анонимном состоянии (<a href="#section-4">раздел 4</a>), это не влияет на состояние каких-либо уже установленных уровней обеспечения безопасности.</p>
+<p>Клиент может использовать механизм SASL EXTERNAL (<a href="https://tools.ietf.org/html/rfc4422#appendix-A">приложение A RFC4422</a>), чтобы запросить LDAP-сервер провести аутентификацию и установить результирующую авторизационную идентификационную сущность, используя защищённые удостоверяющие данные, обмен которыми произошёл на более низком уровне обеспечения безопасности (например, в ходе аутентификации TLS). Если клиент не предоставлял свои удостоверяющие данные аутентификации при установке более низкого уровня обеспечения безопасности, операция Bind с механизмом SASL EXTERNAL должна (MUST) завершиться неудачей с результирующим кодом inappropriateAuthentication. Хотя следствием этой ситуации является то, что сессия LDAP остаётся в анонимном состоянии (<a href="#section-4">раздел 4</a>), это не влияет на состояние каких-либо уже установленных уровней обеспечения безопасности.</p>
 
 <p>Клиент может либо запросить, чтобы его авторизационная идентификационная сущность была автоматически получена из его удостоверяющих данных аутентификации, обмен которыми произошёл на более низком уровне обеспечения безопасности, либо явно предоставить желаемую авторизационную идентификационную сущность. Первый случай называется неявным заявлением авторизационной идентификационной сущности, второй&thinsp;&mdash;&thinsp;явным заявлением.</p>
 
@@ -531,7 +531,7 @@
 
 <p>Разработчикам серверов следует (SHOULD) разрешить администраторам сервера выбирать, требуется ли обеспечивать конфиденциальность и целостность данных и когда это необходимо делать, а также требуется ли аутентификация клиента в ходе переговоров TLS.</p>
 
-<p>Разработчикам следует быть осведомленными и понимать соображения безопасности TLS, обсуждаемые в спецификации TLS [<a href="http://tools.ietf.org/html/rfc4346" title="The TLS Protocol Version 1.1">RFC4346</a>].</p>
+<p>Разработчикам следует быть осведомленными и понимать соображения безопасности TLS, обсуждаемые в спецификации TLS [<a href="https://tools.ietf.org/html/rfc4346" title="The TLS Protocol Version 1.1">RFC4346</a>].</p>
 
 <h3><a name="section-6.3">6.3</a>. Соображения безопасности, касающиеся операции Bind</h3>
 
@@ -551,7 +551,7 @@
 
 <p>Использование паролей в открытом виде и других незащищённых удостоверяющих данных аутентификации настоятельно не рекомендуется в открытых сетях, когда транспортный сервис не может гарантировать конфиденциальности данных. Реализациям LDAP не следует (SHOULD NOT) по умолчанию поддерживать методы аутентификации с использованием паролей в открытом виде и других незащищённых удостоверяющих данных, если данные в сессии не защищены с помощью TLS или других методов защиты конфиденциальности и целостности данных.</p>
 
-<p>Передача паролей в открытом виде,&thinsp;&mdash;&thinsp;обычно для аутентификации или модификации,&thinsp;&mdash;&thinsp;представляет собой значительный риск безопасности. Этого риска можно избежать путём использования механизмов аутентификации SASL [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>], не передающих пароли в открытом виде, либо установлением сервисов обеспечения конфиденциальности на транспортном уровне или на уровне сессии перед тем, как передавать значения паролей.</p>
+<p>Передача паролей в открытом виде,&thinsp;&mdash;&thinsp;обычно для аутентификации или модификации,&thinsp;&mdash;&thinsp;представляет собой значительный риск безопасности. Этого риска можно избежать путём использования механизмов аутентификации SASL [<a href="https://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>], не передающих пароли в открытом виде, либо установлением сервисов обеспечения конфиденциальности на транспортном уровне или на уровне сессии перед тем, как передавать значения паролей.</p>
 
 <p>Чтобы снизить связанные с передачей паролей риски безопасности, реализация сервера, поддерживающая любые механизмы аутентификации на основе паролей, передающие пароли в открытом виде, должна (MUST) поддерживать механизм обеспечения такой политики, когда во время аутентификации или модификации пароля обязательными для выполнения были бы следующие условия:</p>
 <blockquote>
@@ -573,7 +573,7 @@
 
 <h3><a name="section-6.5">6.5</a>. Другие соображения безопасности по теме</h3>
 
-<p>Дополнительные соображения безопасности, относящиеся к различным обсуждаемым в этом документе механизмам и методам аутентификации, можно найти в [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>], [<a href="http://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>], [<a href="http://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>] и [<a href="http://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>].</p>
+<p>Дополнительные соображения безопасности, относящиеся к различным обсуждаемым в этом документе механизмам и методам аутентификации, можно найти в [<a href="https://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>], [<a href="https://tools.ietf.org/html/rfc4013" title="SASLprep: Stringprep Profile for User Names and Passwords">RFC4013</a>], [<a href="https://tools.ietf.org/html/rfc3454" title="Preparation of Internationalized Strings">RFC3454</a>] и [<a href="https://tools.ietf.org/html/rfc3629" title="UTF-8, a transformation format of ISO 10646">RFC3629</a>].</p>
 
 <h2><a name="section-7">7</a>. Регистрация в IANA</h2>
 
@@ -587,7 +587,7 @@
 
 <h2><a name="section-8">8</a>. Благодарности</h2>
 
-<p>Этот документ объединяет в себе информацию, изначально содержавшуюся в <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>,  <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>.  <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>&thinsp;&mdash;&thinsp;продукт рабочей группы Access, Searching and Indexing of Directories (ASID).  <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>&thinsp;&mdash;&thinsp;продукты рабочей группы LDAP Extensions (LDAPEXT).</p>
+<p>Этот документ объединяет в себе информацию, изначально содержавшуюся в <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>,  <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>.  <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>&thinsp;&mdash;&thinsp;продукт рабочей группы Access, Searching and Indexing of Directories (ASID).  <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>&thinsp;&mdash;&thinsp;продукты рабочей группы LDAP Extensions (LDAPEXT).</p>
 
 <p>Данный документ&thinsp;&mdash;&thinsp;продукт рабочей группы IETF LDAP Revision (LDAPBIS).</p>
 
@@ -599,19 +599,19 @@
 
 <p>[<a name="ref-RFC2460" id="ref-RFC2460">RFC2460</a>] Deering, S. и R. Hinden, "Спецификация протокола IPv6", <a href="http://rfc2.ru/2460.rfc">RFC 2460</a>, декабрь 1998 г.</p>
 
-<p>[<a name="ref-RFC3454" id="ref-RFC3454">RFC3454</a>] Hoffman, P. и M. Blanchet, "Preparation of Internationalized Strings ("stringprep")", <a href="http://tools.ietf.org/html/rfc3454">RFC 3454</a>, декабрь 2002 г.</p>
+<p>[<a name="ref-RFC3454" id="ref-RFC3454">RFC3454</a>] Hoffman, P. и M. Blanchet, "Preparation of Internationalized Strings ("stringprep")", <a href="https://tools.ietf.org/html/rfc3454">RFC 3454</a>, декабрь 2002 г.</p>
 
-<p>[<a name="ref-RFC3490" id="ref-RFC3490">RFC3490</a>] Faltstrom, P., Hoffman, P. и A. Costello, "Internationalizing Domain Names in Applications (IDNA)", <a href="http://tools.ietf.org/html/rfc3490">RFC 3490</a>, март 2003 г.</p>
+<p>[<a name="ref-RFC3490" id="ref-RFC3490">RFC3490</a>] Faltstrom, P., Hoffman, P. и A. Costello, "Internationalizing Domain Names in Applications (IDNA)", <a href="https://tools.ietf.org/html/rfc3490">RFC 3490</a>, март 2003 г.</p>
 
-<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="http://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003 г.</p>
+<p>[<a name="ref-RFC3629" id="ref-RFC3629">RFC3629</a>] Yergeau, F., "UTF-8, a transformation format of ISO 10646", STD 63, <a href="https://tools.ietf.org/html/rfc3629">RFC 3629</a>, ноябрь 2003 г.</p>
 
-<p>[<a name="ref-RFC4013" id="ref-RFC4013">RFC4013</a>] Zeilenga, K., "SASLprep: Stringprep Profile for User Names and Passwords", <a href="http://tools.ietf.org/html/rfc4013">RFC 4013</a>, февраль 2005 г.</p>
+<p>[<a name="ref-RFC4013" id="ref-RFC4013">RFC4013</a>] Zeilenga, K., "SASLprep: Stringprep Profile for User Names and Passwords", <a href="https://tools.ietf.org/html/rfc4013">RFC 4013</a>, февраль 2005 г.</p>
 
-<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax Specifications: ABNF", <a href="http://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
+<p>[<a name="ref-RFC4234" id="ref-RFC4234">RFC4234</a>] Crocker, D. и P. Overell, "Augmented BNF for Syntax Specifications: ABNF", <a href="https://tools.ietf.org/html/rfc4234">RFC 4234</a>, октябрь 2005 г.</p>
 
-<p>[<a name="ref-RFC4346" id="ref-RFC4346">RFC4346</a>] Dierks, T. и E. Rescorla, "The TLS Protocol Version 1.1", <a href="http://tools.ietf.org/html/rfc4346">RFC 4346</a>, март 2006 г.</p>
+<p>[<a name="ref-RFC4346" id="ref-RFC4346">RFC4346</a>] Dierks, T. и E. Rescorla, "The TLS Protocol Version 1.1", <a href="https://tools.ietf.org/html/rfc4346">RFC 4346</a>, март 2006 г.</p>
 
-<p>[<a name="ref-RFC4422" id="ref-RFC4422">RFC4422</a>] Под редакцией Melnikov, A. и K. Zeilenga, "Simple  Authentication and Security Layer (SASL)", <a href="http://tools.ietf.org/html/rfc4422">RFC 4422</a>, июнь 2006 г.</p>
+<p>[<a name="ref-RFC4422" id="ref-RFC4422">RFC4422</a>] Под редакцией Melnikov, A. и K. Zeilenga, "Simple  Authentication and Security Layer (SASL)", <a href="https://tools.ietf.org/html/rfc4422">RFC 4422</a>, июнь 2006 г.</p>
 
 <p>[<a name="ref-RFC4510" id="ref-RFC4510">RFC4510</a>] Под редакцией Zeilenga, K., "Lightweight Directory Access Protocol (LDAP): Путеводитель по технической спецификации", <a href="rfc4510.html">RFC 4510</a>, июнь 2006 г.</p>
 
@@ -625,7 +625,7 @@
 
 <p>[<a name="ref-RFC4519" id="ref-RFC4519">RFC4519</a>] Под редакцией Sciberras, A., "Lightweight Directory Access Protocol (LDAP): Схема данных для пользовательских приложений", <a href="rfc4519.html">RFC 4519</a>, июнь 2006 г.</p>
 
-<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Соглашения Internet Assigned Numbers Authority (IANA) о Lightweight Directory Access Protocol (LDAP)", <a href="http://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="http://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006 г.</p>
+<p>[<a name="ref-RFC4520" id="ref-RFC4520">RFC4520</a>] Zeilenga, K., "Соглашения Internet Assigned Numbers Authority (IANA) о Lightweight Directory Access Protocol (LDAP)", <a href="https://tools.ietf.org/html/rfc4520">BCP 64</a>, <a href="https://tools.ietf.org/html/rfc4520">RFC 4520</a>, июнь 2006 г.</p>
 
 <p>[<a name="ref-Unicode" id="ref-Unicode">Unicode</a>] The Unicode Consortium, "The Unicode Standard, Version 3.2.0", определён в "The Unicode Standard, Version 3.0" (Reading, MA, Addison-Wesley, 2000.  ISBN 0-201-61633-5), с поправками, внесенными в "Unicode Standard Annex #27: Unicode 3.1" (<a href="http://www.unicode.org/reports/tr27/">http://www.unicode.org/reports/tr27/</a>) и в "Unicode Standard Annex #28: Unicode 3.2" (<a href="http://www.unicode.org/reports/tr28/">http://www.unicode.org/reports/tr28/</a>).</p>
 
@@ -637,11 +637,11 @@
 
 <p>[<a name="ref-PLAIN" id="ref-PLAIN">PLAIN</a>] Zeilenga, K., <a style="text-decoration: none" href='http://www.google.com/search?sitesearch=tools.ietf.org%2Fhtml%2F&amp;q=inurl:draft-+%22The+Plain+SASL+Mechanism%22'>"The Plain SASL Mechanism"</a>, работы продолжаются, март 2005 г.</p>
 
-<p>[<a name="ref-RFC2828" id="ref-RFC2828">RFC2828</a>] Shirey, R., "Internet Security Glossary", FYI 36, <a href="http://tools.ietf.org/html/rfc2828">RFC 2828</a>, май 2000 г.</p>
+<p>[<a name="ref-RFC2828" id="ref-RFC2828">RFC2828</a>] Shirey, R., "Internet Security Glossary", FYI 36, <a href="https://tools.ietf.org/html/rfc2828">RFC 2828</a>, май 2000 г.</p>
 
-<p>[<a name="ref-RFC4301" id="ref-RFC4301">RFC4301</a>] Kent, S. и K. Seo, "Security Architecture for the  Internet Protocol", <a href="http://tools.ietf.org/html/rfc4301">RFC 4301</a>, декабрь 2005 г.</p>
+<p>[<a name="ref-RFC4301" id="ref-RFC4301">RFC4301</a>] Kent, S. и K. Seo, "Security Architecture for the  Internet Protocol", <a href="https://tools.ietf.org/html/rfc4301">RFC 4301</a>, декабрь 2005 г.</p>
 
-<p>[<a name="ref-RFC4505" id="ref-RFC4505">RFC4505</a>] Zeilenga, K., "The Anonymous SASL Mechanism", <a href="http://tools.ietf.org/html/rfc4505">RFC 4505</a>, июнь 2006 г.</p>
+<p>[<a name="ref-RFC4505" id="ref-RFC4505">RFC4505</a>] Zeilenga, K., "The Anonymous SASL Mechanism", <a href="https://tools.ietf.org/html/rfc4505">RFC 4505</a>, июнь 2006 г.</p>
 
 <h2><a name="appendix-A">Приложение A</a>. Концепции аутентификации и авторизации</h2>
 
@@ -669,22 +669,22 @@
 
 <p>Авторизационная идентификационная сущность&thinsp;&mdash;&thinsp;это один из типов факторов контроля доступа. Она представляет собой имя пользователя или иного субъекта, запрашивающего те операции, которые будут выполняться. Политики контроля доступа часто выражаются в терминах авторизационных идентификационных сущностей; например, "субъект X может выполнить операцию Y с ресурсом Z".</p>
 
-<p>Авторизационная идентификационная сущность сессии LDAP часто семантически совпадает с представленной клиентом аутентификационной идентификационной сущностью, но они могут различаться. SASL позволяет клиентам указать авторизационную идентификационную сущность отличную от аутентификационной, представленной в удостоверяющих данных клиента. Это позволяет агентам, таким как прокси-серверы, проходить аутентификацию на LDAP-сервере с использованием своих собственных удостоверяющих данных, а затем запрашивать привилегии доступа той идентификационной сущности, для которой они они осуществляют проксирование [<a href="http://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>]. Кроме того, форма аутентификационной идентификационной сущности, предоставляемой некоторыми сервисами (например, TLS), может не соответствовать авторизационным идентификационным сущностям, используемым для выражения политики контроля доступа сервера, и потому требует выполнения какого либо специфичного для сервера отображения одной сущности в другую. Метод, по которому сервер составляет авторизационную идентификационную сущность из предоставленных клиентом удостоверяющих данных аутентификации и проверяет правильность такого составления, зависит от реализации.</p>
+<p>Авторизационная идентификационная сущность сессии LDAP часто семантически совпадает с представленной клиентом аутентификационной идентификационной сущностью, но они могут различаться. SASL позволяет клиентам указать авторизационную идентификационную сущность отличную от аутентификационной, представленной в удостоверяющих данных клиента. Это позволяет агентам, таким как прокси-серверы, проходить аутентификацию на LDAP-сервере с использованием своих собственных удостоверяющих данных, а затем запрашивать привилегии доступа той идентификационной сущности, для которой они они осуществляют проксирование [<a href="https://tools.ietf.org/html/rfc4422" title="Simple Authentication and Security Layer (SASL)">RFC4422</a>]. Кроме того, форма аутентификационной идентификационной сущности, предоставляемой некоторыми сервисами (например, TLS), может не соответствовать авторизационным идентификационным сущностям, используемым для выражения политики контроля доступа сервера, и потому требует выполнения какого либо специфичного для сервера отображения одной сущности в другую. Метод, по которому сервер составляет авторизационную идентификационную сущность из предоставленных клиентом удостоверяющих данных аутентификации и проверяет правильность такого составления, зависит от реализации.</p>
 
 <h2><a name="appendix-B">Приложение B</a>. Обзор изменений</h2>
 
 <p>Это приложение не является нормативным.</p>
 
-<p>В данном приложении собраны основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>. Читателям данного документа следует знать, что, кроме описанных ниже конкретных изменений, в текст исходных документов были внесены многочисленные общие редакционные правки, в том числе:</p>
+<p>В данном приложении собраны основные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>, <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a> и <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>. Читателям данного документа следует знать, что, кроме описанных ниже конкретных изменений, в текст исходных документов были внесены многочисленные общие редакционные правки, в том числе:</p>
 <ul>
-<li>Материал, изначально размещённый в разделах <a href="http://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> и <a href="http://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>, в <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a> (все разделы, за исключением <a href="http://tools.ietf.org/html/rfc2829#section-2">2</a> и <a href="http://tools.ietf.org/html/rfc2829#section-4">4</a>), а также в <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>, был собран в один документ.</li>
+<li>Материал, изначально размещённый в разделах <a href="https://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> и <a href="https://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>, в <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a> (все разделы, за исключением <a href="https://tools.ietf.org/html/rfc2829#section-2">2</a> и <a href="https://tools.ietf.org/html/rfc2829#section-4">4</a>), а также в <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>, был собран в один документ.</li>
 <li>Объединённый материал был существенно реорганизован и отредактирован с целью группировки связанных предметов, улучшения структуры документа и уточнения его задач.</li>
 <li>Были внесены изменения по тексту для согласования определений уровней протокола LDAP с терминологией безопасности IETF.</li>
 <li>Существенные обновления и дополнения были внесены в освещение вопросов безопасности всех документов на основе текущего опыта работы.</li>
 </ul>
 <h3><a name="appendix-B.1">B.1</a>. Изменения, внесённые в RFC 2251</h3>
 
-<p>В этом разделе собраны основные изменения, внесённые этим документом в разделы <a href="http://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> и <a href="http://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a>. Кроме того, важные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2251#section-4.2.1">раздел 4.2.1 RFC 2251</a>, представлены в [<a href="rfc4511.html#appendix-C.1.13" title="LDAP: Определение протокола">RFC4511</a>].</p>
+<p>В этом разделе собраны основные изменения, внесённые этим документом в разделы <a href="https://tools.ietf.org/html/rfc2251#section-4.2.1">4.2.1</a> и <a href="https://tools.ietf.org/html/rfc2251#section-4.2.2">4.2.2</a> <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a>. Кроме того, важные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2251#section-4.2.1">раздел 4.2.1 RFC 2251</a>, представлены в [<a href="rfc4511.html#appendix-C.1.13" title="LDAP: Определение протокола">RFC4511</a>].</p>
 
 <h3><a name="appendix-B.1.1">B.1.1</a>. Раздел 4.2.1 (Последовательность запросов Bind)</h3>
 <ul>
@@ -693,11 +693,11 @@
 </ul>
 <h3><a name="appendix-B.1.2">B.1.2</a>. Раздел 4.2.2 (Аутентификация и другие сервисы обеспечения безопасности)</h3>
 <ul>
-<li>В <a href="http://tools.ietf.org/html/rfc2251">RFC 2251</a> утверждается, что анонимная аутентификация должна (MUST) быть выполнена с использованием метода простого подсоединения. В этой спецификации определён механизм анонимной аутентификации метода простого подсоединения и от всех реализаций, удовлетворяющих требованию этого документа, требуется его поддержка. Другие механизмы аутентификации, в результате которых устанавливается анонимное состояние аутентификации и авторизации, также могут быть реализованы и использоваться в реализациях, удовлетворяющих требованию этого документа.</li>
+<li>В <a href="https://tools.ietf.org/html/rfc2251">RFC 2251</a> утверждается, что анонимная аутентификация должна (MUST) быть выполнена с использованием метода простого подсоединения. В этой спецификации определён механизм анонимной аутентификации метода простого подсоединения и от всех реализаций, удовлетворяющих требованию этого документа, требуется его поддержка. Другие механизмы аутентификации, в результате которых устанавливается анонимное состояние аутентификации и авторизации, также могут быть реализованы и использоваться в реализациях, удовлетворяющих требованию этого документа.</li>
 </ul>
 <h3><a name="appendix-B.2">B.2</a>. Изменения, внесённые в RFC 2829</h3>
 
-<p>В этом разделе собраны основные изменения, внесённые в <a href="http://tools.ietf.org/html/rfc2829">RFC 2829</a>.</p>
+<p>В этом разделе собраны основные изменения, внесённые в <a href="https://tools.ietf.org/html/rfc2829">RFC 2829</a>.</p>
 
 <h3><a name="appendix-B.2.1">B.2.1</a>. Раздел 4 (Требуемые механизмы обеспечения безопасности)</h3>
 <ul>
@@ -714,7 +714,7 @@
 
 <h3><a name="appendix-B.2.4">B.2.4</a>. Раздел 6.1 (Аутентификация Digest)</h3>
 <ul>
-<li>Механизм SASL-DIGEST-MD5 больше не является обязательным для реализации, этот раздел стал историческим и не был включён в данный документ. В <a href="http://tools.ietf.org/html/rfc2829#section-6.1">разделе 6.1 RFC 2829</a> по прежнему документирован механизм аутентификации SASL DIGEST-MD5.</li>
+<li>Механизм SASL-DIGEST-MD5 больше не является обязательным для реализации, этот раздел стал историческим и не был включён в данный документ. В <a href="https://tools.ietf.org/html/rfc2829#section-6.1">разделе 6.1 RFC 2829</a> по прежнему документирован механизм аутентификации SASL DIGEST-MD5.</li>
 </ul>
 <h3><a name="appendix-B.2.5">B.2.5</a>. Раздел 6.2 (Способ аутентификации 'simple' при шифровании TLS)</h3>
 <ul>
@@ -751,7 +751,7 @@
 
 <h3><a name="appendix-B.3">B.3</a>. Изменения, внесённые в RFC 2830</h3>
 
-<p>В этом разделе собраны основные изменения, внесённые в разделы <a href="http://tools.ietf.org/html/rfc2830#section-3">3</a> и <a href="http://tools.ietf.org/html/rfc2830#section-5">5</a> <a href="http://tools.ietf.org/html/rfc2830">RFC 2830</a>. В [<a href="rfc4511.html#appendix-C.2" title="LDAP: Определение протокола">RFC4511</a>] перечислены изменения, внесённые в другие разделы этого RFC.</p>
+<p>В этом разделе собраны основные изменения, внесённые в разделы <a href="https://tools.ietf.org/html/rfc2830#section-3">3</a> и <a href="https://tools.ietf.org/html/rfc2830#section-5">5</a> <a href="https://tools.ietf.org/html/rfc2830">RFC 2830</a>. В [<a href="rfc4511.html#appendix-C.2" title="LDAP: Определение протокола">RFC4511</a>] перечислены изменения, внесённые в другие разделы этого RFC.</p>
 
 <h3><a name="appendix-B.3.1">B.3.1</a>. Раздел 3.6 (Проверка идентификационной сущности сервера)</h3>
 <ul>
@@ -768,7 +768,7 @@
 <h3><a name="appendix-B.3.4">B.3.4</a>. Раздел 5.2 (Последствия закрытия соединения TLS)</h3>
 <ul>
 <li>Закрытие уровня TLS в сессии LDAP изменяет состояния аутентификации и авторизации этой LDAP в соответствии с локальной политикой. Конкретнее, это означает, что от реализаций не требуется изменять состояния аутентификации и авторизации на анонимные после закрытия TLS.</li>
-<li>Ссылки, указывающие на <a href="http://tools.ietf.org/html/rfc2401">RFC 2401</a>, заменены на <a href="http://tools.ietf.org/html/rfc4301">RFC 4301</a>.</li>
+<li>Ссылки, указывающие на <a href="https://tools.ietf.org/html/rfc2401">RFC 2401</a>, заменены на <a href="https://tools.ietf.org/html/rfc4301">RFC 4301</a>.</li>
 </ul>
 
 <h2>Адрес автора</h2>
@@ -781,15 +781,15 @@
 
 <p>Copyright (C) Internet Society (2006).</p>
 
-<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
+<p>На этот документ распространяются права, лицензии и ограничения, содержащиеся в <a href="https://tools.ietf.org/html/bcp78">BCP 78</a>, и, за исключением случаев, изложенных в нем, авторы сохраняют все свои права.</p>
 
 <p>Этот документ и содержащаяся в нём информация распространяются "КАК ЕСТЬ" и АВТОР ДОКУМЕНТА, ОРГАНИЗАЦИЯ, КОТОРУЮ ОН/ОНА ПРЕДСТАВЛЯЕТ, ИЛИ КОТОРОЙ ОН/ОНА СПОНСИРУЕТСЯ (ЕСЛИ ТАКОВЫЕ ИМЕЮТСЯ), INTERNET SOCIETY И INTERNET ENGINEERING TASK FORCE ОТКАЗЫВАЮТСЯ ОТ ВСЕХ ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, ПОМИМО ПРОЧЕГО, ЛЮБЫЕ ГАРАНТИИ ТОГО, ЧТО ИСПОЛЬЗОВАНИЕ ПРИВЕДЁННОЙ ЗДЕСЬ ИНФОРМАЦИИ НЕ НАРУШАЕТ КАКИХ-ЛИБО ПРАВ ИЛИ ЛЮБЫЕ ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ ПРИГОДНОСТИ ДЛЯ КОНКРЕТНЫХ ЦЕЛЕЙ.</p>
 
 <h2>Интеллектуальная собственность</h2>
 
-<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="http://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="http://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
+<p>IETF не занимает никакой позиции относительно действительности или области действия каких-либо прав на интеллектуальную собственность или других прав, которые могут заявляться как относящиеся к реализации или использованию технологий, описанных в данном документе, либо в подтверждении которых могут или не могут быть доступны какие-либо лицензии; кроме того, IETF не заявляет о том, что она будет предпринимать какие-либо независимые усилия по выявлению подобных прав. Информацию по процедурам в отношении прав в документах RFC можно найти в <a href="https://tools.ietf.org/html/bcp78">BCP 78</a> и <a href="https://tools.ietf.org/html/bcp79">BCP 79</a>.</p>
 
-<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="http://www.ietf.org/ipr">http://www.ietf.org/ipr</a>.</p>
+<p>Копии поданных в секретариат IETF заявлений о правах на интеллектуальную собственность (Intellectual Property Rights, IPR), а также какие-либо документы, подтверждающие лицензию и предназначенные для предоставления доступа к ним, либо результаты попыток получения генеральных лицензий или разрешений на пользование подобными правами собственности могут быть получены теми, кто занимается реализацией, или пользователями данной спецификации из он-лайн репозитория IPR IETF по адресу <a href="https://www.ietf.org/ipr">https://www.ietf.org/ipr</a>.</p>
 
 <p>IETF просит всех заинтересованных лиц довести до её сведения любые авторские права, патенты или патентные заявки, либо другие права собственности, которые могут касаться технологий данного стандарта и могут потребоваться для его реализации. Пожалуйста, направляйте информацию в IETF по адресу ietf-ipr@ietf.org.</p>
 
